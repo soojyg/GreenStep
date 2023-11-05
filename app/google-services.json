@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "540291974946",
+    "project_id": "greenstep-login-register",
+    "storage_bucket": "greenstep-login-register.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540291974946:android:7ae9a7f9d100a9b85d077b",
+        "android_client_info": {
+          "package_name": "com.example.greenstep"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtNmjRFN2mZmBXqEu2ycA_91DQgAir5XU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
