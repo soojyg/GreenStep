@@ -7,4 +7,9 @@
     <string name="click_to_login">Click to login</string>
     <string name="click_to_register">Click to Register</string>
     <string name="logout">Logout</string>
+    <string name="log_in">Log in</string>
+    <string name="welcome_nback">Welcome\nback</string>
+    <string name="background_for_login_page">background for login page</string>
+    <string name="app_logo">app logo</string>
+    <string name="green_step">Green Step</string>
 </resources>
