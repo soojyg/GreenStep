@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,11 +19,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Registration extends AppCompatActivity {
 
-    TextInputEditText editTextEmail, editTextPassword;
-    Button buttonReg;
+    TextInputEditText editTextEmail, editTextPassword, editTextName;
+    Button buttonSignUp, buttonLogin;
     FirebaseAuth mAuth;
-    ProgressBar progressBar;
-    TextView textView;
+//    ProgressBar progressBar;
 
     // to check if the user is already logged in
     @Override
@@ -42,14 +39,15 @@ public class Registration extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.registration_activity);
         mAuth = FirebaseAuth.getInstance();
-        editTextEmail = findViewById(R.id.email);
-        editTextPassword = findViewById(R.id.password);
-        buttonReg = findViewById(R.id.btn_register);
-        progressBar = findViewById(R.id.progressBar);
-        textView = findViewById(R.id.loginNow);
-        textView.setOnClickListener(new View.OnClickListener(){
+        editTextName = findViewById(R.id.editName);
+        editTextEmail = findViewById(R.id.editEmail);
+        editTextPassword = findViewById(R.id.editPassword);
+        buttonSignUp = findViewById(R.id.button_signup);
+//        progressBar = findViewById(R.id.progressBar);
+        buttonLogin = findViewById(R.id.button_login);
+        buttonLogin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(getApplicationContext(), Login.class);
@@ -58,15 +56,20 @@ public class Registration extends AppCompatActivity {
             }
         });
         
-        buttonReg.setOnClickListener(new View.OnClickListener() {
+        buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                String email,password;
+//                progressBar.setVisibility(View.VISIBLE);
+                String name,email,password;
+                name = String.valueOf(editTextName.getText());
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
 
                 // to check if the email and password is empty or not
+                if(TextUtils.isEmpty(name)){
+                    Toast.makeText(Registration.this,"Enter name",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(Registration.this,"Enter email",Toast.LENGTH_SHORT).show();
                     return;
@@ -80,7 +83,7 @@ public class Registration extends AppCompatActivity {
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                progressBar.setVisibility(View.GONE);
+//                                progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Registration.this, "Account created.",
                                             Toast.LENGTH_SHORT).show();
