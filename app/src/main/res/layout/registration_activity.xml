@@ -70,11 +70,19 @@
         android:id="@+id/editNameTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
         android:layout_marginStart="14dp"
+        android:layout_marginTop="14dp"
         android:layout_marginEnd="14dp"
-        app:boxBackgroundMode="filled"
         android:textColorHint="#9D9D9D"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeColor="@color/dark_green"
+        app:cursorColor="@color/dark_green"
+        app:helperTextTextColor="@color/dark_green"
+        app:hintTextColor="#020202"
+        app:placeholderTextColor="@color/dark_green"
+        app:startIconDrawable="@drawable/person_icon"
+        app:startIconScaleType="fitCenter"
+        app:startIconTint="#9D9D9D"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appName">
@@ -83,14 +91,10 @@
             android:id="@+id/editName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/people_icon"
             android:drawablePadding="10sp"
             android:hint="@string/name"
             android:inputType="text|textEmailAddress"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appName" />
+            android:textSize="20sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -100,8 +104,16 @@
         android:layout_marginTop="14dp"
         android:layout_marginStart="14dp"
         android:layout_marginEnd="14dp"
-        app:boxBackgroundMode="filled"
         android:textColorHint="#9D9D9D"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeColor="@color/dark_green"
+        app:cursorColor="@color/dark_green"
+        app:helperTextTextColor="@color/dark_green"
+        app:hintTextColor="#020202"
+        app:placeholderTextColor="@color/dark_green"
+        app:startIconDrawable="@drawable/email_icon"
+        app:startIconScaleType="fitCenter"
+        app:startIconTint="#9D9D9D"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editNameTextInputLayout">
@@ -110,46 +122,47 @@
             android:id="@+id/editEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/email_icon"
             android:drawablePadding="10sp"
             android:hint="@string/email"
             android:inputType="text|textEmailAddress"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editNameTextInputLayout" />
+            android:textSize="20sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
         android:layout_marginStart="14dp"
+        android:layout_marginTop="14dp"
         android:layout_marginEnd="14dp"
-        app:boxBackgroundMode="filled"
         android:textColorHint="#9D9D9D"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:passwordToggleEnabled="true"
+        app:boxBackgroundMode="filled"
+        app:boxStrokeColor="@color/dark_green"
         app:counterEnabled="true"
         app:counterMaxLength="16"
-        app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout" >
+        app:cursorColor="@color/dark_green"
+        app:helperTextTextColor="@color/dark_green"
+        app:hintTextColor="#020202"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout"
+        app:passwordToggleEnabled="true"
+        app:placeholderTextColor="@color/dark_green"
+        app:startIconDrawable="@drawable/password_icon"
+        app:startIconScaleType="fitCenter"
+        app:startIconTint="#9D9D9D">
 
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/password_icon"
+            android:cursorVisible="true"
             android:drawablePadding="10sp"
             android:hint="@string/password"
             android:inputType="text|textPassword"
             android:maxLength="16"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout" />
+            android:textSize="20sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
