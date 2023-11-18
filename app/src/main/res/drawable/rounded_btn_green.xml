@@ -7,12 +7,10 @@
         android:height="30dp" />
 
     <stroke
-        android:color="#0A5D00"
+        android:color="@color/dark_green"
         android:width="1dp" />
 
-    <!-- Background Color -->
-    <solid android:color="#CAFFBE" />
+    <solid android:color="@color/light_green" />
 
-    <!-- Corner Radius -->
     <corners android:radius="12dp" />
 </shape>
