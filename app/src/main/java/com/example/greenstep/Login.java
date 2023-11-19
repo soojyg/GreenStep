@@ -1,6 +1,6 @@
 package com.example.greenstep;
 
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -14,9 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,13 +41,15 @@ public class Login extends AppCompatActivity {
             finish();
         });
 
-        buttonLogin.setOnClickListener(this::onClick);
+        buttonLogin.setOnClickListener(this::onClick); //when the login button is clicked, it will call the onClick method of Login class
 
         forgotPW.setOnClickListener(view ->{
             AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
             View dialogView = getLayoutInflater().inflate(R.layout.dialog_forgot_pw,null);
+            // getLayoutInflater().inflate(...) -> used to convert the XML layout file into a View object.
             EditText emailBox = dialogView.findViewById(R.id.emailBox);
 
+            // sets the previously inflated dialogView as the view for the AlertDialog.Builder.
             builder.setView(dialogView);
             AlertDialog dialog = builder.create();
 
@@ -116,10 +115,8 @@ public class Login extends AppCompatActivity {
                         finish();
                     } else {
                         // If sign in fails, display a message to the user.
-
                         Toast.makeText(Login.this, "Authentication failed.",
                                 Toast.LENGTH_SHORT).show();
-
                     }
                 });
     }
