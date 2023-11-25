@@ -107,8 +107,5 @@
             app:layout_constraintStart_toEndOf="@id/button_cancel"
             />
 
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
