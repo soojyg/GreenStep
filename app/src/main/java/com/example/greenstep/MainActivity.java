@@ -4,12 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,29 +24,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         auth = FirebaseAuth.getInstance();
-
+        FirebaseApp.initializeApp(this);
         // Initialize button and textview
         button = findViewById(R.id.logout);
         textView = findViewById(R.id.user_details);
         user = auth.getCurrentUser();
 
-        if(user == null){ // if user is null, we have to open the login activity and close the main activity
+        if (user == null) { // if user is null, we have to open the login activity and close the main activity
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
-        }
-        else{
+        } else {
             textView.setText(user.getEmail());
         }
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivity(intent);
-                finish();
-            }
+        button.setOnClickListener(view -> {
+            auth.signOut();
+            Intent intent = new Intent(getApplicationContext(), Login.class);
+            startActivity(intent);
+            finish();
         });
     }
 }

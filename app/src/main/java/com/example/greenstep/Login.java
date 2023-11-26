@@ -1,6 +1,5 @@
 package com.example.greenstep;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -14,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,48 +41,49 @@ public class Login extends AppCompatActivity {
             finish();
         });
 
-        buttonLogin.setOnClickListener(this::onClick); //when the login button is clicked, it will call the onClick method of Login class
+        buttonLogin.setOnClickListener(this::onClick);
+        // When the login button is clicked, it will call the onClick method of Login class
 
-        forgotPW.setOnClickListener(view ->{
+        forgotPW.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
-            View dialogView = getLayoutInflater().inflate(R.layout.dialog_forgot_pw,null);
+            View dialogView = getLayoutInflater().inflate(R.layout.dialog_forgot_pw, null);
             // getLayoutInflater().inflate(...) -> used to convert the XML layout file into a View object.
             EditText emailBox = dialogView.findViewById(R.id.emailBox);
 
-            // sets the previously inflated dialogView as the view for the AlertDialog.Builder.
+            // Set the previously inflated dialogView as the view for the AlertDialog.Builder.
             builder.setView(dialogView);
             AlertDialog dialog = builder.create();
 
             dialogView.findViewById(R.id.button_reset).setOnClickListener(v -> {
                 String userEmail = emailBox.getText().toString();
 
-                if(TextUtils.isEmpty(userEmail) && !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()){
+                if (TextUtils.isEmpty(userEmail) && !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
                     Toast.makeText(Login.this, "Enter your registered email", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mAuth.sendPasswordResetEmail(userEmail).addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        Toast.makeText(Login.this,"Check your email",Toast.LENGTH_SHORT).show();
+                    if (task.isSuccessful()) {
+                        Toast.makeText(Login.this, "Check your email", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
-                    }else{
-                        Toast.makeText(Login.this,"Failed, unable to send.",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(Login.this, "Failed, unable to send.", Toast.LENGTH_SHORT).show();
                     }
                 });
             });
             dialogView.findViewById(R.id.button_cancel).setOnClickListener(v -> dialog.dismiss());
-            if(dialog.getWindow() != null){
+            if (dialog.getWindow() != null) {
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
             dialog.show();
         });
     }
 
-    // to check if the user is already logged in
+    // To check if the user is already logged in
     @Override
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
+        if (currentUser != null) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
@@ -90,7 +91,6 @@ public class Login extends AppCompatActivity {
     }
 
     private void onClick(View view) {
-
         String email, password;
         email = String.valueOf(editTextEmail.getText());
         password = String.valueOf(editTextPassword.getText());

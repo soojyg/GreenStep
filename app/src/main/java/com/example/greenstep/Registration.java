@@ -6,8 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,21 +16,26 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 
 public class Registration extends AppCompatActivity {
 
     TextInputEditText editTextEmail, editTextPassword, editTextName;
     Button buttonSignUp, buttonLogin;
+    Spinner spinnerUserType;
     FirebaseAuth mAuth;
-//    ProgressBar progressBar;
 
-    // to check if the user is already logged in
+    // To check if the user is already logged in
     @Override
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
+        if (currentUser != null) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
@@ -45,57 +51,187 @@ public class Registration extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editEmail);
         editTextPassword = findViewById(R.id.editPassword);
         buttonSignUp = findViewById(R.id.button_signup);
-//        progressBar = findViewById(R.id.progressBar);
         buttonLogin = findViewById(R.id.button_login);
-        buttonLogin.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivity(intent);
-                finish();
-            }
+        spinnerUserType = findViewById(R.id.spinnerUserType);
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.user_types,
+                android.R.layout.simple_spinner_item
+        );
+
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        spinnerUserType.setAdapter(adapter);
+
+        buttonLogin.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), Login.class);
+            startActivity(intent);
+            finish();
         });
-        
-        buttonSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                progressBar.setVisibility(View.VISIBLE);
-                String name,email,password;
-                name = String.valueOf(editTextName.getText());
-                email = String.valueOf(editTextEmail.getText());
-                password = String.valueOf(editTextPassword.getText());
 
-                // to check if the email and password is empty or not
-                if(TextUtils.isEmpty(name)){
-                    Toast.makeText(Registration.this,"Enter name",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(TextUtils.isEmpty(email)){
-                    Toast.makeText(Registration.this,"Enter email",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(TextUtils.isEmpty(password)){
-                    Toast.makeText(Registration.this,"Enter password",Toast.LENGTH_SHORT).show();
-                    return;
-                }
+        buttonSignUp.setOnClickListener(v -> {
+            String name, email, password;
+            name = String.valueOf(editTextName.getText());
+            email = String.valueOf(editTextEmail.getText());
+            password = String.valueOf(editTextPassword.getText());
 
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-//                                progressBar.setVisibility(View.GONE);
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(Registration.this, "Account created.",
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(Registration.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
+            // to check if the email and password is empty or not
+            if (TextUtils.isEmpty(name)) {
+                Toast.makeText(Registration.this, "Enter name", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (TextUtils.isEmpty(email)) {
+                Toast.makeText(Registration.this, "Enter email", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (TextUtils.isEmpty(password)) {
+                Toast.makeText(Registration.this, "Enter password", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Check password strength
+            if (!isStrongPassword(password)) {
+                // Display an error message
+                editTextPassword.setError("Weak password. Follow the criteria below.");
+                return;
+            }
+
+            // To determine the user type
+            String userType = spinnerUserType.getSelectedItem().toString();
+
+            // Check the selected user type
+            if ("Admin".equals(userType)) {
+                // If the user selected "Admin", check if the email is in the Firestore database
+                isAdminEmail(email).addOnCompleteListener(new OnCompleteListener<Boolean>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Boolean> task) {
+                        if (task.isSuccessful()) {
+                            boolean isEmailInAdminList = task.getResult();
+                            if (isEmailInAdminList) {
+                                // If the email is in the admin list, create an admin account
+                                createAdminAccount(email, password);
+                            } else {
+                                // If the email is not in the admin list, display an error message
+                                Toast.makeText(Registration.this, "You are not authorized to register as an admin.", Toast.LENGTH_SHORT).show();
                             }
-                        });
+                        } else {
+                            // Handle errors
+                            Toast.makeText(Registration.this, "Error checking admin email.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            } else {
+                // If the user selected "Normal User", create a normal user account
+                createNormalUserAccount(email, password);
             }
         });
+    }
 
+    // Function to check password strength
+    private boolean isStrongPassword(String password) {
+        // Criteria for a strong password: Minimum 8 characters, including uppercase, lowercase, a special character, and a number
+        return password.length() >= 8 &&
+                containsUppercase(password) &&
+                containsLowercase(password) &&
+                containsSpecialCharacter(password) &&
+                containsNumber(password);
+    }
+
+    // Helper functions to check specific criteria
+    private boolean containsUppercase(String password) {
+        return !password.equals(password.toLowerCase());
+    }
+
+    private boolean containsLowercase(String password) {
+        return !password.equals(password.toUpperCase());
+    }
+
+    private boolean containsNumber(String password) {
+        for (char c : password.toCharArray()) {
+            if (Character.isDigit(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean containsSpecialCharacter(String password) {
+        for (char c : password.toCharArray()) {
+            if (!Character.isDigit(c) && !Character.isLetter(c) && !Character.isWhitespace(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Function to check if the email is in the admin list in Firestore database
+    private Task<Boolean> isAdminEmail(String email) {
+        FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
+        CollectionReference adminsCollection = firestoreDB.collection("admin");
+
+        return adminsCollection
+                .whereEqualTo("email", email)
+                .get()
+                .continueWith(task -> {
+                    try {
+                        if (task.isSuccessful()) {
+                            // Check if there is any document with the given email
+                            for (DocumentSnapshot document : task.getResult()) {
+                                // If a document is found, the email is in the admin list
+                                return true;
+                            }
+                        }
+                        // If no document is found, the email is not in the admin list
+                        return false;
+                    } catch (Exception e) {
+                        // Handle the exception (e.g., log it or throw a runtime exception)
+                        e.printStackTrace();
+                        return false;
+                    }
+                });
+    }
+
+    // Function to create an Admin account
+    private void createAdminAccount(String email, String password) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(Registration.this, "Admin account created.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Handle authentication failure
+                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                Toast.makeText(Registration.this, "Email is already in use.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(Registration.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+    }
+
+    // Function to create a normal user account
+    private void createNormalUserAccount(String email, String password) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(Registration.this, "Normal user account created.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Handle authentication failure
+                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                Toast.makeText(Registration.this, "Email is already in use.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(Registration.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
     }
 }

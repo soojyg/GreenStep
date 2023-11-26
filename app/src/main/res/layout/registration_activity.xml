@@ -71,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="14dp"
         android:textColorHint="#9D9D9D"
         app:boxBackgroundMode="filled"
@@ -140,6 +140,7 @@
         app:boxStrokeColor="@color/dark_green"
         app:counterEnabled="true"
         app:counterMaxLength="16"
+        app:helperText="Minimum 8 characters, including uppercase, lowercase, a special character and a number."
         app:cursorColor="@color/dark_green"
         app:helperTextTextColor="@color/dark_green"
         app:hintTextColor="#020202"
@@ -163,23 +164,33 @@
             android:inputType="text|textPassword"
             android:maxLength="16"
             android:textSize="20sp" />
+
+
     </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Spinner
+        android:id="@+id/spinnerUserType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/passwordTextInputLayout" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_signup"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/quicksand_medium"
-        android:layout_marginBottom="120dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/rounded_btn_green"
+        android:fontFamily="@font/quicksand_medium"
         android:gravity="center"
         android:text="@string/sign_up"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerUserType" />
 
     <View
         android:id="@+id/line"
@@ -211,7 +222,7 @@
         android:id="@+id/button_login"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/rounded_btn_grey"
         android:fontFamily="@font/quicksand_medium"
         android:gravity="center"
