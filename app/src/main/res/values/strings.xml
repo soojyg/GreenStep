@@ -22,6 +22,50 @@
     <string name="cancel">Cancel</string>
     <string name="enter_your_email_address">Enter your email address:</string>
     <string name="reset">Reset</string>
+
+
+    <string name="loading">Loading…</string>
+    <string name="no_internet_connection">No internet connection!</string>
+<!--    <string name="lbl_greenstep">GreenStep</string>-->
+    <string name="lbl_go_vegan">Go Vegan</string>
+    <string name="lbl_start">Start</string>
+    <string name="msg_use_clean_energ">Use Clean Energy</string>
+    <string name="lbl_back">Back</string>
+    <string name="lbl_complete">Complete</string>
+    <string name="msg_silicone_bottle">Silicone Bottles</string>
+    <string name="lbl_donate_clothes">Donate Clothes</string>
+    <string name="lbl_alternatives">Alternatives</string>
+    <string name="msg_avoid_plastic_b">Avoid Plastic Bottle</string>
+    <string name="lbl_image">Image:</string>
+    <string name="lbl_how_to">How To</string>
+    <string name="lbl_edit">Edit</string>
+    <string name="msg_source_referen">Source/ Reference:</string>
+    <string name="msg_alternatives_fo">Alternatives for Plastic Bottles</string>
+    <string name="msg_how_to_altern">How To &amp; Alternatives Update </string>
+    <string name="lbl_reduce_waste">Reduce Waste</string>
+    <string name="lbl_title">Title:</string>
+    <string name="msg_alternatives_fo2">Alternatives for </string>
+    <string name="lbl_alternatives_1">Alternatives 1</string>
+    <string name="msg_your_actions_to">Your actions today can change tomorrow.</string>
+    <string name="lbl_add_option">Add Option</string>
+    <string name="lbl_avoid_shampoo">Avoid Shampoo</string>
+    <string name="lbl_plastic_bottles">Plastic Bottles</string>
+    <string name="msg_stainless_steel">Stainless Steel Water Bottles</string>
+    <string name="lbl">*</string>
+    <string name="msg_avoid_cleaning">Avoid Cleaning Product</string>
+    <string name="lbl_alternatives2">Alternatives:</string>
+    <string name="submit">Submit</string>
+    <string name="title">Title:</string>
+    <string name="image">Image:</string>
+    <string name="caption">Caption</string>
+    <string name="how_to">How To</string>
+    <string name="alternatives">Alternatives</string>
+    <string name="upload">Upload</string>
+    <string name="challenge">Challenge</string>
+    <string name="reward">Reward</string>
+    <string name="events_news"><![CDATA[Events & News]]></string>
+    <string name="educational_content">Educational Content</string>
+    <string name="log_out">Log out</string>
     <string-array name="user_types">
         <item>Admin</item>
         <item>Normal user</item>

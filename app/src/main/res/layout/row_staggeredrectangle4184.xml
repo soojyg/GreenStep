@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+<!--    <data>-->
+<!--        <variable name="staggeredrectangle4184RowModel" type="com.makweneesapplication.app.modules.educontenthowto.data.model.Staggeredrectangle4184RowModel"/>-->
+<!--    </data>-->
+    <LinearLayout android:id="@+id/linearColumnrectangle4184"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" android:orientation="vertical">
+        <FrameLayout android:id="@+id/frameStackrectangle4184"
+            android:layout_gravity="start"
+            android:layout_height="@dimen/_201pxv" android:layout_width="@dimen/_144pxh">
+            <ImageView android:id="@+id/imageRectangle4184"
+                android:layout_gravity="start"
+                android:layout_height="@dimen/_201pxh"
+                android:layout_width="@dimen/_144pxh"
+                android:scaleType="fitXY"
+                cornerRadius="@{@dimen/_10pxh}"
+                imageRes="@{@drawable/img_rectangle4184}"
+                tools:ignore="ContentDescription" tools:src="@drawable/img_rectangle4184"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:ellipsize="end" android:gravity="center"
+                android:id="@+id/btnReduceWaste"
+                android:layout_gravity="bottom|start"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10pxv"
+                android:layout_width="match_parent"
+                android:paddingBottom="@dimen/_12pxv"
+                android:paddingEnd="@dimen/_10pxh"
+                android:paddingStart="@dimen/_8pxh"
+                android:paddingTop="@dimen/_12pxv"
+                android:singleLine="true"
+                android:text="@string/lbl_reduce_waste"
+                android:textAllCaps="false"
+                style="@style/btnSolidRoundedBottomCorner" tools:text="@string/lbl_reduce_waste"/>
+        </FrameLayout>
+        <LinearLayout android:gravity="end"
+            android:id="@+id/linearRowfavorite"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_17pxh"
+            android:layout_marginStart="@dimen/_17pxh"
+            android:layout_marginTop="@dimen/_9pxv"
+            android:layout_width="wrap_content" android:orientation="horizontal">
+            <ImageView android:id="@+id/imageFavorite"
+                android:layout_height="@dimen/_18pxh"
+                android:layout_width="@dimen/_20pxh"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_favorite"
+                tools:ignore="ContentDescription" tools:src="@drawable/img_favorite"/>
+            <ImageView android:id="@+id/imageShare"
+                android:layout_height="@dimen/_18pxh"
+                android:layout_marginStart="@dimen/_10pxh"
+                android:layout_width="@dimen/_23pxh"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_share"
+                tools:ignore="ContentDescription" tools:src="@drawable/img_share"/>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

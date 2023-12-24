@@ -1,9 +1,11 @@
 <resources >
     <!-- Base application theme. -->
-    <style name="Base.Theme.GreenStep" parent="Theme.AppCompat.DayNight">
+    <style name="Theme.GreenStep" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
     </style>
 
-    <style name="Theme.GreenStep" parent="Base.Theme.GreenStep" />
+<!--    <style name="Theme.GreenStep" parent="Base.Theme.GreenStep" />-->
 </resources>

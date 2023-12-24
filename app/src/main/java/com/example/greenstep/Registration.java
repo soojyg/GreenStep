@@ -22,6 +22,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class Registration extends AppCompatActivity {
 
@@ -171,10 +174,10 @@ public class Registration extends AppCompatActivity {
     // Function to check if the email is in the admin list in Firestore database
     private Task<Boolean> isAdminEmail(String email) {
         FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
-        CollectionReference adminsCollection = firestoreDB.collection("admin");
+        CollectionReference adminsCollection = firestoreDB.collection("Admin");
 
         return adminsCollection
-                .whereEqualTo("email", email)
+                .whereEqualTo("Email address", email)
                 .get()
                 .continueWith(task -> {
                     try {
@@ -203,6 +206,9 @@ public class Registration extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(Registration.this, "Admin account created.", Toast.LENGTH_SHORT).show();
+                            // Save the user information to the "Users" collection
+                            String userId = mAuth.getCurrentUser().getUid();
+                            saveToFirestoreDB(userId, email,"Admin");
                         } else {
                             // Handle authentication failure
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
@@ -223,6 +229,9 @@ public class Registration extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(Registration.this, "Normal user account created.", Toast.LENGTH_SHORT).show();
+                            // Save the user information to the "Users" collection
+                            String userId = mAuth.getCurrentUser().getUid();
+                            saveToFirestoreDB(userId, email,"Normal User");
                         } else {
                             // Handle authentication failure
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
@@ -232,6 +241,26 @@ public class Registration extends AppCompatActivity {
                             }
                         }
                     }
+                });
+    }
+
+    // Function to save the user info to firestore database
+    private void saveToFirestoreDB(String userId, String email, String userType){
+        FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
+        CollectionReference usersCollection = firestoreDB.collection("Users");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("UserId",userId);
+        data.put("Email",email);
+        data.put("User type",userType);
+
+        usersCollection.document(userId)
+                .set(data)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(Registration.this, "User information saved to Firestore database.",Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e ->{
+                    Toast.makeText(Registration.this,"Error saving user information to Firestore.",Toast.LENGTH_SHORT).show();
                 });
     }
 }

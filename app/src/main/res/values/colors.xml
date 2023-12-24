@@ -2,7 +2,29 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="light_green">#CAFFBE</color>
-    <color name='dark_green'>#0A5D00</color>
     <color name='grey'>#9D9D9D</color>
+
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="green_50_e5">#e5e3f0db</color>
+    <color name="gray_900">#172b23</color>
+    <color name="teal_900_c9">#c9016734</color>
+    <color name="green_902">#0a5d00</color>
+    <color name="green_A100_a3">#a3caffbe</color>
+    <color name="green_901">#006e2f</color>
+    <color name="green_900">#044b18</color>
+    <color name="green_A100">#caffbe</color>
+    <color name="black_900_3f">#3f000000</color>
+    <color name="gray_200">#f0f0f0</color>
+    <color name="gray_201">#eaecee</color>
+    <color name="indigo_900_33">#33252c61</color>
+    <color name="black_900_44">#44000000</color>
+    <color name="black_900">#000000</color>
+    <color name="bluegray_300">#929da9</color>
+    <color name="light_green_50">#edffe9</color>
+    <color name="white_A700">#ffffff</color>
+    <color name="red_A700">#ff0505</color>
 </resources>

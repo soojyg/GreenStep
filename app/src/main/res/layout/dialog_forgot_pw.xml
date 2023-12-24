@@ -19,7 +19,7 @@
             android:id="@+id/forgotTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/light_green"
+            android:background="@color/green_A100"
             android:drawablePadding="10dp"
             android:fontFamily="@font/quicksand_medium"
             android:padding="10dp"

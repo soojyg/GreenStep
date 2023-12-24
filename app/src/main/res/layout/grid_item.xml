@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="16dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/gridItem"
+        android:layout_width="150dp"
+        android:layout_height="220dp"
+        app:cardElevation="10dp"
+        app:cardCornerRadius="20dp"
+        android:clickable="true"
+        android:focusable="true">
+        
+        <ImageView
+            android:id="@+id/gridImage"
+            android:layout_width="150dp"
+            android:layout_height="220dp"
+            android:scaleType="centerCrop">
+        </ImageView>
+        <androidx.appcompat.widget.AppCompatButton
+            android:ellipsize="end" android:gravity="center"
+            android:id="@+id/btnEdu"
+            android:layout_gravity="bottom|start"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10pxv"
+            android:layout_width="match_parent"
+            android:paddingBottom="@dimen/_12pxv"
+            android:paddingEnd="@dimen/_10pxh"
+            android:paddingStart="@dimen/_8pxh"
+            android:paddingTop="@dimen/_12pxv"
+            android:singleLine="true"
+            android:text="@string/caption"
+            android:textAllCaps="false"
+            style="@style/btnSolidRoundedBottomCorner"/>
+
+    </androidx.cardview.widget.CardView>
+    <LinearLayout android:gravity="end"
+        android:id="@+id/linearRowfavorite"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_17pxh"
+        android:layout_marginStart="@dimen/_17pxh"
+        android:layout_marginTop="@dimen/_9pxv"
+        android:layout_width="wrap_content" android:orientation="horizontal">
+
+        <ToggleButton
+            android:id="@+id/toggleFavorite"
+            android:layout_width="@dimen/_24pxh"
+            android:layout_height="@dimen/_24pxh"
+            android:background="@drawable/toggle_button_background"
+            android:button="@drawable/toggle_selector_like"
+            android:checked="false"
+            android:scaleType="fitXY"
+            android:singleLine="false"
+            android:visibility="visible"
+            tools:ignore="ContentDescription" />
+
+
+        <ImageView
+            android:id="@+id/imageShare"
+            android:layout_width="@dimen/_24pxh"
+            android:layout_height="@dimen/_24pxh"
+            android:layout_marginStart="@dimen/_10pxh"
+            android:scaleType="fitXY"
+            android:src="@drawable/img_share"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/img_share" />
+    </LinearLayout>
+
+
+
+<!--    <LinearLayout android:gravity="end"-->
+<!--        android:id="@+id/linearRowfavorite"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="@dimen/_17pxh"-->
+<!--        android:layout_marginStart="@dimen/_17pxh"-->
+<!--        android:layout_marginTop="@dimen/_9pxv"-->
+<!--        android:layout_width="wrap_content" android:orientation="horizontal">-->
+<!--        <ImageButton android:id="@+id/imageFavorite"-->
+<!--            android:layout_height="@dimen/_18pxh"-->
+<!--            android:layout_width="@dimen/_20pxh"-->
+<!--            android:scaleType="fitXY"-->
+<!--            android:onClick="btnFavPressed"-->
+<!--            tools:ignore="ContentDescription"/>-->
+<!--        <ImageView android:id="@+id/imageShare"-->
+<!--            android:layout_height="@dimen/_18pxh"-->
+<!--            android:layout_marginStart="@dimen/_10pxh"-->
+<!--            android:layout_width="@dimen/_23pxh"-->
+<!--            android:scaleType="fitXY"-->
+<!--            android:src="@drawable/img_share"-->
+<!--            tools:ignore="ContentDescription" tools:src="@drawable/img_share"/>-->
+<!--    </LinearLayout>-->
+
+
+
+</LinearLayout>
