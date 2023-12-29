@@ -51,6 +51,10 @@
     <style name="groupStylegreen_A100">
         <item name="android:background">@drawable/rectangle_bg_green_a100</item>
     </style>
+
+    <style name="deleteDialog">
+        <item name="android:background">@drawable/delete_dialog_background</item>
+    </style>
     <style name="txtQuicksandbold18_1">
         <item name="android:textSize">@dimen/_18pxh</item>
         <item name="android:textColor">@color/bluegray_300</item>

@@ -2,33 +2,28 @@ package com.example.greenstep;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.net.Uri;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class MyAdapter extends BaseAdapter {
+public class AdapterDisplayEduHowTo extends BaseAdapter {
 
     private ArrayList<DataClass> dataList;
     private Context context;
     LayoutInflater layoutInflater;
-    private boolean isFavorite = false;
 
-    public MyAdapter(ArrayList<DataClass> dataList, Context context) {
+    public AdapterDisplayEduHowTo(ArrayList<DataClass> dataList, Context context) {
         this.dataList = dataList;
         this.context = context;
     }
@@ -104,21 +99,11 @@ public class MyAdapter extends BaseAdapter {
         gridItem.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                goToUrl("https://www.wm.com/us/en/recycle-right/recycling-101");
+                goToUrl(dataList.get(i).getSourceRef());
             }
         });
         return view;
     }
-
-//    public int calculateTotalHeight() {
-//        int totalHeight = 0;
-//        for (int i = 0; i < getCount(); i++) {
-//            View itemView = getView(i, null, null);
-//            itemView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-//            totalHeight += itemView.getMeasuredHeight();
-//        }
-//        return totalHeight;
-//    }
 
     private void goToUrl(String url){
         Uri uri = Uri.parse(url);

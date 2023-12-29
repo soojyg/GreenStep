@@ -17,17 +17,15 @@
         tools:layout="@layout/reward_fragment" />
     <fragment
         android:id="@+id/DestEduContent"
-        android:name="com.example.greenstep.EduHowToFrame"
+        android:name="com.example.greenstep.EduContentFrame"
         android:label="edu_howto_frame"
-        tools:layout="@layout/edu_howto_frame" />
+        tools:layout="@layout/edu_content_frame"/>
+
     <fragment
         android:id="@+id/DestEventNews"
         android:name="com.example.greenstep.EventNewsFragment"
         android:label="event_news_fragment"
-        tools:layout="@layout/event_news_fragment" />
-    <fragment
-        android:id="@+id/DestProfile"
-        android:name="com.example.greenstep.ProfileFragment"
-        android:label="profile_fragment"
-        tools:layout="@layout/profile_activity" />
+        tools:layout="@layout/event_news_fragment"/>
+
+
 </navigation>

@@ -66,6 +66,9 @@
     <string name="events_news"><![CDATA[Events & News]]></string>
     <string name="educational_content">Educational Content</string>
     <string name="log_out">Log out</string>
+    <string name="how_to_alternatives_update"><![CDATA[How To & Alternatives Update]]></string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string-array name="user_types">
         <item>Admin</item>
         <item>Normal user</item>

@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -17,6 +19,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,11 +30,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class UploadHowTo extends AppCompatActivity {
+public class UploadHowTo extends Fragment {
     EditText inputTitle,inputSourceRef;
     private ImageButton uploadImage;
     private Button submitBtn;
@@ -41,14 +45,18 @@ public class UploadHowTo extends AppCompatActivity {
     FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.edu_howto_upload);
-        inputTitle = findViewById(R.id.editTitle);
-        inputSourceRef = findViewById(R.id.editSourceRef);
-        uploadImage = findViewById(R.id.uploadImage);
-        submitBtn = findViewById(R.id.submitEduBtn);
-        progressBar = findViewById(R.id.progressBar);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @NonNull Bundle savedInstanceState){
+        View rootView = inflater.inflate(R.layout.edu_howto_upload, container, false);
+        return rootView;
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+        inputTitle = view.findViewById(R.id.editTitle);
+        inputSourceRef = view.findViewById(R.id.editSourceRef);
+        uploadImage = view.findViewById(R.id.uploadImage);
+        submitBtn = view.findViewById(R.id.btnComplete);
+        progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
 
@@ -64,7 +72,7 @@ public class UploadHowTo extends AppCompatActivity {
                                 uploadImage.setImageURI(imageUri);
                             }
                         } else {
-                            Toast.makeText(UploadHowTo.this, "No image selected.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "No image selected.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -86,7 +94,7 @@ public class UploadHowTo extends AppCompatActivity {
                 if (imageUri != null) {
                     uploadToFirebase(imageUri);
                 } else {
-                    Toast.makeText(UploadHowTo.this, "Please select image", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Please select image", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -115,13 +123,13 @@ public class UploadHowTo extends AppCompatActivity {
                             .add(data)
                             .addOnSuccessListener(documentReference -> {
                                 progressBar.setVisibility(View.VISIBLE);
-                                Toast.makeText(UploadHowTo.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(UploadHowTo.this, MainActivity.class);
+                                Toast.makeText(requireContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(requireContext(), MainActivity.class);
                                 startActivity(intent);
-                                finish();
+//                                finish();
                             }).addOnFailureListener(e -> {
                                 progressBar.setVisibility(View.INVISIBLE);
-                                Toast.makeText(UploadHowTo.this, "Failed to upload", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(requireContext(), "Failed to upload", Toast.LENGTH_SHORT).show();
                             });
                 }).addOnFailureListener(exception -> {
                     Log.e("FirebaseStorage","Error getting download URL",exception);
@@ -137,7 +145,7 @@ public class UploadHowTo extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(UploadHowTo.this, "Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Failed", Toast.LENGTH_SHORT).show();
             }
         });
     }

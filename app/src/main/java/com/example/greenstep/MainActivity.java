@@ -1,7 +1,9 @@
 package com.example.greenstep;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
@@ -28,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser user;
     ImageView profileIcon;
+    FragmentContainerView mainFragmentContainer;
+    BottomNavigationView bottomBar;
 
 
     @Override
@@ -38,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         profileIcon = findViewById(R.id.profile);
         user = auth.getCurrentUser();
+        mainFragmentContainer = findViewById(R.id.mainFragmentContainer);
+        bottomBar = findViewById(R.id.bottom_nav_view);
+
 
         profileIcon.setOnClickListener(view ->{
             Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
@@ -84,8 +91,10 @@ public class MainActivity extends AppCompatActivity {
                 public void onCallback(String userType) {
                     if(userType.equals("Admin")){
                         setupBottomNavMenuAdmin(navController);
-                    } else{
+                        navController.setGraph(R.navigation.nav_admin);
+                    } else{ //userType = Normal User
                         setupBottomNavMenuNormUser(navController);
+                        navController.setGraph(R.navigation.nav_user);
                     }
                 }
 

@@ -1,7 +1,7 @@
 package com.example.greenstep;
 
 public class DataClass {
-    private String title, sourceRef,imageURL;
+    private String documentId, title, sourceRef,imageURL;
     public DataClass(){}
 
     public String getTitle() {
@@ -24,7 +24,10 @@ public class DataClass {
         this.imageURL = imageURL;
     }
 
-    public DataClass(String title, String sourceRef, String imageURL) {
+    public String getDocumentId(){ return documentId; }
+
+    public DataClass(String documentId, String title, String sourceRef, String imageURL) {
+        this.documentId = documentId;
         this.title = title;
         this.sourceRef = sourceRef;
         this.imageURL = imageURL;

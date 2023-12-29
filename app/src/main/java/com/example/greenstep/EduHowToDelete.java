@@ -5,10 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -18,25 +21,36 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.ArrayList;
 
-public class EduHowToContent extends Fragment {
+public class EduHowToDelete extends Fragment {
     GridView gridView;
-//    Button btnAdd;
     ArrayList<DataClass> dataList;
-    AdapterDisplayEduHowTo adapter;
+    AdapterDeleteEduHowTo adapter;
+    ImageView closeBtn;
+    BottomNavigationView bottomNavigationView;
 
 
     final private FirebaseFirestore firestoreDbRef = FirebaseFirestore.getInstance();
     final private String collectionPath = "Edu Content Posts";
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @NonNull Bundle savedInstanceState){
-        View rootView = inflater.inflate(R.layout.edu_howto_content, container, false);
+        View rootView = inflater.inflate(R.layout.edu_howto_delete,container, false);
+        return rootView;
 
-        gridView = rootView.findViewById(R.id.eduHowToPost);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+
+        gridView = view.findViewById(R.id.eduHowToPost);
         dataList = new ArrayList<>();
-        adapter = new AdapterDisplayEduHowTo(dataList, requireContext());
+        adapter = new AdapterDeleteEduHowTo(dataList, requireContext(), firestoreDbRef, collectionPath);
         gridView.setAdapter(adapter);
+        bottomNavigationView = getActivity().findViewById(R.id.bottom_nav_view);
+        closeBtn = view.findViewById(R.id.close);
+
+        bottomNavigationView.setVisibility(View.GONE);
 
         // Load title, image url, and image from firestore database
         firestoreDbRef.collection(collectionPath).get()
@@ -59,39 +73,10 @@ public class EduHowToContent extends Fragment {
                         Toast.makeText(requireContext(),"Failed to load image.",Toast.LENGTH_SHORT).show();
                     }
                 });
-        return rootView;
+
+        closeBtn.setOnClickListener(v ->{
+            bottomNavigationView.setVisibility(View.VISIBLE);
+            Navigation.findNavController(view).popBackStack();
+        });
     }
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState){
-//        super.onCreate(savedInstanceState);
-//
-//        setContentView(R.layout.edu_howto_content);
-//
-////        gridView = findViewById(R.id.gridView);
-////        btnAdd = findViewById(R.id.btnAdd);
-//
-//        editTxt= findViewById(R.id.editTxt);
-//        uploadTxt = findViewById(R.id.uploadTxt);
-//
-//        uploadTxt.setPaintFlags(editTxt.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-//        editTxt.setPaintFlags(editTxt.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-//
-//
-//
-//
-//        uploadTxt.setOnClickListener(view ->{
-//            Intent intent = new Intent(getApplicationContext(), UploadHowTo.class);
-//            startActivity(intent);
-//            finish();
-//        });
-//    }
-
-
-    // Method to open a webpage using a browser intent
-//    private void openWebPage(String url) {
-//        Intent intent = new Intent(Intent.ACTION_VIEW);
-//        intent.setData(Uri.parse(url));
-//        startActivity(intent);
-//    }
 }

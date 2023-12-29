@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_admin"
+    app:startDestination="@id/DestReward">
+
+    <fragment
+        android:id="@+id/DestReward"
+        android:name="com.example.greenstep.RewardFragment"
+        android:label="reward_fragment"
+        tools:layout="@layout/reward_fragment" />
+    <fragment
+        android:id="@+id/DestEventNews"
+        android:name="com.example.greenstep.EventNewsFragment"
+        android:label="event_news_fragment"
+        tools:layout="@layout/event_news_fragment" />
+    <fragment
+        android:id="@+id/DestEduContent"
+        android:name="com.example.greenstep.EduContentFrame"
+        android:label="edu_howto_frame"
+        tools:layout="@layout/edu_content_frame">
+        <action
+            android:id="@+id/action_to_eduContentUploadFrame"
+            app:destination="@id/DestEduContentUploadFrame"/>
+        <action
+            android:id="@+id/action_to_editHowToPage"
+            app:destination="@id/DestEduHowToDelete"/>
+    </fragment>
+    <fragment
+        android:id="@+id/DestEduContentUploadFrame"
+        android:name="com.example.greenstep.EduContentUploadFrame"
+        android:label="edu_content_upload"
+        tools:layout="@layout/edu_content_upload_frame" />
+    <fragment
+        android:id="@+id/DestEduHowToDelete"
+        android:name="com.example.greenstep.EduHowToDelete"
+        android:label="edu_howto_delete"
+        tools:layout="@layout/edu_howto_delete" />
+
+
+</navigation>
