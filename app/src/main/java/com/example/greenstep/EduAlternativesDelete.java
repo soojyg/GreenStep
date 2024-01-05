@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FieldPath;
@@ -21,50 +23,53 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.ArrayList;
 
-public class EduHowToDelete extends Fragment {
-    GridView gridView;
-    ArrayList<HowToDataClass> dataList;
-    AdapterDeleteEduHowTo adapter;
+public class EduAlternativesDelete extends Fragment {
+    ScrollView scrollView;
+    RecyclerView recyclerView;
     ImageView closeBtn;
     BottomNavigationView bottomNavigationView;
-
+    ArrayList<AlternativesDataClass> dataList;
+    AdapterDeleteEduAlternatives adapter;
 
     final private FirebaseFirestore firestoreDbRef = FirebaseFirestore.getInstance();
-    final private String collectionPath = "Edu Content Posts";
+    final private String collectionPath = "Edu Content Tips";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @NonNull Bundle savedInstanceState){
-        View rootView = inflater.inflate(R.layout.edu_howto_delete,container, false);
+        View rootView = inflater.inflate(R.layout.edu_alternatives_delete,container,false);
         return rootView;
-
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        gridView = view.findViewById(R.id.eduHowToPost);
+        scrollView = view.findViewById(R.id.scrollView);
         dataList = new ArrayList<>();
-        adapter = new AdapterDeleteEduHowTo(dataList, requireContext(), firestoreDbRef, collectionPath);
-        gridView.setAdapter(adapter);
+        adapter = new AdapterDeleteEduAlternatives(dataList, requireContext(), firestoreDbRef, collectionPath);
+        recyclerView.setAdapter(adapter);
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav_view);
         closeBtn = view.findViewById(R.id.close);
 
+        // Set the visibility of bottom navigation view to GONE
         bottomNavigationView.setVisibility(View.GONE);
 
-        // Load title, image url, and image from firestore database
+        // Load documentID, title, tip1, tip2, image url, and image from firestore database
         firestoreDbRef.collection(collectionPath).get()
                 .addOnCompleteListener(task ->{
                     if(task.isSuccessful()){
                         for(QueryDocumentSnapshot document : task.getResult()){
-                            HowToDataClass howToDataClass = new HowToDataClass(
+                            AlternativesDataClass alternativesDataClass = new AlternativesDataClass(
                                     document.getId(),
                                     (String) document.get(FieldPath.of("Title")),
-                                    (String) document.get(FieldPath.of("Source/ Reference")),
+                                    (String) document.get(FieldPath.of("Tip 1")),
+                                    (String) document.get(FieldPath.of("Tip 2")),
                                     document.getString("ImageUrl")
                             );
-                            dataList.add(howToDataClass);
-//                            Log.d("ImageURL", "Image URL: " + dataClass.getImageURL());
+                            dataList.add(alternativesDataClass);
 
                         }
                         adapter.notifyDataSetChanged();
@@ -78,5 +83,7 @@ public class EduHowToDelete extends Fragment {
             bottomNavigationView.setVisibility(View.VISIBLE);
             Navigation.findNavController(view).popBackStack();
         });
+
     }
+
 }

@@ -18,14 +18,34 @@
     <fragment
         android:id="@+id/DestEduContent"
         android:name="com.example.greenstep.EduContentFrame"
-        android:label="edu_howto_frame"
+        android:label="edu_content_frame"
         tools:layout="@layout/edu_content_frame">
+        <action
+            android:id="@+id/action_to_eduAlternativesDetails"
+            app:destination="@id/DestEduAlternativesDetails">
+<!--            <argument-->
+<!--                android:name="title"-->
+<!--                app:argType="string"/>-->
+<!--            <argument-->
+<!--                android:name="tip1"-->
+<!--                app:argType="string"/>-->
+<!--            <argument-->
+<!--                android:name="tip2"-->
+<!--                app:argType="string"/>-->
+<!--            <argument-->
+<!--                android:name="imageUrl"-->
+<!--                app:argType="string"/>-->
+
+        </action>
         <action
             android:id="@+id/action_to_eduContentUploadFrame"
             app:destination="@id/DestEduContentUploadFrame"/>
         <action
             android:id="@+id/action_to_editHowToPage"
             app:destination="@id/DestEduHowToDelete"/>
+        <action
+            android:id="@+id/action_to_editAlternativesPage"
+            app:destination="@id/DestEduAlternativesDelete"/>
     </fragment>
     <fragment
         android:id="@+id/DestEduContentUploadFrame"
@@ -37,6 +57,16 @@
         android:name="com.example.greenstep.EduHowToDelete"
         android:label="edu_howto_delete"
         tools:layout="@layout/edu_howto_delete" />
+    <fragment
+        android:id="@+id/DestEduAlternativesDetails"
+        android:name="com.example.greenstep.EduAlternativesDetails"
+        android:label="edu_alternatives_details"
+        tools:layout="@layout/edu_alternatives_details" />
+    <fragment
+        android:id="@+id/DestEduAlternativesDelete"
+        android:name="com.example.greenstep.EduAlternativesDelete"
+        android:label="edu_alternatives_delete"
+        tools:layout="@layout/edu_alternatives_delete" />
 
 
 </navigation>

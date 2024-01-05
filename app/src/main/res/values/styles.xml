@@ -137,4 +137,20 @@
         <item name="android:fontFamily">@font/montserrat</item>
         <item name="android:textFontWeight" tools:targetApi="p">600</item>
     </style>
+    <style name="txtSarabunbold15">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/green_901</item>
+        <item name="android:fontFamily">@font/sarabun</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+    <style name="txtSarabunbold15txtQuicksandbold15_2">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/white_A700</item>
+        <item name="android:fontFamily">@font/sarabun</item>
+        <item name="android:textFontWeight" tools:targetApi="p">700</item>
+    </style>
+    <style name="groupStylegray_200cornerRadius">
+        <item name="android:background">@drawable/rectangle_bg_gray_200_radius_25</item>
+    </style>
+
 </resources>

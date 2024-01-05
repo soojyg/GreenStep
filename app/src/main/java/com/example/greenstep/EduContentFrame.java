@@ -81,9 +81,11 @@ public class EduContentFrame extends Fragment {
 
         // Set onClickListener for "Edit"
         txtEdit.setOnClickListener(v ->{
-//            if(selectedTabMain.equals("How To")){
+            if(selectedTabMain.get().equals("How To")){
                 Navigation.findNavController(view).navigate(R.id.action_to_editHowToPage);
-//            }
+            } else{
+                Navigation.findNavController(view).navigate(R.id.action_to_editAlternativesPage);
+            }
         });
 
         // Set onClickListener for "Upload" text

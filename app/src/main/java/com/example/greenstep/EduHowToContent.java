@@ -19,10 +19,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.ArrayList;
 
 public class EduHowToContent extends Fragment {
-    GridView gridView;
-//    Button btnAdd;
-    ArrayList<DataClass> dataList;
-    AdapterDisplayEduHowTo adapter;
+    private GridView gridView;
+    private ArrayList<HowToDataClass> dataList;
+    private AdapterDisplayEduHowTo adapter;
 
 
     final private FirebaseFirestore firestoreDbRef = FirebaseFirestore.getInstance();
@@ -38,18 +37,18 @@ public class EduHowToContent extends Fragment {
         adapter = new AdapterDisplayEduHowTo(dataList, requireContext());
         gridView.setAdapter(adapter);
 
-        // Load title, image url, and image from firestore database
+        // Load documentID, title, image url, and image from firestore database
         firestoreDbRef.collection(collectionPath).get()
                 .addOnCompleteListener(task ->{
                     if(task.isSuccessful()){
                         for(QueryDocumentSnapshot document : task.getResult()){
-                            DataClass dataClass = new DataClass(
+                            HowToDataClass howToDataClass = new HowToDataClass(
                                     document.getId(),
                                     (String) document.get(FieldPath.of("Title")),
                                     (String) document.get(FieldPath.of("Source/ Reference")),
                                     document.getString("ImageUrl")
                             );
-                            dataList.add(dataClass);
+                            dataList.add(howToDataClass);
 //                            Log.d("ImageURL", "Image URL: " + dataClass.getImageURL());
 
                         }
@@ -61,37 +60,4 @@ public class EduHowToContent extends Fragment {
                 });
         return rootView;
     }
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState){
-//        super.onCreate(savedInstanceState);
-//
-//        setContentView(R.layout.edu_howto_content);
-//
-////        gridView = findViewById(R.id.gridView);
-////        btnAdd = findViewById(R.id.btnAdd);
-//
-//        editTxt= findViewById(R.id.editTxt);
-//        uploadTxt = findViewById(R.id.uploadTxt);
-//
-//        uploadTxt.setPaintFlags(editTxt.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-//        editTxt.setPaintFlags(editTxt.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-//
-//
-//
-//
-//        uploadTxt.setOnClickListener(view ->{
-//            Intent intent = new Intent(getApplicationContext(), UploadHowTo.class);
-//            startActivity(intent);
-//            finish();
-//        });
-//    }
-
-
-    // Method to open a webpage using a browser intent
-//    private void openWebPage(String url) {
-//        Intent intent = new Intent(Intent.ACTION_VIEW);
-//        intent.setData(Uri.parse(url));
-//        startActivity(intent);
-//    }
 }

@@ -1,8 +1,15 @@
 package com.example.greenstep;
 
-public class DataClass {
+public class HowToDataClass {
     private String documentId, title, sourceRef,imageURL;
-    public DataClass(){}
+    public HowToDataClass(){}
+
+    public HowToDataClass(String documentId, String title, String sourceRef, String imageURL) {
+        this.documentId = documentId;
+        this.title = title;
+        this.sourceRef = sourceRef;
+        this.imageURL = imageURL;
+    }
 
     public String getTitle() {
         return title;
@@ -26,10 +33,5 @@ public class DataClass {
 
     public String getDocumentId(){ return documentId; }
 
-    public DataClass(String documentId, String title, String sourceRef, String imageURL) {
-        this.documentId = documentId;
-        this.title = title;
-        this.sourceRef = sourceRef;
-        this.imageURL = imageURL;
-    }
+
 }

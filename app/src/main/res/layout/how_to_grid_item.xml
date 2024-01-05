@@ -36,7 +36,7 @@
         </ImageView>
         <androidx.appcompat.widget.AppCompatButton
             android:ellipsize="end" android:gravity="center"
-            android:id="@+id/btnEdu"
+            android:id="@+id/btnTitle"
             android:layout_gravity="bottom|start"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10pxv"

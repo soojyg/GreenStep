@@ -153,7 +153,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginTop="5dp"
-            android:src="@android:drawable/ic_menu_upload"
+            android:src="@drawable/img_twitter"
             android:background="@drawable/rectangle_bg_light_green_50_border_green_902_radius_10"/>
     </LinearLayout>
 

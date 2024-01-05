@@ -19,11 +19,11 @@ import java.util.ArrayList;
 
 public class AdapterDisplayEduHowTo extends BaseAdapter {
 
-    private ArrayList<DataClass> dataList;
+    private ArrayList<HowToDataClass> dataList;
     private Context context;
     LayoutInflater layoutInflater;
 
-    public AdapterDisplayEduHowTo(ArrayList<DataClass> dataList, Context context) {
+    public AdapterDisplayEduHowTo(ArrayList<HowToDataClass> dataList, Context context) {
         this.dataList = dataList;
         this.context = context;
     }
@@ -49,10 +49,10 @@ public class AdapterDisplayEduHowTo extends BaseAdapter {
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
         if (view == null) {
-            view = layoutInflater.inflate(R.layout.grid_item, null);
+            view = layoutInflater.inflate(R.layout.how_to_grid_item, null);
         }
         ImageView gridImage = view.findViewById(R.id.gridImage);
-        AppCompatButton btnEduTitle = view.findViewById(R.id.btnEdu);
+        AppCompatButton btnEduTitle = view.findViewById(R.id.btnTitle);
 //        ToggleButton btnFavorite = view.findViewById(R.id.imageFavorite);
         ImageView btnShare = view.findViewById(R.id.imageShare);
         CardView gridItem = view.findViewById(R.id.gridItem);

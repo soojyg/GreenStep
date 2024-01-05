@@ -20,6 +20,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,10 +37,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UploadHowTo extends Fragment {
-    EditText inputTitle,inputSourceRef;
+    private EditText inputTitle,inputSourceRef;
     private ImageButton uploadImage;
     private Button submitBtn;
-    ProgressBar progressBar;
+    private ProgressBar progressBar;
     private Uri imageUri;
     final private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
@@ -59,7 +60,7 @@ public class UploadHowTo extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
-
+        // In the gallery page
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -88,25 +89,56 @@ public class UploadHowTo extends Fragment {
             }
         });
 
+
         submitBtn.setOnClickListener(new View.OnClickListener() {
+            boolean title, srcRef, img = false;
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                String titleText = inputTitle.getText().toString().trim();
+                String srcRefText= inputSourceRef.getText().toString().trim();
+                if(!titleText.isEmpty()){
+                    title = true;
+                } else{
+                    Toast.makeText(requireContext(), "Please enter title.", Toast.LENGTH_SHORT).show();
+                }
+                if(!srcRefText.isEmpty()){
+                    srcRef = true;
+                } else{
+                    Toast.makeText(requireContext(), "Please enter source/ reference link.", Toast.LENGTH_SHORT).show();
+                }
                 if (imageUri != null) {
-                    uploadToFirebase(imageUri);
+                    img = true;
+
                 } else {
-                    Toast.makeText(requireContext(), "Please select image", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Please select image.", Toast.LENGTH_SHORT).show();
+                }
+                if(title && srcRef && img){
+                    uploadToFirebase(imageUri);
+//                    uploadToFirebase(imageUri, new UploadCallback() {
+//                        @Override
+//                        public void onSuccess() {
+//                            Navigation.findNavController(view).popBackStack();
+//                        }
+//
+//                        @Override
+//                        public void onFailure() {
+//                            // Handle failure if needed
+//                        }
+//                    });
                 }
             }
         });
 
-//        CropImage.activity()
-//                .setAspectRatio(1,1)
-//                .start(UploadHowTo.this);
-
     }
 
+//    public interface UploadCallback {
+//        void onSuccess();
+//        void onFailure();
+//    }
+
+    // Upload image to Storage AND upload details to Firestore DB
     private void uploadToFirebase(Uri uri) {
-        StorageReference imageReference = storageReference.child("eduContentPictures").child(String.valueOf(System.currentTimeMillis()));
+        StorageReference imageReference = storageReference.child("eduHowToPictures").child(String.valueOf(System.currentTimeMillis()));
         imageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -126,6 +158,10 @@ public class UploadHowTo extends Fragment {
                                 Toast.makeText(requireContext(), "Uploaded", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(requireContext(), MainActivity.class);
                                 startActivity(intent);
+                                // Navigate back to the previous activity
+//                                callback.onSuccess();
+//                                requireActivity().onBackPressed();
+//                                Navigation.findNavController(view).popBackStack();
 //                                finish();
                             }).addOnFailureListener(e -> {
                                 progressBar.setVisibility(View.INVISIBLE);
@@ -155,4 +191,6 @@ public class UploadHowTo extends Fragment {
 //        MimeTypeMap mime = MimeTypeMap.getSingleton();
 //        return mime.getExtensionFromMimeType(contentResolver.getType(fileUri));
 //    }
+
 }
+
