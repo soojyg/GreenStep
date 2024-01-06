@@ -10,6 +10,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +29,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.concurrent.TimeUnit;
+
 public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
@@ -38,42 +44,50 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        scheduleJob();
+
         auth = FirebaseAuth.getInstance();
         FirebaseApp.initializeApp(this);
-        profileIcon = findViewById(R.id.profile);
-        user = auth.getCurrentUser();
-        mainFragmentContainer = findViewById(R.id.mainFragmentContainer);
-        bottomBar = findViewById(R.id.bottom_nav_view);
-
-
-        profileIcon.setOnClickListener(view ->{
-            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+        if (auth.getCurrentUser() == null) {
+            // User is not authenticated, start Login activity
+            Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
+            finish();
+        } else {
+            profileIcon = findViewById(R.id.profile);
+            user = auth.getCurrentUser();
+            mainFragmentContainer = findViewById(R.id.mainFragmentContainer);
+            bottomBar = findViewById(R.id.bottom_nav_view);
+
+
+            profileIcon.setOnClickListener(view -> {
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
 
 //            showFragment(new ProfileFragment());
 
-        });
+            });
 
 
 //        AppBarLayout appBarLayout = findViewById(R.id.toolbarLayout);
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-        NavHostFragment host = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainer);
-        NavController navController = host.getNavController();
+            NavHostFragment host = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainer);
+            NavController navController = host.getNavController();
 
 //        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
 
-        if (user == null) { // if user is null, we have to open the login activity and close the main activity
-            Intent intent = new Intent(getApplicationContext(), Login.class);
-            startActivity(intent);
-            finish();
-        } else{ // if user is not null, indicating that the user is signed in
-            String userId = user.getUid();
+            if (user == null) { // if user is null, we have to open the login activity and close the main activity
+                Intent intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
+                finish();
+            } else { // if user is not null, indicating that the user is signed in
+                String userId = user.getUid();
 
-            // Obtain user type and set up bottom navigation bar based on user type
+                // Obtain user type and set up bottom navigation bar based on user type
 //            getUserTypeFromFirestore(userId, userType -> {
 //                if(userType != null){
 //                    String retrievedUserType = userType;
@@ -86,23 +100,29 @@ public class MainActivity extends AppCompatActivity {
 //                    Toast.makeText(MainActivity.this,"Error: Unable to determine user type.",Toast.LENGTH_SHORT).show();
 //                }
 //            });
-            FirebaseUtils.getUserType(new FirebaseUtils.UserTypeCallback() {
-                @Override
-                public void onCallback(String userType) {
-                    if(userType.equals("Admin")){
-                        setupBottomNavMenuAdmin(navController);
-                        navController.setGraph(R.navigation.nav_admin);
-                    } else{ //userType = Normal User
-                        setupBottomNavMenuNormUser(navController);
-                        navController.setGraph(R.navigation.nav_user);
+                FirebaseUtils.getUserType(new FirebaseUtils.UserTypeCallback() {
+                    @Override
+                    public void onCallback(String userType) {
+                        if (userType.equals("Admin")) {
+                            setupBottomNavMenuAdmin(navController);
+                            navController.setGraph(R.navigation.nav_admin);
+                        } else { //userType = Normal User
+                            setupBottomNavMenuNormUser(navController);
+                            navController.setGraph(R.navigation.nav_user);
+                        }
                     }
-                }
 
-                @Override
-                public void onError(String errorMessage) {
-                    Toast.makeText(MainActivity.this,"Error: Unable to determine user type.",Toast.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void onError(String errorMessage) {
+                        Toast.makeText(MainActivity.this, "Error: Unable to determine user type.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.mainFragmentContainer, new ChallengeScreen())
+                    .addToBackStack(null)
+                    .commit();
         }
 
     }
@@ -134,6 +154,19 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.mainFragmentContainer, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    private void scheduleJob() {
+        ComponentName componentName = new ComponentName(this, ProgressUpdateJobService.class);
+        JobInfo jobInfo = new JobInfo.Builder(1, componentName)
+                .setPeriodic(TimeUnit.HOURS.toMillis(1)) // Adjust the interval as needed
+                .setPersisted(true) // Keep the job even after device reboots
+                .build();
+
+        JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        int resultCode = jobScheduler.schedule(jobInfo);
+
+
     }
 
 
