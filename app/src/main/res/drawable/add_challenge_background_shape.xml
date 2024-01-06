@@ -1,0 +1,40 @@
+<!-- inverted_s_shaped_curve_with_taller_rectangle.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background color -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#CAFFBE" />
+        </shape>
+    </item>
+
+    <!-- Oval shape to create the bottom part of the inverted S -->
+    <item
+        android:top="-1000dp"
+        android:left="-400dp"
+        android:right="-400dp">
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF" />
+        </shape>
+    </item>
+
+    <!-- Oval shape to create the middle part of the inverted S -->
+    <item
+        android:top="-200dp"
+        android:bottom="-1000dp"
+        android:left="-400dp"
+        android:right="-400dp">
+        <shape android:shape="oval">
+            <solid android:color="#CAFFBE" />
+        </shape>
+    </item>
+
+    <!-- Oval shape to create the top part of the inverted S -->
+    <item
+        android:bottom="-200dp"
+        android:left="-400dp"
+        android:right="-400dp">
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF" />
+        </shape>
+    </item>
+</layer-list>
