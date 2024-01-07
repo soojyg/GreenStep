@@ -93,7 +93,7 @@ public class EduContentFrame extends Fragment {
 //            Intent intent = new Intent(requireContext(), EduContentUploadFrame.class);
 //            startActivity(intent);
 
-            Navigation.findNavController(view).navigate(R.id.action_to_eduContentUploadFrame);
+//            Navigation.findNavController(view).navigate(R.id.action_to_eduContentUploadFrame);
 
         });
 
@@ -118,24 +118,5 @@ public class EduContentFrame extends Fragment {
         unselectedTab.setTextColor(getResources().getColor(R.color.bluegray_300));
         unselectedTab.setTypeface(null, Typeface.NORMAL);
 
-    }
-
-    private void showUploadFragment(Fragment fragment){
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.mainFragmentContainer, fragment);
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
-
-//        FragmentManager fragmentManager = getChildFragmentManager();
-//        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE); // Clear the back stack
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.mainFragmentContainer, fragment);
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.mainFragmentContainer, fragment);
-        transaction.addToBackStack(null); // Optional: Add transaction to back stack for fragment navigation
-        transaction.commit();
     }
 }

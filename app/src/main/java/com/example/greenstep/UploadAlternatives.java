@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,9 +22,12 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -40,11 +44,13 @@ public class UploadAlternatives extends Fragment {
     private EditText inputTitle, inputTip1, inputTip2;
     private ImageButton uploadImg;
     private Button submitBtn;
+    BottomNavigationView bottomNavigationView;
+    private ImageView close;
     private ProgressBar progressBar;
     private Uri imageUri;
     final private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
-
+    NavController navController;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @NonNull Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.edu_alternatives_upload, container, false);
@@ -54,6 +60,8 @@ public class UploadAlternatives extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+        close = view.findViewById(R.id.close);
         inputTitle = view.findViewById(R.id.editTitle);
         inputTip1 = view.findViewById(R.id.editTip1);
         inputTip2 = view.findViewById(R.id.editTip2);
@@ -61,6 +69,8 @@ public class UploadAlternatives extends Fragment {
         submitBtn = view.findViewById(R.id.btnComplete);
         progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
+        bottomNavigationView = getActivity().findViewById(R.id.bottom_nav_view);
+        bottomNavigationView.setVisibility(View.GONE);
 
         // In the gallery page
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
@@ -120,6 +130,12 @@ public class UploadAlternatives extends Fragment {
                 }
             }
         });
+        close.setOnClickListener(v ->{
+
+            navController.navigate(R.id.navigate_to_eduAlternativesContent);
+            bottomNavigationView.setVisibility(View.VISIBLE);
+
+        });
 
     }
 
@@ -172,6 +188,7 @@ public class UploadAlternatives extends Fragment {
             }
         });
     }
+
 
 
 

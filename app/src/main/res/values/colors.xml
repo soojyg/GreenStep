@@ -28,4 +28,11 @@
     <color name="light_green_50">#edffe9</color>
     <color name="white_A700">#ffffff</color>
     <color name="red_A700">#ff0505</color>
+    <color name="green_700">#159148</color>
+    <color name="lavender">#8692f7</color>
+    <color name="teal_900">#016734</color>
+    <color name="black_900_59">#591a0606</color>
+    <color name="black_900_d8">#d80e0000</color>
+    <color name="light_green">#CAFFBE</color>
+    <color name='dark_green'>#0A5D00</color>
 </resources>

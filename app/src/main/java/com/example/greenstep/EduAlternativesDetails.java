@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
@@ -21,6 +22,7 @@ public class EduAlternativesDetails extends Fragment {
     TextView defaultTxt, title, txtBack;
     AppCompatButton tip1, tip2;
     BottomNavigationView bottomNavigationView;
+    NavController navController;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @NonNull Bundle savedInstanceState){
@@ -31,7 +33,7 @@ public class EduAlternativesDetails extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-
+        navController = Navigation.findNavController(view);
         img = view.findViewById(R.id.alterImg);
         defaultTxt = view.findViewById(R.id.defaultTxt);
         title = view.findViewById(R.id.titleAlt);
@@ -48,7 +50,6 @@ public class EduAlternativesDetails extends Fragment {
             String tip1Value = args.getString("Tip 1", "");
             String tip2Value = args.getString("Tip 2", "");
             String imageUrl = args.getString("imageURL", "");
-
             // Set the title
             title.setText(titleValue);
             // Load the image
@@ -69,7 +70,7 @@ public class EduAlternativesDetails extends Fragment {
 
         txtBack.setOnClickListener(v ->{
 
-            Navigation.findNavController(view).popBackStack();
+            navController.navigate(R.id.navigate_to_eduAlternativesContent);
             bottomNavigationView.setVisibility(View.VISIBLE);
 
         });

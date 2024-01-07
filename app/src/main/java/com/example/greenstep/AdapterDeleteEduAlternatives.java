@@ -62,13 +62,15 @@ public class AdapterDeleteEduAlternatives extends RecyclerView.Adapter<AdapterDe
         holder.startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
+                // Get the document ID associated with the item
+                String documentId = currentItem.getDocumentId();
                 // Show a confirmation dialog
-                showDeleteDialog(context, position); // Pass the position of the item
+                showDeleteDialog(context, documentId); // Pass the position of the item
             }
         });
     }
 
-    private void showDeleteDialog(Context c, int position){
+    private void showDeleteDialog(Context c, String documentId){
         // Instantiate the custom dialog
         Dialog dialog = new Dialog(c);
         dialog.setContentView(R.layout.dialog_delete);
@@ -82,7 +84,7 @@ public class AdapterDeleteEduAlternatives extends RecyclerView.Adapter<AdapterDe
         positiveBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                deleteTip(position);
+                deleteTip(documentId);
                 dialog.dismiss();
             }
         });
@@ -97,15 +99,24 @@ public class AdapterDeleteEduAlternatives extends RecyclerView.Adapter<AdapterDe
         dialog.show();
     }
 
-    private void deleteTip(int position){
+    private void deleteTip(String documentId){
         // Remove the item from the datalist
-        dataList.remove(position);
+        removeItemFromDataList(documentId);
         // Notify the adapter that the dataset has changed
         notifyDataSetChanged();
 
         // Delete the corresponding record from the Firestore database
-        String documentID = getDocumentIdFromDataList(position);
-        deleteRecordFromFirestore(documentID);
+//        String documentID = getDocumentIdFromDataList(position);
+        deleteRecordFromFirestore(documentId);
+    }
+
+    private void removeItemFromDataList(String documentId) {
+        for (AlternativesDataClass item : dataList) {
+            if (item.getDocumentId().equals(documentId)) {
+                dataList.remove(item);
+                return; // exit the loop once the item is removed
+            }
+        }
     }
 
     private String getDocumentIdFromDataList(int position){

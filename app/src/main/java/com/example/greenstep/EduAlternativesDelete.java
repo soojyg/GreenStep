@@ -9,6 +9,7 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,7 @@ public class EduAlternativesDelete extends Fragment {
     BottomNavigationView bottomNavigationView;
     ArrayList<AlternativesDataClass> dataList;
     AdapterDeleteEduAlternatives adapter;
+    NavController navController;
 
     final private FirebaseFirestore firestoreDbRef = FirebaseFirestore.getInstance();
     final private String collectionPath = "Edu Content Tips";
@@ -46,7 +48,7 @@ public class EduAlternativesDelete extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
+        navController = Navigation.findNavController(view);
         scrollView = view.findViewById(R.id.scrollView);
         dataList = new ArrayList<>();
         adapter = new AdapterDeleteEduAlternatives(dataList, requireContext(), firestoreDbRef, collectionPath);
@@ -81,7 +83,7 @@ public class EduAlternativesDelete extends Fragment {
 
         closeBtn.setOnClickListener(v ->{
             bottomNavigationView.setVisibility(View.VISIBLE);
-            Navigation.findNavController(view).popBackStack();
+            navController.navigate(R.id.navigate_to_eduAlternativesContent);
         });
 
     }

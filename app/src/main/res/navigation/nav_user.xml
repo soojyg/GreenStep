@@ -5,27 +5,77 @@
     android:id="@+id/nav_user"
     app:startDestination="@id/DestChallenge">
 
-    <fragment
-        android:id="@+id/DestChallenge"
-        android:name="com.example.greenstep.ChallengeFragment"
-        android:label="challenge_fragment"
-        tools:layout="@layout/challenge_fragment" />
-    <fragment
-        android:id="@+id/DestReward"
-        android:name="com.example.greenstep.RewardFragment"
-        android:label="reward_fragment"
-        tools:layout="@layout/reward_fragment" />
-    <fragment
-        android:id="@+id/DestEduContent"
-        android:name="com.example.greenstep.EduContentFrame"
-        android:label="edu_howto_frame"
-        tools:layout="@layout/edu_content_frame"/>
+<!--    <fragment-->
+<!--        android:id="@+id/DestChallenge"-->
+<!--        android:name="com.example.greenstep.ChallengeFragment"-->
+<!--        android:label="challenge_fragment"-->
+<!--        tools:layout="@layout/challenge_fragment" />-->
+<!--    <fragment-->
+<!--        android:id="@+id/DestReward"-->
+<!--        android:name="com.example.greenstep.RewardFragment"-->
+<!--        android:label="reward_fragment"-->
+<!--        tools:layout="@layout/reward_fragment" />-->
+<!--    <fragment-->
+<!--        android:id="@+id/DestEduContent"-->
+<!--        android:name="com.example.greenstep.EduContentFrame"-->
+<!--        android:label="edu_howto_frame"-->
+<!--        tools:layout="@layout/edu_content_frame"/>-->
+
 
     <fragment
+        android:id="@+id/DestRewardUser"
+        android:name="com.example.greenstep.RewardUser"
+        android:label="reward_user"
+        tools:layout="@layout/reward_user" />
+<!--    <fragment-->
+<!--        android:id="@+id/DestEventNews"-->
+<!--        android:name="com.example.greenstep.EventsNewsFrame"-->
+<!--        android:label="events_news_frame"-->
+<!--        tools:layout="@layout/events_news_frame" />-->
+    <fragment
         android:id="@+id/DestEventNews"
-        android:name="com.example.greenstep.EventNewsFragment"
-        android:label="event_news_fragment"
-        tools:layout="@layout/event_news_fragment"/>
+        android:name="com.example.greenstep.EventUserView"
+        android:label="event_user_view"
+        tools:layout="@layout/event_user_view" >
+
+        <action
+            android:id="@+id/navigate_to_news"
+            app:destination="@id/DestNewsUserView"/>
+    </fragment>
+    <fragment
+        android:id="@+id/DestNewsUserView"
+        android:name="com.example.greenstep.NewsUserView"
+        android:label="news_user_view"
+        tools:layout="@layout/news_user_view" >
+
+        <action
+            android:id="@+id/navigate_to_events"
+            app:destination="@id/DestEventNews"/>
+    </fragment>
+    <fragment
+        android:id="@+id/eduAlternativesContent"
+        android:name="com.example.greenstep.EduAlternativesContent"
+        android:label="edu_alternatives_content"
+        tools:layout="@layout/edu_alternatives_content" >
+        <action
+            android:id="@+id/navigate_to_howto"
+            app:destination="@id/DestEduContent"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/DestEduContent"
+        android:name="com.example.greenstep.EduHowToContent"
+        android:label="edu_howto_content"
+        tools:layout="@layout/edu_howto_content" >
+        <action
+            android:id="@+id/navigate_to_alternatives"
+            app:destination="@id/eduAlternativesContent"/>
+    </fragment>
+    <fragment
+        android:id="@+id/DestChallenge"
+        android:name="com.example.greenstep.ChallengeScreen"
+        android:label="fragment_challenge_screen"
+        tools:layout="@layout/fragment_challenge_screen" />
 
 
 </navigation>

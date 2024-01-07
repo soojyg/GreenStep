@@ -22,8 +22,10 @@
     <string name="cancel">Cancel</string>
     <string name="enter_your_email_address">Enter your email address:</string>
     <string name="reset">Reset</string>
-
-
+    <string name="msg_climate_change">"Climate Change Is Accelerating, Bringing World 'Dangerously Close' to Irreversible Change"</string>
+    <string name="lbl_with">with</string>
+    <string name="lbl_matt_villano">Matt Villano</string>
+    <string name="msg_sunday_22_oct">Sunday, 22 Oct 2023</string>
     <string name="loading">Loading…</string>
     <string name="no_internet_connection">No internet connection!</string>
 <!--    <string name="lbl_greenstep">GreenStep</string>-->
@@ -75,5 +77,28 @@
     <string-array name="user_types">
         <item>Admin</item>
         <item>Normal user</item>
+    </string-array>
+    <string-array name="challenge_types">
+        <item>Select Your Challenge Here</item>
+        <item>Carpooling</item>
+        <item>Public Transportation</item>
+        <item>Non-motorized Transportation</item>
+        <item>Reduce</item>
+        <item>Reuse</item>
+        <item>Recycle</item>
+        <item>Plastic Free</item>
+        <item>Paperless</item>
+        <item>Plant-based/ Meatless meals</item>
+        <item>Energy Conservation</item>
+        <item>Water Conservation</item>
+        <item>Eco-friendly Shopping</item>
+        <item>Community Cleanup</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="frequency_types">
+        <item>Frequency</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
     </string-array>
 </resources>

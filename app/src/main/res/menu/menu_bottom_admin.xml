@@ -4,7 +4,7 @@
 
 
     <item
-        android:id="@id/DestReward"
+        android:id="@id/DestRewardAdmin"
         android:icon="@drawable/img_vector"
         android:title="@string/reward"/>
 

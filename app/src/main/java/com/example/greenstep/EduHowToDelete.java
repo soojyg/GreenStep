@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FieldPath;
@@ -22,7 +24,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.ArrayList;
 
 public class EduHowToDelete extends Fragment {
-    GridView gridView;
+//    GridView gridView;
+    RecyclerView recyclerView;
     ArrayList<HowToDataClass> dataList;
     AdapterDeleteEduHowTo adapter;
     ImageView closeBtn;
@@ -42,11 +45,13 @@ public class EduHowToDelete extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-
-        gridView = view.findViewById(R.id.eduHowToPost);
+        recyclerView = view.findViewById(R.id.recyclerView);
+//        gridView = view.findViewById(R.id.eduHowToPost);
         dataList = new ArrayList<>();
         adapter = new AdapterDeleteEduHowTo(dataList, requireContext(), firestoreDbRef, collectionPath);
-        gridView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(),2));
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav_view);
         closeBtn = view.findViewById(R.id.close);
 

@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EventAdminView">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".eventAdmin">
+        <LinearLayout
+            android:id="@+id/eventNewsTabOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <TextView
+                android:id="@+id/tabEvents"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Events"
+                android:textColor="@color/bluegray_300"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/tabNews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="News"
+                android:textColor="@color/bluegray_300"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/eventNewsTabOption">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewEvent"
+                itemSpace="13dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="21dp"
+                android:layout_marginEnd="21dp"
+                android:elevation="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/recycle_item_event" />
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/linearRowedit"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:elevation="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/scrollView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <FrameLayout
+                android:id="@+id/frameStackedit"
+                android:layout_width="wrap_content"
+                android:layout_height="23dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="1dp">
+
+                <TextView
+                    android:id="@+id/txtEdit"
+                    style="@style/txtQuicksandbold18_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:ellipsize="end"
+                    android:gravity="top|start"
+                    android:singleLine="true"
+                    android:text="@string/lbl_edit" />
+
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/frameStackupload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="235dp"
+                android:layout_marginTop="1dp">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:backgroundTint="@color/teal_700"
+                    android:src="@drawable/ic_baseline_add_24"
+                    app:tint="@color/white" />
+
+            </FrameLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.core.widget.NestedScrollView>
+
+
+
+<!--        <LinearLayout android:gravity="start" android:id="@+id/linearColumn"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginTop="4dp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:orientation="vertical" style="@style/groupStylegreen_A100">-->
+<!--            <LinearLayout android:id="@+id/linearColumngreenstep"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:orientation="vertical" style="@style/groupStylegreen_A100">-->
+<!--                <LinearLayout android:gravity="end"-->
+<!--                    android:id="@+id/linearRowgreenstep"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginEnd="13dp"-->
+<!--                    android:layout_marginStart="13dp"-->
+<!--                    android:layout_width="match_parent" android:orientation="horizontal">-->
+
+<!--                    <FrameLayout-->
+<!--                        android:id="@+id/frameLogoGreenStep"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_width="126dp"-->
+<!--                        android:layout_height="88dp">-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/txtGreenStep"-->
+<!--                            style="@style/txtQuicksandbold18"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_gravity="bottom|center"-->
+<!--                            android:layout_marginTop="10dp"-->
+<!--                            android:ellipsize="end"-->
+<!--                            android:gravity="top|start"-->
+<!--                            android:singleLine="true"-->
+<!--                            android:text="@string/lbl_greenstep" />-->
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/imageTwoHundredFiftyTwo"-->
+<!--                            android:layout_width="76dp"-->
+<!--                            android:layout_height="70dp"-->
+<!--                            android:layout_gravity="top|center"-->
+<!--                            android:layout_marginStart="8dp"-->
+<!--                            android:layout_marginEnd="7dp"-->
+<!--                            android:layout_marginBottom="10dp"-->
+<!--                            android:scaleType="fitXY"-->
+<!--                            tools:ignore="ContentDescription"-->
+<!--                            android:src="@drawable/img_252"/>-->
+<!--                    </FrameLayout>-->
+<!--                    <ImageView android:id="@+id/imageContrast"-->
+<!--                        android:layout_height="28dp"-->
+<!--                        android:layout_marginBottom="22dp"-->
+<!--                        android:layout_marginStart="57dp"-->
+<!--                        android:layout_marginTop="38dp"-->
+<!--                        android:layout_width="62dp"-->
+<!--                        android:scaleType="fitXY"-->
+<!--                        android:src="@drawable/img_contrast"-->
+<!--                        tools:ignore="ContentDescription" tools:src="@drawable/img_contrast"/>-->
+<!--                </LinearLayout>-->
+
+
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/linearColumnevents"-->
+<!--                    style="@style/groupStylewhite_A700cornerRadius"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:orientation="vertical">-->
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/linearRowevents"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginStart="40dp"-->
+<!--                        android:layout_marginTop="19dp"-->
+<!--                        android:layout_marginEnd="40dp"-->
+<!--                        android:gravity="start"-->
+<!--                        android:orientation="horizontal">-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/txtEvents"-->
+<!--                            style="@style/txt"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="0.75"-->
+<!--                            android:ellipsize="end"-->
+<!--                            android:singleLine="true"-->
+<!--                            android:text="@string/lbl_events" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/txtNews"-->
+<!--                            style="@style/txtQuicksandbold18_1"-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginStart="47dp"-->
+<!--                            android:layout_marginTop="4dp"-->
+<!--                            android:layout_marginBottom="2dp"-->
+<!--                            android:layout_weight="0.25"-->
+<!--                            android:ellipsize="end"-->
+<!--                            android:singleLine="true"-->
+<!--                            android:text="@string/lbl_news" />-->
+<!--                    </LinearLayout>-->
+
+
+
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/linearRowedit"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="72dp"-->
+<!--                        android:layout_marginStart="45dp"-->
+<!--                        android:layout_marginEnd="21dp"-->
+<!--                        android:layout_marginBottom="67dp"-->
+<!--                        android:orientation="horizontal"-->
+<!--                        android:elevation="50dp"-->
+<!--                    app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+<!--                    <FrameLayout-->
+<!--                            android:id="@+id/frameStackedit"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="23dp"-->
+<!--                            android:layout_marginTop="18dp"-->
+<!--                            android:layout_marginBottom="1dp">-->
+
+<!--                            <TextView-->
+<!--                                android:id="@+id/txtEdit"-->
+<!--                                style="@style/txtQuicksandbold18_2"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_gravity="start"-->
+<!--                                android:ellipsize="end"-->
+<!--                                android:gravity="top|start"-->
+<!--                                android:singleLine="true"-->
+<!--                                android:text="@string/lbl_edit" />-->
+
+
+<!--                        </FrameLayout>-->
+
+<!--                        <FrameLayout-->
+<!--                            android:id="@+id/frameStackupload"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginStart="235dp"-->
+<!--                            android:layout_marginTop="1dp">-->
+
+<!--                            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                                android:id="@+id/fab"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_alignParentRight="true"-->
+<!--                                android:layout_alignParentBottom="true"-->
+<!--                                android:backgroundTint="@color/teal_700"-->
+<!--                                android:src="@drawable/ic_baseline_add_24"-->
+<!--                                app:tint="@color/white" />-->
+
+<!--                        </FrameLayout>-->
+<!--                    </LinearLayout>-->
+<!--                </LinearLayout>-->
+<!--&lt;!&ndash;            </LinearLayout>&ndash;&gt;-->
+<!--&lt;!&ndash;            <FrameLayout android:id="@+id/frameBottombar"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_width="match_parent" style="@style/groupStylegray_200"&ndash;&gt;-->
+<!--&lt;!&ndash;                app:layout_constraintTop_toBottomOf="@id/linearRowedit">&ndash;&gt;-->
+<!--&lt;!&ndash;                <LinearLayout android:id="@+id/linearRowmegaphone"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_height="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_marginBottom="13dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_marginTop="16dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:orientation="horizontal"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_gravity="center_horizontal">&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <ImageView&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:id="@+id/imageMegaphone"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_width="23dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_height="19dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_gravity="center"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_marginStart="38dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_marginTop="5dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_marginBottom="11dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:scaleType="fitXY"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:src="@drawable/img_megaphone"&ndash;&gt;-->
+<!--&lt;!&ndash;                        tools:ignore="ContentDescription"&ndash;&gt;-->
+<!--&lt;!&ndash;                        tools:src="@drawable/img_megaphone" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <ImageView&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:id="@+id/imageVector"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_width="27dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_height="20dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_gravity="center"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_marginStart="57dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_marginTop="4dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_marginBottom="12dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:scaleType="fitXY"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:src="@drawable/img_vector"&ndash;&gt;-->
+<!--&lt;!&ndash;                        tools:ignore="ContentDescription"&ndash;&gt;-->
+<!--&lt;!&ndash;                        tools:src="@drawable/img_vector" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <ImageView&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:id="@+id/imageVectorOne"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_width="24dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_height="21dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_gravity="center"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_marginStart="57dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_marginTop="4dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_marginBottom="10dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:scaleType="fitXY"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:src="@drawable/img_vector_gray_900"&ndash;&gt;-->
+<!--&lt;!&ndash;                        tools:ignore="ContentDescription"&ndash;&gt;-->
+<!--&lt;!&ndash;                        tools:src="@drawable/img_vector_gray_900" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <ImageView&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:id="@+id/imageUser"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_width="24dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_height="36dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_gravity="center"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_marginStart="63dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:layout_marginEnd="44dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:scaleType="fitXY"&ndash;&gt;-->
+<!--&lt;!&ndash;                        android:src="@drawable/img_user"&ndash;&gt;-->
+<!--&lt;!&ndash;                        tools:ignore="ContentDescription"&ndash;&gt;-->
+<!--&lt;!&ndash;                        tools:src="@drawable/img_user" />&ndash;&gt;-->
+<!--&lt;!&ndash;                </LinearLayout>&ndash;&gt;-->
+<!--&lt;!&ndash;            </FrameLayout>&ndash;&gt;-->
+<!--        </LinearLayout>-->
+
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--</androidx.core.widget.NestedScrollView>-->

@@ -10,6 +10,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +28,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,8 +53,25 @@ public class MainActivity extends AppCompatActivity {
 
 
         profileIcon.setOnClickListener(view ->{
-            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+//            startActivity(intent);
+            FirebaseUtils.getUserType(new FirebaseUtils.UserTypeCallback() {
+                @Override
+                public void onCallback(String userType) {
+                    if(userType.equals("Admin")){
+                        Intent adminIntent = new Intent(getApplicationContext(), AdminProfileGreenStep.class);
+                        startActivity(adminIntent);
+                    } else{ //userType = Normal User
+                        Intent userIntent = new Intent(getApplicationContext(), ProfileGreenStep.class);
+                        startActivity(userIntent);
+                    }
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    Toast.makeText(MainActivity.this,"Error: Unable to determine user type.",Toast.LENGTH_SHORT).show();
+                }
+            });
 
 //            showFragment(new ProfileFragment());
 
@@ -103,6 +126,11 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,"Error: Unable to determine user type.",Toast.LENGTH_SHORT).show();
                 }
             });
+
+//            scheduleJob();getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.mainFragmentContainer, new ChallengeScreen())
+//                    .addToBackStack(null)
+//                    .commit();
         }
 
     }
@@ -121,19 +149,19 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNav, navController);
     }
 
-    private void showFragment(Fragment fragment){
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.mainFragmentContainer, fragment);
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE); // Clear the back stack
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.mainFragmentContainer, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+
+    private void scheduleJob() {
+        ComponentName componentName = new ComponentName(this, ProgressUpdateJobService.class);
+        JobInfo jobInfo = new JobInfo.Builder(1, componentName)
+                .setPeriodic(TimeUnit.HOURS.toMillis(1)) // Adjust the interval as needed
+                .setPersisted(true) // Keep the job even after device reboots
+                .build();
+
+        JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        int resultCode = jobScheduler.schedule(jobInfo);
+
+
     }
 
 

@@ -1,0 +1,8 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- This is the line drawable -->
+    <item android:bottom="1dp">
+        <shape android:shape="line">
+            <solid android:color="@color/green_901" />
+        </shape>
+    </item>
+</layer-list>

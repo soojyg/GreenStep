@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recCardNews"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="8dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/recNewsImage"
+        android:layout_width="379dp"
+        android:layout_height="100dp"
+        android:layout_gravity="start"
+        android:scaleType="fitXY"
+        android:src="@drawable/image_tree"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Corner20dp"
+        tools:ignore="ContentDescription"
+        />
+
+
+    <LinearLayout android:gravity="start"
+        android:id="@+id/linearColumnclimatechange"
+        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:orientation="vertical" style="@style/groupStylecornerRadius_black">
+
+
+        <TextView
+            android:id="@+id/recTitleNews"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="10dp"
+            android:lineSpacingExtra="6dp"
+            style="@style/txtQuicksandbold14"
+            android:background="@android:color/transparent"
+            android:text="@string/msg_climate_change"
+            android:maxLines="1"
+            android:ellipsize="end"/>
+
+        <LinearLayout android:id="@+id/linearRowmattvillano"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="35dp"
+            android:layout_width="match_parent" android:orientation="horizontal">
+            <TextView android:ellipsize="end"
+                android:id="@+id/recAuthor"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:layout_gravity="right"
+                android:layout_weight="0.37" android:layout_width="wrap_content"
+                android:lineSpacingExtra="3dp"
+                android:singleLine="true"
+                style="@style/txtQuicksandsemibold12" android:text="@string/lbl_matt_villano"/>
+            <TextView android:ellipsize="end"
+                android:id="@+id/recDate"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginTop="1dp"
+                android:layout_weight="0.30" android:layout_width="0dp"
+                android:lineSpacingExtra="3dp"
+                android:singleLine="true"
+                style="@style/txtQuicksandsemibold12" android:text="@string/msg_sunday_22_oct"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

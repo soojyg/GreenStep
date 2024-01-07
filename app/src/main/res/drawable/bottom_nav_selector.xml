@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_challenge_pressed" android:state_checked="true"/>
+    <item android:drawable="@drawable/ic_challenge_normal" android:state_checked="false"/>
+    <item android:drawable="@drawable/ic_rewards_pressed" android:state_checked="true"/>
+    <item android:drawable="@drawable/ic_rewards_normal" android:state_checked="false"/>
+    <item android:drawable="@drawable/ic_edu_pressed" android:state_checked="true"/>
+    <item android:drawable="@drawable/ic_edu_normal" android:state_checked="false"/>
+    <item android:drawable="@drawable/ic_event_pressed" android:state_checked="true"/>
+    <item android:drawable="@drawable/ic_event_normal" android:state_checked="false"/>
+</selector>

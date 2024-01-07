@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -39,7 +41,9 @@ import java.util.Map;
 public class UploadHowTo extends Fragment {
     private EditText inputTitle,inputSourceRef;
     private ImageButton uploadImage;
+    private ImageView close;
     private Button submitBtn;
+    BottomNavigationView bottomNavigationView;
     private ProgressBar progressBar;
     private Uri imageUri;
     final private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -54,11 +58,14 @@ public class UploadHowTo extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         inputTitle = view.findViewById(R.id.editTitle);
+        close = view.findViewById(R.id.close);
         inputSourceRef = view.findViewById(R.id.editSourceRef);
         uploadImage = view.findViewById(R.id.uploadImage);
         submitBtn = view.findViewById(R.id.btnComplete);
         progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
+        bottomNavigationView = getActivity().findViewById(R.id.bottom_nav_view);
+        bottomNavigationView.setVisibility(View.GONE);
 
         // In the gallery page
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
@@ -128,7 +135,12 @@ public class UploadHowTo extends Fragment {
                 }
             }
         });
+        close.setOnClickListener(v ->{
 
+            Navigation.findNavController(view).popBackStack();
+            bottomNavigationView.setVisibility(View.VISIBLE);
+
+        });
     }
 
 //    public interface UploadCallback {

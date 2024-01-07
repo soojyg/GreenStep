@@ -1,11 +1,15 @@
 package com.example.greenstep;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import androidx.appcompat.widget.SearchView;
+
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -13,7 +17,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+//import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,6 +34,9 @@ public class EduAlternativesContent extends Fragment {
     private SearchView searchBar;
     private RecyclerView recyclerView;
     private ScrollView scrollView;
+    private LinearLayout editLayout;
+    TextView txtEdit,tabHowto, tabAlter;
+    FloatingActionButton uploadBtn;
     private ArrayList<AlternativesDataClass> dataList;
     private AdapterDisplayEduAlternatives adapter;
     private NavController navController;
@@ -48,14 +57,33 @@ public class EduAlternativesContent extends Fragment {
         searchBar.clearFocus();
         recyclerView = view.findViewById(R.id.recyclerView);
         scrollView = view.findViewById(R.id.scrollView);
-
+        editLayout = view.findViewById(R.id.linearRowedit);
+        txtEdit = view.findViewById(R.id.txtEdit);
+        tabHowto = view.findViewById(R.id.tabHowTo);
+        tabAlter = view.findViewById(R.id.tabAlternatives);
+        tabAlter.setTextColor(getResources().getColor(R.color.black));
+        tabAlter.setTypeface(null, Typeface.BOLD);
+        uploadBtn = view.findViewById(R.id.uploadBtn);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         dataList = new ArrayList<>();
         adapter = new AdapterDisplayEduAlternatives(dataList, requireContext(), navController);
         recyclerView.setAdapter(adapter);
+        // Set the visibility of the "edit" and "upload" button
+        FirebaseUtils.getUserType(new FirebaseUtils.UserTypeCallback() {
+            @Override
+            public void onCallback(String userType) {
+                if(userType.equals("Admin")){
+                    editLayout.setVisibility(View.VISIBLE);
+                }
+            }
 
+            @Override
+            public void onError(String errorMessage) {
+                Toast.makeText(requireContext(),"Error: Unable to determine user type.",Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Load documentID, title, tip1, tip2, image url, and image from firestore database
         firestoreDbRef.collection(collectionPath).get()
@@ -78,6 +106,23 @@ public class EduAlternativesContent extends Fragment {
                         Toast.makeText(requireContext(),"Failed to load image.",Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        txtEdit.setOnClickListener(v -> {
+                    Navigation.findNavController(view).navigate(R.id.action_to_editAlternativesPage);
+                });
+
+        uploadBtn.setOnClickListener(v ->{
+            Navigation.findNavController(view).navigate(R.id.action_to_alternativesUploadPage);
+        });
+
+        tabHowto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(NewsAdminView.this,EventAdminView.class);
+//                startActivity(intent);
+                Navigation.findNavController(view).navigate(R.id.navigate_to_howto);
+            }
+        });
 
         // Search activity
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
