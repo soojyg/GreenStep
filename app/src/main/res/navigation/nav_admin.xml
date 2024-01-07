@@ -5,55 +5,6 @@
     android:id="@+id/nav_admin"
     app:startDestination="@id/DestRewardAdmin">
 
-<!--    <fragment-->
-<!--        android:id="@+id/DestReward"-->
-<!--        android:name="com.example.greenstep.RewardFragment"-->
-<!--        android:label="reward_fragment"-->
-<!--        tools:layout="@layout/reward_fragment" />-->
-<!--    <fragment-->
-<!--        android:id="@+id/eventsNews"-->
-<!--        android:name="com.example.greenstep.EventsNewsFrame"-->
-<!--        android:label="events_news_frame"-->
-<!--        tools:layout="@layout/events_news_frame" >-->
-
-<!--        <action-->
-<!--            android:id="@+id/action_to_eventUpload"-->
-<!--            app:destination="@id/DestEventUpload"/>-->
-<!--        <action-->
-<!--            android:id="@+id/action_to_eventDetail"-->
-<!--            app:destination="@id/DestEventDetail"/>-->
-<!--        <action-->
-<!--            android:id="@+id/action_to_newsUpload"-->
-<!--            app:destination="@id/DestNewsUpload"/>-->
-<!--        <action-->
-<!--            android:id="@+id/action_to_newsDetail"-->
-<!--            app:destination="@id/DestNewsDetail"/>-->
-
-<!--    </fragment>-->
-<!--    <fragment-->
-<!--        android:id="@+id/DestEduContent"-->
-<!--        android:name="com.example.greenstep.EduContentFrame"-->
-<!--        android:label="edu_content_frame"-->
-<!--        tools:layout="@layout/edu_content_frame">-->
-<!--        <action-->
-<!--            android:id="@+id/action_to_eduAlternativesDetails"-->
-<!--            app:destination="@id/DestEduAlternativesDetails">-->
-<!--        </action>-->
-<!--        <action-->
-<!--            android:id="@+id/action_to_eduContentUploadFrame"-->
-<!--            app:destination="@id/DestEduContentUploadFrame"/>-->
-<!--        <action-->
-<!--            android:id="@+id/action_to_editHowToPage"-->
-<!--            app:destination="@id/DestEduHowToDelete"/>-->
-<!--        <action-->
-<!--            android:id="@+id/action_to_editAlternativesPage"-->
-<!--            app:destination="@id/DestEduAlternativesDelete"/>-->
-<!--    </fragment>-->
-<!--    <fragment-->
-<!--        android:id="@+id/DestEduContentUploadFrame"-->
-<!--        android:name="com.example.greenstep.EduContentUploadFrame"-->
-<!--        android:label="edu_content_upload"-->
-<!--        tools:layout="@layout/edu_content_upload_frame" />-->
     <fragment
         android:id="@+id/DestEduHowToDelete"
         android:name="com.example.greenstep.EduHowToDelete"
@@ -131,9 +82,6 @@
         android:name="com.example.greenstep.NewsUpdate"
         android:label="news_update"
         tools:layout="@layout/news_update" >
-<!--        <action-->
-<!--            android:id="@+id/navigate_to_newsDetail"-->
-<!--            app:destination="@id/DestNewsDetail"/>-->
         <action
             android:id="@+id/navigate_to_news"
             app:destination="@id/DestNewsAdminView"/>
@@ -214,32 +162,19 @@
         <action
             android:id="@+id/navigate_to_eduAlternativesContent"
             app:destination="@id/eduAlternativesContent"/>
+        <action
+            android:id="@+id/navigate_to_alternatives"
+            app:destination="@id/eduAlternativesContent"/>
     </fragment>
     <fragment
         android:id="@+id/uploadHowTo"
         android:name="com.example.greenstep.UploadHowTo"
         android:label="edu_howto_upload"
-        tools:layout="@layout/edu_howto_upload" />
-
-    <!--    <activity-->
-<!--        android:id="@+id/adminProfileGreenStep"-->
-<!--        android:name="com.example.greenstep.AdminProfileGreenStep"-->
-<!--        android:label="activity_admin_profile_green_step"-->
-<!--        tools:layout="@layout/activity_admin_profile_green_step" >-->
-<!--        <action-->
-<!--            android:id="@+id/navigate_to_editProfileAdmin"-->
-<!--            app:destination="@id/editProfileAdmin"/>-->
-<!--    </activity>-->
-<!--    <activity-->
-<!--        android:id="@+id/editProfileAdmin"-->
-<!--        android:name="com.example.greenstep.EditProfileAdmin"-->
-<!--        android:label="activity_edit_profile_admin"-->
-<!--        tools:layout="@layout/activity_edit_profile_admin" >-->
-
-<!--        <action-->
-<!--            android:id="@+id/navigate_to_ProfileAdmin"-->
-<!--            app:destination="@id/adminProfileGreenStep"/>-->
-<!--    </activity>-->
+        tools:layout="@layout/edu_howto_upload" >
+        <action
+            android:id="@+id/navigate_to_howto"
+            app:destination="@id/DestEduContent"/>
+    </fragment>
 
 
 </navigation>

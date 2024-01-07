@@ -21,6 +21,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -48,6 +49,7 @@ public class UploadHowTo extends Fragment {
     private Uri imageUri;
     final private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     FirebaseFirestore firestoreDB = FirebaseFirestore.getInstance();
+    NavController navController;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @NonNull Bundle savedInstanceState){
@@ -57,6 +59,7 @@ public class UploadHowTo extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
         inputTitle = view.findViewById(R.id.editTitle);
         close = view.findViewById(R.id.close);
         inputSourceRef = view.findViewById(R.id.editSourceRef);
@@ -121,32 +124,17 @@ public class UploadHowTo extends Fragment {
                 }
                 if(title && srcRef && img){
                     uploadToFirebase(imageUri);
-//                    uploadToFirebase(imageUri, new UploadCallback() {
-//                        @Override
-//                        public void onSuccess() {
-//                            Navigation.findNavController(view).popBackStack();
-//                        }
-//
-//                        @Override
-//                        public void onFailure() {
-//                            // Handle failure if needed
-//                        }
-//                    });
                 }
             }
         });
         close.setOnClickListener(v ->{
 
-            Navigation.findNavController(view).popBackStack();
+            navController.navigate(R.id.navigate_to_howto);
             bottomNavigationView.setVisibility(View.VISIBLE);
 
         });
     }
 
-//    public interface UploadCallback {
-//        void onSuccess();
-//        void onFailure();
-//    }
 
     // Upload image to Storage AND upload details to Firestore DB
     private void uploadToFirebase(Uri uri) {
@@ -168,13 +156,8 @@ public class UploadHowTo extends Fragment {
                             .addOnSuccessListener(documentReference -> {
                                 progressBar.setVisibility(View.VISIBLE);
                                 Toast.makeText(requireContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(requireContext(), MainActivity.class);
-                                startActivity(intent);
-                                // Navigate back to the previous activity
-//                                callback.onSuccess();
-//                                requireActivity().onBackPressed();
-//                                Navigation.findNavController(view).popBackStack();
-//                                finish();
+                                navController.navigate(R.id.navigate_to_howto);
+                                bottomNavigationView.setVisibility(View.VISIBLE);
                             }).addOnFailureListener(e -> {
                                 progressBar.setVisibility(View.INVISIBLE);
                                 Toast.makeText(requireContext(), "Failed to upload", Toast.LENGTH_SHORT).show();
@@ -197,12 +180,6 @@ public class UploadHowTo extends Fragment {
             }
         });
     }
-
-//    private String getFileExtension(Uri fileUri){
-//        ContentResolver contentResolver = getContentResolver();
-//        MimeTypeMap mime = MimeTypeMap.getSingleton();
-//        return mime.getExtensionFromMimeType(contentResolver.getType(fileUri));
-//    }
 
 }
 

@@ -162,8 +162,10 @@ public class UploadAlternatives extends Fragment {
                             .addOnSuccessListener(documentReference -> {
                                 progressBar.setVisibility(View.VISIBLE);
                                 Toast.makeText(requireContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(requireContext(), MainActivity.class);
-                                startActivity(intent);
+//                                Intent intent = new Intent(requireContext(), MainActivity.class);
+//                                startActivity(intent);
+                                navController.navigate(R.id.navigate_to_eduAlternativesContent);
+                                bottomNavigationView.setVisibility(View.VISIBLE);
 
 //                                finish();
                             }).addOnFailureListener(e -> {
@@ -188,8 +190,5 @@ public class UploadAlternatives extends Fragment {
             }
         });
     }
-
-
-
 
 }
