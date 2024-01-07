@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/add_challenge_background"
+    tools:context=".AddChallengeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/add_challenge_background">
+
+
+        <LinearLayout
+            android:id="@+id/squareLayout"
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/dark_green_outline"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:layout_constraintWidth_default="wrap">
+
+            <!-- Points for Challenge Completion -->
+
+            <!-- Points Counted -->
+            <TextView
+                android:id="@+id/pointsForChallengeCompletion"
+                android:layout_width="184dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:fontFamily="@font/manrope_semibold"
+                android:gravity="center_vertical"
+                android:text="Points for Challenge Completion: " />
+
+            <TextView
+                android:id="@+id/pointsCounted"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/manrope_bold"
+                android:text="0"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/combinedLayout1"
+            android:layout_width="345dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/dark_green_outline"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.533"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/squareLayout">
+
+            <!-- Vertical Layout -->
+            <LinearLayout
+                android:id="@+id/challengeLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Challenge Icon -->
+                <ImageView
+                    android:id="@+id/challengeIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/challenge_icon" />
+
+                <!-- Challenge TextView -->
+                <TextView
+                    android:id="@+id/challenge_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/manrope_semibold"
+                    android:text="Challenge"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
+            <!-- Spinner -->
+            <Spinner
+                android:id="@+id/challengeType_spinner"
+                android:layout_width="230dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/descriptionLayout"
+            android:layout_width="345dp"
+            android:layout_height="125dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/dark_green_outline"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.533"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/quantityLayout">
+
+            <!-- Description TextView -->
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/manrope_semibold"
+                android:text="Description"
+                android:textColor="@color/black"/>
+
+            <!-- Challenge Description EditText -->
+            <EditText
+                android:id="@+id/challengeDescription_editText"
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="8dp"
+                android:hint="Type your description of your challenge here."
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/quantityLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/dark_green_outline"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.048"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/combinedLayout"
+            app:layout_constraintWidth_default="wrap">
+
+            <!-- Quantity Icon and Text (Vertical) -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Quantity Icon -->
+                <ImageView
+                    android:id="@+id/quantityIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/quantity_icon" />
+
+                <!-- Quantity Text -->
+                <TextView
+                    android:id="@+id/quantity_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/manrope_semibold"
+                    android:text="Quantity"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
+            <!-- Quantity Number -->
+
+
+            <!-- Quantity Increment Button -->
+            <ImageButton
+                android:id="@+id/quantityIncrement_button"
+                android:layout_width="45dp"
+                android:layout_height="21dp"
+                android:layout_gravity="center"
+                android:src="@drawable/quantity_increment_imagebutton"
+                app:layout_constraintStart_toEndOf="@+id/quantity_number" />
+
+            <TextView
+                android:id="@+id/quantity_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="1"
+                android:textColor="@color/black"/>
+            <!-- Quantity Decrement Button -->
+            <ImageButton
+                android:id="@+id/quantityDecrement_button"
+                android:layout_width="45dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:src="@drawable/quantity_decrement_imagebutton"
+                app:layout_constraintStart_toEndOf="@+id/quantityIncrement_button" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/combinedLayout"
+            android:layout_width="345dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/dark_green_outline"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.533"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/combinedLayout1">
+
+            <!-- Vertical Layout 1 (frequencyLayout) -->
+            <LinearLayout
+                android:id="@+id/frequencyLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Frequency Icon -->
+                <ImageView
+                    android:id="@+id/frequencyIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/frequency_icon" />
+
+                <!-- Frequency TextView -->
+                <TextView
+                    android:id="@+id/frequency_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/manrope_semibold"
+                    android:text="Frequency"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
+            <!-- Horizontal Layout (Spinner) -->
+            <Spinner
+                android:id="@+id/frequency_spinner"
+                android:layout_width="230dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/startChallengeButtonLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionLayout">
+
+        </LinearLayout>
+
+
+        <ImageButton
+            android:id="@+id/backToMainPage_addChallenge_button"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="start|top"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/back_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/manrope_bold"
+            android:text="Start a Challenge! "
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintStart_toEndOf="@+id/backToMainPage_addChallenge_button"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/startChallenge_button"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_marginTop="24dp"
+            android:text="Start"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/light_green"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionLayout" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

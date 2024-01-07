@@ -1,0 +1,24 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Oval background for the checkbox -->
+    <item>
+        <shape android:shape="oval">
+            <size android:width="24dp"
+                android:height="24dp"/>
+            <solid android:color="#CAFFBE"/>
+            <stroke android:color="#0A5D00"
+                android:width="2dp"/>
+        </shape>
+    </item>
+
+    <!-- Tick symbol in the middle -->
+    <item android:gravity="center">
+        <bitmap
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:width="24dp"
+            android:height="24dp"
+            android:gravity="center"
+            android:src="@drawable/ic_tick_image" />
+    </item>
+</layer-list>

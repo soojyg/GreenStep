@@ -1,0 +1,96 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="8dp"
+    android:layout_margin="16dp"
+    android:id="@+id/challenge_progress">
+
+    <RelativeLayout
+        android:id="@+id/challenge_details_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/target_bg"
+        android:clickable="true"
+        android:elevation="10dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvFrequency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/quicksand_medium"
+            android:text="Daily"
+            android:textColor="#000000" />
+
+        <!-- Progress Percentage (Top Middle) -->
+        <TextView
+            android:id="@+id/tvProgressPercentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/quicksand_medium"
+            android:text="10%"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <!-- Edit ImageButton (Top Right) -->
+        <ImageButton
+            android:id="@+id/imageButton_editChallenge"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:scaleType="centerCrop"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_edit" />
+
+        <TextView
+            android:id="@+id/tvChallengeName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvFrequency"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/quicksand_medium"
+            android:text="Plant-based/ Meatless Meat"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+        <!-- Button Layout at the Bottom -->
+        <LinearLayout
+            android:id="@+id/buttonlayout_challengeProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <!-- Add Checkbox or Buttons as Needed -->
+            <CheckBox
+                android:id="@+id/button_challengeProgress"
+                style="@android:style/Widget.Material.Light.CompoundButton.CheckBox"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:button="@drawable/custom_checkbox"
+                android:shadowColor="@color/grey"
+
+
+                android:gravity="center|fill_horizontal|fill_vertical" />
+
+            <!-- Add 10 buttons dynamically based on backend -->
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
