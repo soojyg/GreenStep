@@ -95,12 +95,19 @@
         <action
             android:id="@+id/action_to_eventUpdate"
             app:destination="@id/DestEventUpdate"/>
+        <action
+            android:id="@+id/navigate_to_events"
+            app:destination="@id/DestEventNews"/>
     </fragment>
     <fragment
         android:id="@+id/DestEventUpdate"
         android:name="com.example.greenstep.EventUpdate"
         android:label="event_update"
-        tools:layout="@layout/event_update" />
+        tools:layout="@layout/event_update" >
+        <action
+            android:id="@+id/navigate_to_events"
+            app:destination="@id/DestEventNews"/>
+    </fragment>
     <fragment
         android:id="@+id/DestNewsUpload"
         android:name="com.example.greenstep.NewsUpload"
@@ -115,12 +122,22 @@
         <action
             android:id="@+id/action_to_newsUpdate"
             app:destination="@id/DestNewsUpdate"/>
+        <action
+            android:id="@+id/navigate_to_news"
+            app:destination="@id/DestNewsAdminView"/>
     </fragment>
     <fragment
         android:id="@+id/DestNewsUpdate"
         android:name="com.example.greenstep.NewsUpdate"
         android:label="news_update"
-        tools:layout="@layout/news_update" />
+        tools:layout="@layout/news_update" >
+<!--        <action-->
+<!--            android:id="@+id/navigate_to_newsDetail"-->
+<!--            app:destination="@id/DestNewsDetail"/>-->
+        <action
+            android:id="@+id/navigate_to_news"
+            app:destination="@id/DestNewsAdminView"/>
+    </fragment>
     <fragment
         android:id="@+id/DestEventNews"
         android:name="com.example.greenstep.EventAdminView"

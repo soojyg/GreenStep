@@ -68,7 +68,7 @@
             android:checked="false"
             android:scaleType="fitXY"
             android:singleLine="false"
-            android:visibility="visible"
+            android:visibility="gone"
             tools:ignore="ContentDescription" />
 
 

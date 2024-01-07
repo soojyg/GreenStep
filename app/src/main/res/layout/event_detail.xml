@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,6 +12,19 @@
     android:orientation="vertical"
     tools:context=".EventDetail">
 
+    <ImageView
+        android:id="@+id/cancel"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_arrowright"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/img_arrowright"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -83,3 +100,4 @@
         </com.github.clans.fab.FloatingActionMenu>
     </RelativeLayout>
 </LinearLayout>
+</ScrollView>

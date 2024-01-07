@@ -63,7 +63,9 @@ public class ProfileGreenStep extends AppCompatActivity {
         logout=(Button) findViewById(R.id.button_logout);
 
         backBtn.setOnClickListener(v ->{
-            onBackPressed();
+//            onBackPressed();
+            Intent intent = new Intent(ProfileGreenStep.this, MainActivity.class);
+            startActivity(intent);
         });
         logout.setOnClickListener(new View.OnClickListener() {
             @Override

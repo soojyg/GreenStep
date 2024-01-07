@@ -127,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-//            scheduleJob();getSupportFragmentManager().beginTransaction()
+            scheduleJob();
+//            getSupportFragmentManager().beginTransaction()
 //                    .replace(R.id.mainFragmentContainer, new ChallengeScreen())
 //                    .addToBackStack(null)
 //                    .commit();

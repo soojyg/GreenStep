@@ -34,7 +34,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class EventDetail extends Fragment {
     TextView detailDesc, detailTitle, detailLang;
-    ImageView detailImage;
+    ImageView detailImage,cancelBtn;
     FloatingActionButton deleteButton, editButton;
     String key = "";
     String imageUrl = "";
@@ -59,6 +59,7 @@ public class EventDetail extends Fragment {
         deleteButton = view.findViewById(R.id.deleteButton);
         editButton = view.findViewById(R.id.editButton);
         detailLang = view.findViewById(R.id.detailLang);
+        cancelBtn = view.findViewById(R.id.cancel);
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav_view);
         bottomNavigationView.setVisibility(View.GONE);
         Bundle args = getArguments();
@@ -100,6 +101,10 @@ public class EventDetail extends Fragment {
         });
         onItemDeletedListener = (EventDetail.OnItemDeletedListener) requireActivity().getIntent().getSerializableExtra("listener");
 
+        cancelBtn.setOnClickListener(v -> {
+            navController.navigate(R.id.navigate_to_events);
+            bottomNavigationView.setVisibility(View.VISIBLE);
+        });
     }
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {

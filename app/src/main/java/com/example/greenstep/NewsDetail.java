@@ -34,7 +34,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class NewsDetail extends Fragment {
     TextView detailAuthor, detailTitle, detailLang, detailDate;
-    ImageView detailImage;
+    ImageView detailImage,cancelBtn;
     FloatingActionButton deleteButton, editButton;
     String key = "";
     String imageUrl = "";
@@ -60,6 +60,7 @@ public class NewsDetail extends Fragment {
         detailTitle = view.findViewById(R.id.detailNewsTitle);
         deleteButton = view.findViewById(R.id.deleteButton);
         editButton = view.findViewById(R.id.editButton);
+        cancelBtn = view.findViewById(R.id.cancel);
         detailLang = view.findViewById(R.id.detailLang);
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav_view);
         bottomNavigationView.setVisibility(View.GONE);
@@ -106,6 +107,11 @@ public class NewsDetail extends Fragment {
         });
         onItemDeletedListener = (NewsDetail.OnItemDeletedListener) requireActivity().getIntent().getSerializableExtra("listener");
 
+        cancelBtn.setOnClickListener(v -> {
+//            Navigation.findNavController(view).popBackStack();
+            navController.navigate(R.id.navigate_to_news);
+            bottomNavigationView.setVisibility(View.VISIBLE);
+        });
     }
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {

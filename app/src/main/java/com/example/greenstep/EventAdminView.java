@@ -235,7 +235,7 @@ public class EventAdminView extends Fragment {
                     Log.d("EditStatusCAN", "isEditAvailableCAN: " + isEditAvailable);
                     // Change the text to "Done" if edit is available
                     showCompleteDialog();
-                    edit.setText("Done");
+//                    edit.setText("Done");
                     Toast.makeText(requireContext(), "Edit Available", Toast.LENGTH_SHORT).show();
                 } else {
                     // Reset the text if edit is unavailable

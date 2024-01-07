@@ -241,7 +241,7 @@ public class ChallengeListAdapter extends RecyclerView.Adapter<ChallengeListAdap
                                         put("totalPointsCollected", challenge.getTotalPointsCollected() + challenge.getTotalPointsPerCompletion());
                                         db.collection("User Info")
                                                 .document(getUserUid())
-                                                .update("Points Collected", FieldValue.increment(challenge.getTotalPointsPerCompletion()));
+                                                .update("pointCollected", FieldValue.increment(challenge.getTotalPointsPerCompletion()));
                                     }
 
                                 }}, SetOptions.merge())  // Use SetOptions.merge() to add or update fields

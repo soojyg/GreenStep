@@ -110,7 +110,8 @@ public class AdminProfileGreenStep extends AppCompatActivity {
                 });
 
         backBtn.setOnClickListener(v ->{
-            onBackPressed();
+            Intent intent = new Intent(AdminProfileGreenStep.this, MainActivity.class);
+            startActivity(intent);
         });
         logout.setOnClickListener(new View.OnClickListener() {
             @Override

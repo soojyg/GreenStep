@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.app.Activity;
@@ -49,6 +50,7 @@ public class NewsUpdate extends Fragment {
     DocumentReference documentReference;
     StorageReference storageReference;
     BottomNavigationView bottomNavigationView;
+    private NavController navController;
     //    private UpdateListener updateListener;
 
     @Override
@@ -61,6 +63,7 @@ public class NewsUpdate extends Fragment {
     @Override
     public void onViewCreated(@org.checkerframework.checker.nullness.qual.NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
         btnUpdate = view.findViewById(R.id.btnUpdate);
         updateAuthor = view.findViewById(R.id.updateAuthor);
         updateImage = view.findViewById(R.id.updateNewsImage);
@@ -125,6 +128,7 @@ public class NewsUpdate extends Fragment {
                 Toast.makeText(requireContext(), "Update incomplete", Toast.LENGTH_SHORT).show();
 //                Intent intent = new Intent(NewsUpdate.this, NewsAdminView.class);
 //                startActivity(intent);
+//                navController.navigate(R.id.navigate_to_newsDetail);
                 Navigation.findNavController(view).popBackStack();
                 bottomNavigationView.setVisibility(View.VISIBLE);
             }
@@ -260,7 +264,8 @@ public class NewsUpdate extends Fragment {
                     Navigation.findNavController(view).popBackStack();
                     bottomNavigationView.setVisibility(View.VISIBLE);
                 }
-                Navigation.findNavController(view).popBackStack();
+//                Navigation.findNavController(view).popBackStack();
+                navController.navigate(R.id.navigate_to_news);
                 bottomNavigationView.setVisibility(View.VISIBLE);
             }
         }).addOnFailureListener(new OnFailureListener() {

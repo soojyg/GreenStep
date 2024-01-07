@@ -60,6 +60,9 @@
         <action
             android:id="@+id/navigate_to_howto"
             app:destination="@id/DestEduContent"/>
+        <action
+            android:id="@+id/action_to_eduAlternativesDetails"
+            app:destination="@id/DestEduAlternativesDetails"/>
     </fragment>
 
     <fragment
@@ -76,6 +79,15 @@
         android:name="com.example.greenstep.ChallengeScreen"
         android:label="fragment_challenge_screen"
         tools:layout="@layout/fragment_challenge_screen" />
+    <fragment
+        android:id="@+id/DestEduAlternativesDetails"
+        android:name="com.example.greenstep.EduAlternativesDetails"
+        android:label="edu_alternatives_details"
+        tools:layout="@layout/edu_alternatives_details" >
+        <action
+            android:id="@+id/navigate_to_eduAlternativesContent"
+            app:destination="@id/eduAlternativesContent"/>
+    </fragment>
 
 
 </navigation>

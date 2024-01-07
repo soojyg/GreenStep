@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.app.Activity;
@@ -52,6 +53,7 @@ public class EventUpdate extends Fragment {
     DocumentReference documentReference;
     StorageReference storageReference;
     BottomNavigationView bottomNavigationView;
+    NavController navController;
     //    private UpdateListener updateListener;
 
     @Override
@@ -64,7 +66,7 @@ public class EventUpdate extends Fragment {
     @Override
     public void onViewCreated(@org.checkerframework.checker.nullness.qual.NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        navController = Navigation.findNavController(view);
         btnUpdate = view.findViewById(R.id.btnUpdate);
         updateDesc = view.findViewById(R.id.updateCompanyOrgani);
         updateImage = view.findViewById(R.id.updateEventImage);
@@ -198,7 +200,8 @@ public class EventUpdate extends Fragment {
                 }
 //                Intent intent = new Intent(EventUpdate.this, EventAdminView.class);
 //                startActivity(intent);
-                Navigation.findNavController(view).popBackStack();
+//                Navigation.findNavController(view).popBackStack();
+                navController.navigate(R.id.navigate_to_events);
                 bottomNavigationView.setVisibility(View.VISIBLE);
             }
         }).addOnFailureListener(new OnFailureListener() {
