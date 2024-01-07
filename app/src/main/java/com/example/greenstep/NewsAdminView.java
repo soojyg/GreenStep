@@ -113,7 +113,6 @@ public class NewsAdminView extends Fragment {
             @Override
             public void onClick(View view) {
                 editAvailabilityManager.toggleEditAvailability();
-                showCompleteDialog();
                 handleEditAvailability();
             }
         });

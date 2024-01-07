@@ -114,7 +114,6 @@ public class EventAdminView extends Fragment {
             @Override
             public void onClick(View view) {
                 editAvailabilityManager.toggleEditAvailability();
-                showCompleteDialog();
                 handleEditAvailability();
             }
         });

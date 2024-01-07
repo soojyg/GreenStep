@@ -104,10 +104,16 @@
 
             <EditText
                 android:id="@+id/editTitle"
+                style="@style/etSolidRoundedOutline"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/rectangle_bg_light_green_50_border_green_902_radius_10"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/rectangle_bg_light_green_50_border_green_901_radius_10"
+                android:ellipsize="end"
+                android:inputType="text"
+                android:padding="15dp"
+                android:singleLine="true"
+                tools:ignore="Autofill"
                  />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
@@ -154,10 +160,16 @@
             app:placeholderTextColor="@color/green_902">
             <EditText
                 android:id="@+id/editSourceRef"
+                style="@style/etSolidRoundedOutline"
                 android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="50dp"
-                android:background="@drawable/rectangle_bg_light_green_50_border_green_902_radius_10"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/rectangle_bg_light_green_50_border_green_901_radius_10"
+                android:ellipsize="end"
+                android:inputType="text"
+                android:padding="15dp"
+                android:singleLine="true"
+                tools:ignore="Autofill"
                 />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>

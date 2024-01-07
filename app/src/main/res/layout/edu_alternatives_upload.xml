@@ -104,10 +104,16 @@
 
                 <EditText
                     android:id="@+id/editTitle"
+                    style="@style/etSolidRoundedOutline"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/rectangle_bg_light_green_50_border_green_902_radius_10"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/rectangle_bg_light_green_50_border_green_901_radius_10"
+                    android:ellipsize="end"
+                    android:inputType="text"
+                    android:padding="15dp"
+                    android:singleLine="true"
+                    tools:ignore="Autofill"
                     />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -159,10 +165,16 @@
                     android:hint="@string/add_option"
 
                     android:gravity="center"
+                    style="@style/etSolidRoundedOutline"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/rectangle_bg_light_green_50_border_green_902_radius_10"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/rectangle_bg_light_green_50_border_green_901_radius_10"
+                    android:ellipsize="end"
+                    android:inputType="text"
+                    android:padding="15dp"
+                    android:singleLine="true"
+                    tools:ignore="Autofill"
                     />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
@@ -178,10 +190,16 @@
                     android:id="@+id/editTip2"
                     android:hint="@string/add_option"
                     android:gravity="center"
+                    style="@style/etSolidRoundedOutline"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/rectangle_bg_light_green_50_border_green_902_radius_10"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/rectangle_bg_light_green_50_border_green_901_radius_10"
+                    android:ellipsize="end"
+                    android:inputType="text"
+                    android:padding="15dp"
+                    android:singleLine="true"
+                    tools:ignore="Autofill"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
