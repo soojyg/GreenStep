@@ -101,4 +101,8 @@
         <item>Weekly</item>
         <item>Monthly</item>
     </string-array>
+    <string name="select_challenge_type">Please select Challenge Type</string>
+    <string name="select_frequency">Please select Frequency</string>
+    <string name="challenge_added">Challenge added</string>
+    <string name="error_adding_challenge">Error adding challenge</string>
 </resources>
