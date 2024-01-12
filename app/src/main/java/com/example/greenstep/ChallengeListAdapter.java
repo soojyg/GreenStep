@@ -2,11 +2,7 @@ package com.example.greenstep;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log; // Import Log class
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +17,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +25,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -41,7 +35,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 public class ChallengeListAdapter extends RecyclerView.Adapter<ChallengeListAdapter.ChallengeProgressViewHolder> {
@@ -63,12 +56,6 @@ public class ChallengeListAdapter extends RecyclerView.Adapter<ChallengeListAdap
     }
 
 
-
-    public ChallengeListAdapter(FragmentManager fragmentManager, ArrayList<Challenge> challengeList) {
-        this.fragmentManager = fragmentManager;
-        this.challengeList = challengeList;
-    }
-
     @NonNull
     @Override
     public ChallengeProgressViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -80,14 +67,6 @@ public class ChallengeListAdapter extends RecyclerView.Adapter<ChallengeListAdap
     @Override
     public void onBindViewHolder(@NonNull ChallengeProgressViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Log.d(TAG, "onBindViewHolder: Position = " + position);
-
-
-
-
-
-
-
-
 
         if (position >= 0 && position < challengeList.size()) {
             Challenge challenge = challengeList.get(position);

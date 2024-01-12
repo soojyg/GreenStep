@@ -1,12 +1,10 @@
 package com.example.greenstep;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -60,14 +58,14 @@ public class ChallengeScreen extends Fragment {
         button_addChallenge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create an instance of the AddChallengeFragment
-                AddChallengeFragment addChallengeFragment = new AddChallengeFragment();
+                // Create an instance of the ChallengeAddNewChallengeFragment
+                ChallengeAddNewChallengeFragment addChallengeFragment = new ChallengeAddNewChallengeFragment();
 
                 // Get the FragmentManager and start a FragmentTransaction
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                // Replace the current fragment with the AddChallengeFragment
+                // Replace the current fragment with the ChallengeAddNewChallengeFragment
                 fragmentTransaction.replace(R.id.mainFragmentContainer, addChallengeFragment);
 
                 // Optional: Add the transaction to the back stack, so the user can navigate back
@@ -103,18 +101,8 @@ public class ChallengeScreen extends Fragment {
         });
 
 
-
-
-
-        // Log the end of the onCreateView method
-        Log.d(TAG, "onCreateView: Ended");
-
         return rootView;
     }
-
-    // ...
-
-    // Add log messages within your methods as needed for troubleshooting
 
     public String getUserUid() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -127,17 +115,6 @@ public class ChallengeScreen extends Fragment {
             Log.d(TAG, "getUserUid: User not signed in");
             return "";
         }
-    }
-
-    public void updateChallenges(List<Challenge> newChallenges) {
-        // Log information about updating challenges
-        Log.d(TAG, "updateChallenges: Updating challenges");
-
-        challengeDetailsList.clear();
-        challengeDetailsList.addAll(newChallenges);
-
-        // Notify the adapter about the data change
-        clAdapter.notifyDataSetChanged();
     }
 
     private void fetchDataFromFirestore() {
@@ -209,13 +186,10 @@ public class ChallengeScreen extends Fragment {
                 });
     }
 
-
-
-
     private void showCompletedChallengesDialog(Map<String, Object> completedChallenges) {
         // Use a DialogFragment or any other UI component to display the completed challenges
-        CompletedChallengeFragment completedChallengeFragment = CompletedChallengeFragment.newInstance(completedChallenges);
-        completedChallengeFragment.show(getChildFragmentManager(), "CompletedChallengesDialog");
+        ChallengeCalendarCompletedListFragment challengeCalendarCompletedListFragment = ChallengeCalendarCompletedListFragment.newInstance(completedChallenges);
+        challengeCalendarCompletedListFragment.show(getChildFragmentManager(), "CompletedChallengesDialog");
 
     }
 }

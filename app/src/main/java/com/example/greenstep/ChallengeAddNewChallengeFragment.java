@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,7 +28,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddChallengeFragment extends Fragment {
+public class ChallengeAddNewChallengeFragment extends Fragment {
+
+
+    private static final String TAG = ChallengeAddNewChallengeFragment.class.getSimpleName();
+    private static final String COLLECTION_USER_INFO = "User Info";
+    private static final String COLLECTION_CHALLENGE_DETAILS = "Challenge Details";
 
     private Spinner challengeTypesSpinner;
     private Spinner frequencyTypesSpinner;
@@ -37,6 +41,7 @@ public class AddChallengeFragment extends Fragment {
     private ImageButton quantityDecrementButton;
     private TextView quantityNumberText;
     private int quantity = 1;
+    private int notificationStatus;
     private Switch switchNotificationStatus;
     private TextView pointsCounted;
     private ImageButton backToHomePageButton;
@@ -48,9 +53,8 @@ public class AddChallengeFragment extends Fragment {
     private String description;
     private String userUid;
 
-    private int notificationStatus;
 
-    public AddChallengeFragment() {
+    public ChallengeAddNewChallengeFragment() {
         // Required empty public constructor
     }
 
@@ -58,11 +62,17 @@ public class AddChallengeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_challenge, container, false);
 
-
         // Initialize Firebase Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // Initialize UI components
+        initializeUIComponents(view, db);
+
+        return view;
+    }
+
+    private void initializeUIComponents(View view, FirebaseFirestore db) {
+        // Initialize UI components...
         pointsCounted = view.findViewById(R.id.pointsCounted);
 
         challengeTypesSpinner = view.findViewById(R.id.challengeType_spinner);
@@ -87,9 +97,7 @@ public class AddChallengeFragment extends Fragment {
         quantityDecrementButton = view.findViewById(R.id.quantityDecrement_button);
         quantityNumberText = view.findViewById(R.id.quantity_number);
 
-
         backToHomePageButton = view.findViewById(R.id.backToMainPage_addChallenge_button);
-
 
         quantityIncrementButton.setOnClickListener(v -> {
             if (quantity < 10)
@@ -104,7 +112,6 @@ public class AddChallengeFragment extends Fragment {
             quantityNumberText.setText(String.valueOf(quantity));
             returnPoints(db, pointsCounted, frequencyTypesSpinner.getSelectedItem().toString(), quantity);
         });
-
 
         challengeTypesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -134,33 +141,24 @@ public class AddChallengeFragment extends Fragment {
         challengeDescriptionEditText = view.findViewById(R.id.challengeDescription_editText);
         startChallengeButton.setOnClickListener(v -> {
             if (challengeTypesSpinner.getSelectedItemPosition() == 0) {
-                Toast.makeText(requireContext(), "Please select Challenge Type", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.select_challenge_type, Toast.LENGTH_SHORT).show();
             } else if (frequencyTypesSpinner.getSelectedItemPosition() == 0) {
-                Toast.makeText(requireContext(), "Please select Frequency", Toast.LENGTH_SHORT).show();
-            }
-            else {
+                Toast.makeText(requireContext(), R.string.select_frequency, Toast.LENGTH_SHORT).show();
+            } else {
                 addChallengeToDatabase(db);
-                // Go back to the previous fragment only if the challenge type is selected
-
             }
         });
-
-        return view;
     }
-
     private void addChallengeToDatabase(FirebaseFirestore db) {
         if (getActivity() == null || !isAdded()) {
-            // Fragment is not attached, or not added to an activity
             return;
         }
 
         challengeType = challengeTypesSpinner.getSelectedItem().toString();
-
         frequency = frequencyTypesSpinner.getSelectedItem().toString();
         description = challengeDescriptionEditText.getText().toString().trim();
         userUid = getUserUid();
 
-        // Rest of the code to add challenge to the database
         Map<String, Object> challengeData = new HashMap<>();
         challengeData.put("challengeType", challengeType);
         challengeData.put("frequency", frequency);
@@ -174,26 +172,22 @@ public class AddChallengeFragment extends Fragment {
 
         String timestampId = String.valueOf(System.currentTimeMillis());
 
-        db.collection("User Info")
+        db.collection(COLLECTION_USER_INFO)
                 .document(userUid)
-                .collection("Challenge Details")
+                .collection(COLLECTION_CHALLENGE_DETAILS)
                 .document(timestampId)
                 .set(challengeData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(requireContext(), "Challenge added", Toast.LENGTH_SHORT).show();
-                        requireActivity().getSupportFragmentManager().popBackStack();
-                    }
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(requireContext(), R.string.challenge_added, Toast.LENGTH_SHORT).show();
+                    requireActivity().getSupportFragmentManager().popBackStack();
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("Add Challenge Fragment", "Error adding challenge", e);
-                        Toast.makeText(requireContext(), "Error adding challenge", Toast.LENGTH_SHORT).show();
-                    }
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error adding challenge", e);
+                    Toast.makeText(requireContext(), R.string.error_adding_challenge, Toast.LENGTH_SHORT).show();
                 });
     }
+
+
 
 
     private void returnPoints(FirebaseFirestore db, TextView pointCounted, String frequency, int quantity) {
@@ -234,15 +228,15 @@ public class AddChallengeFragment extends Fragment {
 
                                 pointCounted.setText(String.valueOf((challengePoints) * quantity * frequencyValue));
                             } else {
-                                Log.e("AddChallengeFragment", "Points field is null in the document");
+                                Log.e("ChallengeAddNewChallengeFragment", "Points field is null in the document");
                             }
                         } else {
-                            Log.d("AddChallengeFragment", "No such document");
+                            Log.d("ChallengeAddNewChallengeFragment", "No such document");
                         }
                     } else {
                         Exception e = task.getException();
                         if (e != null) {
-                            Log.e("AddChallengeFragment", "Error querying Firestore", e);
+                            Log.e("ChallengeAddNewChallengeFragment", "Error querying Firestore", e);
                         }
                     }
                 });
