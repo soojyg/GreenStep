@@ -50,7 +50,7 @@ public class NewsDetail extends Fragment {
 
     }
 
-    @Override
+        @Override
     public void onViewCreated(@org.checkerframework.checker.nullness.qual.NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
@@ -66,7 +66,6 @@ public class NewsDetail extends Fragment {
         bottomNavigationView.setVisibility(View.GONE);
         Bundle args = getArguments();
 
-//        Bundle bundle = getIntent().getExtras();
         if (args != null){
             detailTitle.setText(args.getString("Title"));
             detailAuthor.setText(args.getString("Author"));
@@ -95,73 +94,28 @@ public class NewsDetail extends Fragment {
                 bundle.putString("Key", key);
                 navController.navigate(R.id.action_to_newsUpdate, bundle);
 
-//                Intent intent = new Intent(NewsDetail.this, NewsUpdate.class)
-//                        .putExtra("Title", detailTitle.getText().toString())
-//                        .putExtra("Author", detailAuthor.getText().toString())
-//                        .putExtra("Date",detailDate.getText().toString())
-//                        .putExtra("Language", detailLang.getText().toString())
-//                        .putExtra("Image", imageUrl)
-//                        .putExtra("Key", key);
-//                startActivity(intent);
             }
         });
         onItemDeletedListener = (NewsDetail.OnItemDeletedListener) requireActivity().getIntent().getSerializableExtra("listener");
 
         cancelBtn.setOnClickListener(v -> {
-//            Navigation.findNavController(view).popBackStack();
             navController.navigate(R.id.navigate_to_news);
             bottomNavigationView.setVisibility(View.VISIBLE);
         });
     }
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.news_detail);
-//        detailAuthor = findViewById(R.id.detailAuthor);
-//        detailImage = findViewById(R.id.detailImage);
-//        detailDate = findViewById(R.id.detailDate);
-//        detailTitle = findViewById(R.id.detailNewsTitle);
-//        deleteButton = findViewById(R.id.deleteButton);
-//        editButton = findViewById(R.id.editButton);
-//        detailLang = findViewById(R.id.detailLang);
-//        Bundle bundle = getIntent().getExtras();
-//        if (bundle != null){
-//            detailTitle.setText(bundle.getString("Title"));
-//            detailAuthor.setText(bundle.getString("Author"));
-//            detailLang.setText(bundle.getString("Language"));
-//            detailDate.setText(bundle.getString("Date"));
-//            key = bundle.getString("Key");
-//            imageUrl = bundle.getString("Image");
-//            Glide.with(this).load(bundle.getString("Image")).into(detailImage);
-//        }
-//        deleteButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                deleteItem();
-//            }
-//        });
-//
-//        editButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(NewsDetail.this, NewsUpdate.class)
-//                        .putExtra("Title", detailTitle.getText().toString())
-//                        .putExtra("Author", detailAuthor.getText().toString())
-//                        .putExtra("Date",detailDate.getText().toString())
-//                        .putExtra("Language", detailLang.getText().toString())
-//                        .putExtra("Image", imageUrl)
-//                        .putExtra("Key", key);
-//                startActivity(intent);
-//            }
-//        });
-//        onItemDeletedListener = (NewsDetail.OnItemDeletedListener) getIntent().getSerializableExtra("listener");
-//
-//    }
 
+    /**
+     * Displays a confirmation dialog for item deletion.
+     *
+     * @param view The view associated with the action.
+     */
     private void deleteItem(View view) {
+        // Create an AlertDialog to confirm item deletion
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Confirm Deletion");
         builder.setMessage("Are you sure you want to delete this item?");
+
+        // Set up positive button for confirmation
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -173,17 +127,18 @@ public class NewsDetail extends Fragment {
                 deleteFromStorage(imageUrl);
 
                 Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(getApplicationContext(), NewsAdminView.class));
 
+                // Notify the listener if available
                 if (onItemDeletedListener != null) {
                     onItemDeletedListener.onItemDeleted(key);
                 }
 
-//                finish();
+                // Navigate back and make bottom navigation visible
                 Navigation.findNavController(view).popBackStack();
                 bottomNavigationView.setVisibility(View.VISIBLE);
             }
         });
+        // Set up negative button for cancellation
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -192,16 +147,23 @@ public class NewsDetail extends Fragment {
             }
         });
 
+        // Show the AlertDialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
 
 
-
+    /**
+     * Deletes a document from Firestore based on the provided document ID.
+     *
+     * @param documentId The ID of the document to be deleted.
+     */
     private void deleteFromFirestore(String documentId) {
+        // Get reference to Firestore database
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("News");
 
+        // Delete the document from Firestore
         collectionReference.document(documentId).delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -220,10 +182,17 @@ public class NewsDetail extends Fragment {
                 });
     }
 
+    /**
+     * Deletes a file from Firebase Storage based on the provided image URL.
+     *
+     * @param imageUrl The URL of the image to be deleted from Storage.
+     */
     private void deleteFromStorage(String imageUrl) {
+        // Get reference to Firebase Storage
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReferenceFromUrl(imageUrl);
 
+        // Delete the file from Storage
         storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -240,7 +209,9 @@ public class NewsDetail extends Fragment {
         });
     }
 
-
+    /**
+     * Interface to notify listeners when an item is deleted.
+     */
     public interface OnItemDeletedListener {
         void onItemDeleted(String key);
     }
