@@ -50,7 +50,7 @@ public class NewsAdminView extends Fragment {
 
     }
 
-    @Override
+       @Override
     public void onViewCreated(@org.checkerframework.checker.nullness.qual.NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerViewNews);
@@ -71,11 +71,11 @@ public class NewsAdminView extends Fragment {
         txtNews = view.findViewById(R.id.tabNews);
         txtNews.setTextColor(getResources().getColor(R.color.black));
         txtNews.setTypeface(null, Typeface.BOLD);
-// Initialize Firestore
+        // Initialize Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("News");
 
-// Retrieve Data from Firestore
+        // Retrieve Data from Firestore
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -100,13 +100,10 @@ public class NewsAdminView extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(NewsAdminView.this, NewsUpload.class);
-//                startActivity(intent);
+
                 Navigation.findNavController(view).navigate(R.id.action_to_newsUpload);
             }
         });
-
-        Log.d("EditStatusORI", "isEditAvailable ORI: " + isEditAvailable);
 
 
         edit.setOnClickListener(new View.OnClickListener() {
@@ -119,111 +116,17 @@ public class NewsAdminView extends Fragment {
         txtEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(NewsAdminView.this,EventAdminView.class);
-//                startActivity(intent);
+
                 Navigation.findNavController(view).navigate(R.id.navigate_to_events);
             }
         });
 
     }
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.news_admin_view);
-//        recyclerView = findViewById(R.id.recyclerViewNews);
-//        fab = findViewById(R.id.fab);
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(NewsAdminView.this, 1);
-//        recyclerView.setLayoutManager(gridLayoutManager);
-//        AlertDialog.Builder builder = new AlertDialog.Builder(NewsAdminView.this);
-//        builder.setCancelable(false);
-//        builder.setView(R.layout.progress_layout);
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//        dataList = new ArrayList<>();
-//        adapter = new NewsAdapter(NewsAdminView.this, dataList, editAvailabilityManager);
-//        recyclerView.setAdapter(adapter);
-//        edit = findViewById(R.id.txtEdit);
-//        txtEvents=findViewById(R.id.txtEvents);
-//// Initialize Firestore
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        CollectionReference collectionReference = db.collection("News");
-//
-//// Retrieve Data from Firestore
-//        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    dataList.clear();
-//                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                        NewsDataClass NewsDataClass = document.toObject(NewsDataClass.class);
-//                        NewsDataClass.setKey(document.getId());
-//                        dataList.add(NewsDataClass);
-//                    }
-//                    adapter.notifyDataSetChanged();
-//                    dialog.dismiss();
-//                } else {
-//                    // Handle errors
-//                    dialog.dismiss();
-//                    Toast.makeText(NewsAdminView.this, "Error getting data from Firestore", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//
-//
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(NewsAdminView.this, NewsUpload.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        Log.d("EditStatusORI", "isEditAvailable ORI: " + isEditAvailable);
-//
-//
-//        edit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                editAvailabilityManager.toggleEditAvailability();
-//                showCompleteDialog();
-//                handleEditAvailability();
-//            }
-//        });
-//        txtEvents.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(NewsAdminView.this,EventAdminView.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//    }
-
-//    public void handleEditAvailability() {
-//        boolean isEditAvailable = editAvailabilityManager.isEditAvailable();
-//
-//        Log.d("EditStatusRETURN", "isEditAvailableRETURN: " + isEditAvailable);
-//
-//        requireActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (isEditAvailable) {
-//                    Log.d("EditStatusCAN", "isEditAvailableCAN: " + isEditAvailable);
-//                    // Change the text to "Done" if edit is available
-//                    edit.setText("Done");
-//                    Toast.makeText(requireContext(), "Edit Available", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    // Reset the text if edit is unavailable
-//                    edit.setText("Edit"); // You may want to set it to a different value or empty
-//                    Toast.makeText(requireContext(), "Edit Unavailable", Toast.LENGTH_SHORT).show();
-//                    Log.d("EditStatusCANNOT", "isEditAvailableCANNOT: " + isEditAvailable);
-//                }
-//            }
-//        });
-//
-//        Log.d("EditStatusFINAL", "isEditAvailableFINAL: " + isEditAvailable);
-//    }
+    /**
+     * Handles UI changes based on edit availability, showing a complete dialog if edit is available.
+     * Updates the UI accordingly and displays a toast message.
+     */
     public void handleEditAvailability() {
         boolean isEditAvailable = editAvailabilityManager.isEditAvailable();
 
@@ -234,9 +137,7 @@ public class NewsAdminView extends Fragment {
             public void run() {
                 if (isEditAvailable) {
                     Log.d("EditStatusCAN", "isEditAvailableCAN: " + isEditAvailable);
-                    // Change the text to "Done" if edit is available
                     showCompleteDialog();
-//                    edit.setText("Done");
                     Toast.makeText(requireContext(), "Edit Available", Toast.LENGTH_SHORT).show();
                 } else {
                     // Reset the text if edit is unavailable
@@ -250,6 +151,10 @@ public class NewsAdminView extends Fragment {
         Log.d("EditStatusFINAL", "isEditAvailableFINAL: " + isEditAvailable);
     }
 
+    /**
+     * Shows a custom dialog with a completion message.
+     * The dialog provides instructions to click on the card view to modify the information.
+     */
     private void showCompleteDialog() {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(requireContext());
 
