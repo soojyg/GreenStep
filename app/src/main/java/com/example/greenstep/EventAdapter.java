@@ -34,6 +34,14 @@ import java.util.List;
         private NavController navController;
     private final int REQUEST_CODE_DETAIL = 1;
 
+          /**
+         * Constructor for the EventAdapter.
+         *
+         * @param context               Context of the application.
+         * @param dataList              List of event data.
+         * @param manager               EditAvailabilityManager for controlling edit availability.
+         * @param navController         NavController for handling fragment navigation.
+         */
     public EventAdapter(Context context, List<DataClass> dataList,EditAvailabilityManager manager, NavController navController) {
             this.context = context;
             this.dataList = dataList;
@@ -42,7 +50,13 @@ import java.util.List;
 
             }
 
-
+        /**
+         * Inflates the layout for each item in the RecyclerView and creates a new EventHolder to hold the views.
+         *
+         * @param parent   The parent ViewGroup.
+         * @param viewType The type of the new View.
+         * @return A new EventHolder that holds the views for each item in the RecyclerView.
+         */
         @NonNull
         @Override
         public EventHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,25 +64,25 @@ import java.util.List;
             return new EventHolder(view, dataList, context);
         }
 
+        /**
+         * Binds the data to the views in each item of the RecyclerView.
+         *
+         * @param holder   The EventHolder containing views for a single item.
+         * @param position The position of the item within the RecyclerView.
+         */
         @Override
-    public void onBindViewHolder(@NonNull EventHolder holder, int position) {
+        public void onBindViewHolder(@NonNull EventHolder holder, int position) {
+            // Binding data to the views in each item of the RecyclerView
             Glide.with(context).load(dataList.get(position).getDataImage()).into(holder.recImage);
             holder.recTitle.setText(dataList.get(position).getDataTitle());
             holder.recDesc.setText(dataList.get(position).getDataDesc());
             String eventLink = dataList.get(position).getDataLang();
 
-
+            // Handling item click event
             holder.recCard.setOnClickListener(new View.OnClickListener() {
 
     @Override
     public void onClick(View view) {
-//            Intent intent = new Intent(context, EventDetail.class);
-//            intent.putExtra("Image", dataList.get(holder.getAdapterPosition()).getDataImage());
-//            intent.putExtra("Description", dataList.get(holder.getAdapterPosition()).getDataDesc());
-//            intent.putExtra("Title", dataList.get(holder.getAdapterPosition()).getDataTitle());
-//            intent.putExtra("Key",dataList.get(holder.getAdapterPosition()).getKey());
-//            intent.putExtra("Language", dataList.get(holder.getAdapterPosition()).getDataLang());
-//            Boolean isEditAvailable = editAvailabilityManager.isEditAvailable();
         Bundle bundle = new Bundle();
         bundle.putString("Image", dataList.get(holder.getAdapterPosition()).getDataImage());
         bundle.putString("Description", dataList.get(holder.getAdapterPosition()).getDataDesc());
@@ -79,8 +93,6 @@ import java.util.List;
 
             if(isEditAvailable) {
             Log.d("EditStatus GET FROM MANAGER", "isEditAvailable GET FROM MANAGER TRUE: " + isEditAvailable);
-//                ((Activity) context).startActivityForResult(intent, REQUEST_CODE_DETAIL);
-//            context.startActivity(intent);
                 navController.navigate(R.id.action_to_eventDetail, bundle);
 
             }else {
@@ -93,6 +105,7 @@ import java.util.List;
 
 
             }
+
 
     @Override
     public int getItemCount() {
@@ -110,12 +123,19 @@ import java.util.List;
 
             }
 
-        public void searchDataList(ArrayList<DataClass> searchList){
+        /**
+         * Sets a new list of data for the adapter and notifies the changes.
+         *
+         * @param searchList The new list of data.
+         */
+            public void searchDataList(ArrayList<DataClass> searchList){
             dataList = searchList;
             notifyDataSetChanged();}
 
 
-    private int findPositionByKey(String key) {
+        // Helper method to find the position of an item based on its key
+
+        private int findPositionByKey(String key) {
             for (int i = 0; i < dataList.size(); i++) {
             if (dataList.get(i).getKey().equals(key)) {
             return i;
@@ -128,6 +148,9 @@ import java.util.List;
 
             }
 
+/**
+ * ViewHolder class for holding the views of each item in the event RecyclerView.
+ */
     class EventHolder extends RecyclerView.ViewHolder{
         ImageView recImage;
         TextView recTitle, recDesc;
@@ -137,6 +160,13 @@ import java.util.List;
         private Context context;
 
 
+    /**
+     * Constructor for the EventHolder.
+     *
+     * @param itemView View representing each item in the RecyclerView.
+     * @param dataList List of event data.
+     * @param context  Context of the application.
+     */
         public EventHolder(@NonNull View itemView, List<DataClass> dataList, Context context) {
             super(itemView);
             this.dataList = dataList;
