@@ -72,6 +72,7 @@ public class EditProfileUser extends AppCompatActivity {
     private ImageView profilePic;
     EditText editName, editUsername, editGender, editContactNo, editCountry, editDOB;
     FirebaseAuth mAuth;
+    FloatingActionButton fab;
     String nameUser, usernameUser, genderUser, contactNoUser, countryUser, dobUser,imageUriDB;
     TextView resetPassword,textButton_save,textButton_cancel;
     DatabaseReference reference;
