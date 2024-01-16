@@ -372,7 +372,7 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         app:cornerRadius="10dp"
-        app:icon="@drawable/ic_edit"
+        app:icon="@drawable/ic_baseline_edit_24"
         app:iconTint="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
