@@ -60,7 +60,7 @@ public class NewsUpdate extends Fragment {
 
     }
 
-    @Override
+        @Override
     public void onViewCreated(@org.checkerframework.checker.nullness.qual.NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
@@ -73,22 +73,26 @@ public class NewsUpdate extends Fragment {
         cancel = view.findViewById(R.id.cancel);
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav_view);
         bottomNavigationView.setVisibility(View.GONE);
+
+        // Set up activity result launcher for handling image selection
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK){
+                            // Handle the selected image URI
                             Intent data = result.getData();
                             uri = data.getData();
                             updateImage.setImageURI(uri);
                         } else {
+                            // Inform the user that no image was selected
                             Toast.makeText(requireContext(), "No Image Selected", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
         );
-//        Bundle bundle = getIntent().getExtras();
+        // Set initial values if arguments are present
         Bundle args = getArguments();
         if (args != null){
             Glide.with(NewsUpdate.this).load(args.getString("Image")).into(updateImage);
@@ -100,12 +104,13 @@ public class NewsUpdate extends Fragment {
             oldImageURL = args.getString("Image");
         }
 
+        // Initialize Firestore database
         db = FirebaseFirestore.getInstance();
-
 
         // Set the reference to the Firestore document based on the document ID
         documentReference = db.collection("News").document(key);
 
+        // Set up click listeners
         updateImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,96 +131,33 @@ public class NewsUpdate extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(requireContext(), "Update incomplete", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(NewsUpdate.this, NewsAdminView.class);
-//                startActivity(intent);
-//                navController.navigate(R.id.navigate_to_newsDetail);
+
                 Navigation.findNavController(view).popBackStack();
                 bottomNavigationView.setVisibility(View.VISIBLE);
             }
         });
     }
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.news_update);
-//        btnUpdate = findViewById(R.id.btnUpdate);
-//        updateAuthor = findViewById(R.id.updateAuthor);
-//        updateImage = findViewById(R.id.updateNewsImage);
-//        updateLang = findViewById(R.id.updateNewsSourceRef);
-//        updateTitle = findViewById(R.id.updateNewsName);
-//        updateDate = findViewById(R.id.updateDate);
-//        cancel = findViewById(R.id.cancel);
-//
-//        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-//                new ActivityResultContracts.StartActivityForResult(),
-//                new ActivityResultCallback<ActivityResult>() {
-//                    @Override
-//                    public void onActivityResult(ActivityResult result) {
-//                        if (result.getResultCode() == Activity.RESULT_OK){
-//                            Intent data = result.getData();
-//                            uri = data.getData();
-//                            updateImage.setImageURI(uri);
-//                        } else {
-//                            Toast.makeText(NewsUpdate.this, "No Image Selected", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                }
-//        );
-//        Bundle bundle = getIntent().getExtras();
-//        if (bundle != null){
-//            Glide.with(NewsUpdate.this).load(bundle.getString("Image")).into(updateImage);
-//            updateTitle.setText(bundle.getString("Title"));
-//            updateAuthor.setText(bundle.getString("Author"));
-//            updateLang.setText(bundle.getString("Language"));
-//            updateDate.setText(bundle.getString("Date"));
-//            key = bundle.getString("Key");
-//            oldImageURL = bundle.getString("Image");
-//        }
-//
-//        db = FirebaseFirestore.getInstance();
-//
-//
-//        // Set the reference to the Firestore document based on the document ID
-//        documentReference = db.collection("News").document(key);
-//
-//        updateImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent photoPicker = new Intent(Intent.ACTION_PICK);
-//                photoPicker.setType("image/*");
-//                activityResultLauncher.launch(photoPicker);
-//            }
-//        });
-//        btnUpdate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                saveData();
-//
-//            }
-//        });
-//
-//        cancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(NewsUpdate.this, "Update incomplete", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(NewsUpdate.this, NewsAdminView.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//    }
+
+    /**
+     * Saves data to Firestore. Uploads a new photo if the user selected one,
+     * otherwise, uses the existing photo URL.
+     *
+     * @param view The view associated with the action.
+     */
     public void saveData(View view){
         if (uri != null) {
             // User selected a new photo, upload it
             storageReference = FirebaseStorage.getInstance().getReference().child("newsPictures").child("newsPic")
                     .child(uri.getLastPathSegment());
 
+            // Create a progress dialog for image upload
             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setCancelable(false);
             builder.setView(R.layout.progress_layout);
             AlertDialog dialog = builder.create();
             dialog.show();
 
+            // Upload the selected image
             storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -241,12 +183,19 @@ public class NewsUpdate extends Fragment {
             updateData(view);
         }
     }
+
+    /**
+     * Updates data in Firestore and deletes the old photo from Storage.
+     *
+     * @param view The view associated with the action.
+     */
     public void updateData(View view) {
         title = updateTitle.getText().toString().trim();
         author = updateAuthor.getText().toString().trim();
         lang = updateLang.getText().toString();
         date = updateDate.getText().toString();
 
+        // Create a NewsDataClass object with the retrieved data
         NewsDataClass NewsDataClass = new NewsDataClass(title, author, lang, imageUrl, date);
 
         // Update the Firestore document
@@ -258,13 +207,10 @@ public class NewsUpdate extends Fragment {
                     reference.delete();
                     Toast.makeText(requireContext(), "Updated", Toast.LENGTH_SHORT).show();
 
-//                    finish();
-//                    Intent intent = new Intent(NewsUpdate.this, NewsAdminView.class);
-//                    startActivity(intent);
+
                     Navigation.findNavController(view).popBackStack();
                     bottomNavigationView.setVisibility(View.VISIBLE);
                 }
-//                Navigation.findNavController(view).popBackStack();
                 navController.navigate(R.id.navigate_to_news);
                 bottomNavigationView.setVisibility(View.VISIBLE);
             }
