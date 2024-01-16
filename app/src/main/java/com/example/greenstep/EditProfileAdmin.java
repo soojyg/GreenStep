@@ -77,6 +77,7 @@ public class EditProfileAdmin extends AppCompatActivity {
     DatabaseReference reference;
     FirebaseStorage storage;
     StorageReference storageRef;
+    FloatingActionButton fab;
     FirebaseUser user;
     String userID;
     ReadWriteUserDetails writeUserDetails =new ReadWriteUserDetails();
