@@ -66,6 +66,7 @@ public class EventUpdate extends Fragment {
     @Override
     public void onViewCreated(@org.checkerframework.checker.nullness.qual.NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Initialize UI elements
         navController = Navigation.findNavController(view);
         btnUpdate = view.findViewById(R.id.btnUpdate);
         updateDesc = view.findViewById(R.id.updateCompanyOrgani);
@@ -75,6 +76,8 @@ public class EventUpdate extends Fragment {
         cancel = view.findViewById(R.id.cancel);
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav_view);
         bottomNavigationView.setVisibility(View.GONE);
+
+        // Register activity result launcher for handling image selection
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -90,6 +93,8 @@ public class EventUpdate extends Fragment {
                     }
                 }
         );
+
+        // Set initial values if arguments are present
         Bundle args = getArguments();
         if (args != null){
             Glide.with(EventUpdate.this).load(args.getString("Image")).into(updateImage);
@@ -102,10 +107,10 @@ public class EventUpdate extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-
         // Set the reference to the Firestore document based on the document ID
         documentReference = db.collection("Events").document(key);
 
+        // Set up click listeners
         updateImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,8 +129,6 @@ public class EventUpdate extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(requireContext(), "Update incomplete", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(EventUpdate.this, EventAdminView.class);
-//                startActivity(intent);
                 Navigation.findNavController(view).popBackStack();
                 bottomNavigationView.setVisibility(View.VISIBLE);
             }
@@ -133,12 +136,19 @@ public class EventUpdate extends Fragment {
 
 
     }
+
+    /**
+     * Saves data to Firestore after handling the image upload if needed.
+     *
+     * @param view The View representing the fragment.
+     */
     public void saveData(View view) {
         if (uri != null) {
             // User selected a new photo, upload it
             storageReference = FirebaseStorage.getInstance().getReference()
                     .child("eventPictures").child("eventPic").child(uri.getLastPathSegment());
 
+            // Show progress dialog during the image upload
             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setCancelable(false);
             builder.setView(R.layout.progress_layout);
@@ -148,11 +158,13 @@ public class EventUpdate extends Fragment {
             storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // Once the image is uploaded, get the download URL
                     Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                     uriTask.addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
                             if (task.isSuccessful()) {
+                                // Image upload successful, get the URL and update the data
                                 Uri urlImage = task.getResult();
                                 imageUrl = urlImage.toString();
                                 updateData(view);
@@ -177,6 +189,11 @@ public class EventUpdate extends Fragment {
         }
     }
 
+    /**
+     * Updates data in Firestore after handling the image upload if needed.
+     *
+     * @param view The View representing the fragment.
+     */
     public void updateData(View view) {
         title = updateTitle.getText().toString().trim();
         desc = updateDesc.getText().toString().trim();
@@ -189,18 +206,15 @@ public class EventUpdate extends Fragment {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
+                    // If the document update is successful, delete the old image from storage
                     StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(oldImageURL);
                     reference.delete();
                     Toast.makeText(requireContext(), "Updated", Toast.LENGTH_SHORT).show();
-//                    finish();
-//                    Intent intent = new Intent(requireContext(), EventAdminView.class);
-//                    startActivity(intent);
                     Navigation.findNavController(view).popBackStack();
                     bottomNavigationView.setVisibility(View.VISIBLE);
                 }
-//                Intent intent = new Intent(EventUpdate.this, EventAdminView.class);
-//                startActivity(intent);
-//                Navigation.findNavController(view).popBackStack();
+
+                // Navigate to the events screen
                 navController.navigate(R.id.navigate_to_events);
                 bottomNavigationView.setVisibility(View.VISIBLE);
             }
