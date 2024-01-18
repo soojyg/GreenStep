@@ -29,5 +29,4 @@ public class ChallengeFragment extends Fragment{
     }
 
 
-
 }
