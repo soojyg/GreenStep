@@ -27,8 +27,6 @@ public class Challenge implements Parcelable {
     int progress;
     int notificationStatus; //0==off, 1==on
 
-
-
     public Challenge() {
 
     }
