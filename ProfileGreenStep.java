@@ -103,7 +103,7 @@ public class ProfileGreenStep extends AppCompatActivity {
         reference=FirebaseDatabase.getInstance().getReference("User Info");
 
 
-
+                          
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference userRef = db.collection("User Info").document(userID);
 
@@ -304,7 +304,7 @@ public class ProfileGreenStep extends AppCompatActivity {
 
 }
 
-
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
 
 
