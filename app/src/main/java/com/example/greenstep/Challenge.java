@@ -18,7 +18,6 @@ import android.os.Parcelable;
 public class Challenge implements Parcelable {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userUid;
-
     String description;
     String challengeType;
     String frequency;
