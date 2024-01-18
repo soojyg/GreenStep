@@ -85,8 +85,8 @@ public class EditProfileAdmin extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 100;
     private String currentPhotoPath;
 
-
-
+                                                                                                                                 
+                                                                                                  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -784,4 +784,4 @@ public class EditProfileAdmin extends AppCompatActivity {
         }
 
     }
-}
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
