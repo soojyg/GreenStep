@@ -48,7 +48,7 @@ public class Challenge implements Parcelable {
         this.quantity = quantity;
         this.description = description;
     }
-
+ 
     protected Challenge(Parcel in) {
         challengeType = in.readString();
         progress = in.readInt();
