@@ -21,7 +21,6 @@ public class Challenge implements Parcelable {
     String frequency;
     private String documentId;
     int quantity;
-
     int totalPointsPerCompletion;
     int totalPointsCollected;
     int progress;
