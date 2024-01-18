@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@id/DestChallenge"
+        android:icon="@drawable/challenge_icon"
+        android:title="@string/challenge"/>
+
+    <item
+        android:id="@id/DestRewardUser"
+        android:icon="@drawable/img_vector"
+        android:title="@string/reward"/>
+
+    <item
+        android:id="@id/DestEduContent"
+        android:icon="@drawable/educontent_icon"
+        android:title="@string/educational_content"/>
+
+    <item
+        android:id="@id/DestEventNews"
+        android:icon="@drawable/img_vector_black_900"
+        android:title="@string/events_news"/>
+
+
+
+</menu>
