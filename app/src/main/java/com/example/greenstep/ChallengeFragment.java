@@ -28,5 +28,4 @@ public class ChallengeFragment extends Fragment{
         tv = view.findViewById(R.id.txtTemp);
     }
 
-
 }
