@@ -1,7 +1,5 @@
 package com.example.greenstep;
 
-
-
 import android.os.Parcel;
 import android.util.Log;
 
