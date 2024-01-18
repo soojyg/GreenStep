@@ -43,7 +43,6 @@ public class Challenge implements Parcelable {
 
     }
 
-
     public Challenge(String userId, String challengeType, String frequency, int quantity, String description) {
         this.userUid = userId;
         this.challengeType = challengeType;
