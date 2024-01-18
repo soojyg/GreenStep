@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         profileIcon.setOnClickListener(view ->{
-//            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-//            startActivity(intent);
             FirebaseUtils.getUserType(new FirebaseUtils.UserTypeCallback() {
                 @Override
                 public void onCallback(String userType) {
@@ -73,20 +71,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-//            showFragment(new ProfileFragment());
-
         });
 
-
-//        AppBarLayout appBarLayout = findViewById(R.id.toolbarLayout);
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
         NavHostFragment host = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragmentContainer);
         NavController navController = host.getNavController();
 
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
 
         if (user == null) { // if user is null, we have to open the login activity and close the main activity
@@ -96,19 +86,6 @@ public class MainActivity extends AppCompatActivity {
         } else{ // if user is not null, indicating that the user is signed in
             String userId = user.getUid();
 
-            // Obtain user type and set up bottom navigation bar based on user type
-//            getUserTypeFromFirestore(userId, userType -> {
-//                if(userType != null){
-//                    String retrievedUserType = userType;
-//                    if(userType.equals("Admin")){
-//                        setupBottomNavMenuAdmin(navController);
-//                    } else{
-//                        setupBottomNavMenuNormUser(navController);
-//                    }
-//                } else{
-//                    Toast.makeText(MainActivity.this,"Error: Unable to determine user type.",Toast.LENGTH_SHORT).show();
-//                }
-//            });
             FirebaseUtils.getUserType(new FirebaseUtils.UserTypeCallback() {
                 @Override
                 public void onCallback(String userType) {

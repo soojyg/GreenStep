@@ -128,22 +128,22 @@ public class UploadHowTo extends Fragment {
             }
         });
         close.setOnClickListener(v ->{
-
             navController.navigate(R.id.navigate_to_howto);
             bottomNavigationView.setVisibility(View.VISIBLE);
-
         });
     }
 
 
-    // Upload image to Storage AND upload details to Firestore DB
+    // Upload image to Storage and upload details to Firestore DB
     private void uploadToFirebase(Uri uri) {
         StorageReference imageReference = storageReference.child("eduHowToPictures").child(String.valueOf(System.currentTimeMillis()));
+        // Upload image to Firebase Storage
         imageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 String sourceRef = inputSourceRef.getText().toString();
                 String title = inputTitle.getText().toString();
+                // Get the download URL for the uploaded image
                 taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
                     String imageUrl = uri.toString();
                     // Create a new document in "Edu Content Posts" collection
@@ -151,6 +151,7 @@ public class UploadHowTo extends Fragment {
                     data.put("Title", title);
                     data.put("Source/ Reference",sourceRef);
                     data.put("ImageUrl", imageUrl);
+                    // Add data to Firestore database
                     firestoreDB.collection("Edu Content Posts")
                             .add(data)
                             .addOnSuccessListener(documentReference -> {

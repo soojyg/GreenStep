@@ -210,7 +210,7 @@ public class Registration extends AppCompatActivity {
 
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                            // Create a new user document in the "users" collection
+                            // Create a new user document in the "User Info" collection
                             DocumentReference userRef = db.collection("User Info").document(mAuth.getUid());
                             userRef.set(writeUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -247,7 +247,7 @@ public class Registration extends AppCompatActivity {
 
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                            // Create a new user document in the "users" collection
+                            // Create a new user document in the "User Info" collection
                             DocumentReference userRef = db.collection("User Info").document(mAuth.getUid());
                             userRef.set(writeUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -271,51 +271,6 @@ public class Registration extends AppCompatActivity {
                     }
                 });
     }
-//    // Function to create an Admin account
-//    private void createAdminAccount(String email, String password) {
-//        mAuth.createUserWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            Toast.makeText(Registration.this, "Admin account created.", Toast.LENGTH_SHORT).show();
-//                            // Save the user information to the "Users" collection
-//                            String userId = mAuth.getCurrentUser().getUid();
-//                            saveToFirestoreDB(userId, email,"Admin");
-//                        } else {
-//                            // Handle authentication failure
-//                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-//                                Toast.makeText(Registration.this, "Email is already in use.", Toast.LENGTH_SHORT).show();
-//                            } else {
-//                                Toast.makeText(Registration.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    }
-//                });
-//    }
-//
-//    // Function to create a normal user account
-//    private void createNormalUserAccount(String email, String password) {
-//        mAuth.createUserWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            Toast.makeText(Registration.this, "Normal user account created.", Toast.LENGTH_SHORT).show();
-//                            // Save the user information to the "Users" collection
-//                            String userId = mAuth.getCurrentUser().getUid();
-//                            saveToFirestoreDB(userId, email,"Normal User");
-//                        } else {
-//                            // Handle authentication failure
-//                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-//                                Toast.makeText(Registration.this, "Email is already in use.", Toast.LENGTH_SHORT).show();
-//                            } else {
-//                                Toast.makeText(Registration.this, "Authentication failed", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    }
-//                });
-//    }
 
     // Function to save the user info to firestore database
     private void saveToFirestoreDB(String userId, String email, String userType){

@@ -24,7 +24,6 @@ public class AdapterDeleteEduHowTo extends RecyclerView.Adapter<AdapterDeleteEdu
     private Context context;
     private FirebaseFirestore firestoreDbRef;
     private String collectionPath;
-    LayoutInflater layoutInflater;
 
     public AdapterDeleteEduHowTo(ArrayList<HowToDataClass> dataList, Context context, FirebaseFirestore firestoreDbRef, String collectionPath) {
         this.dataList = dataList;
@@ -92,44 +91,6 @@ public class AdapterDeleteEduHowTo extends RecyclerView.Adapter<AdapterDeleteEdu
         return dataList.size();
     }
 
-//    @Override
-//    public View getView(int i, View view, ViewGroup viewGroup) {
-//        if (layoutInflater == null) {
-//            layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        }
-//        if (view == null) {
-//            view = layoutInflater.inflate(R.layout.how_to_grid_item, null);
-//        }
-//        ImageView gridImage = view.findViewById(R.id.gridImage);
-//        AppCompatButton btnEduTitle = view.findViewById(R.id.btnTitle);
-//        ImageView deleteBtn = view.findViewById(R.id.deleteBtn);
-//
-//        // Load the image
-//        Glide.with(context)
-//                .load(dataList.get(i).getImageURL())
-//                .placeholder(R.drawable.logo_app)
-//                .error(R.drawable.image_not_found)
-//                .into(gridImage);
-//
-//        // Set the title of the educational content
-//        btnEduTitle.setText(dataList.get(i).getTitle());
-//
-//
-//        // Set the visibility of the delete icon
-//        deleteBtn.setVisibility(View.VISIBLE);
-//
-//        // Set onClickListener for deleteBtn
-//        deleteBtn.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                // Show a confirmation dialog
-//                showDeleteDialog(context, i); // Pass the position of the item
-//            }
-//        });
-//
-//        return view;
-//    }
-
     private void showDeleteDialog(Context c, String documentId){
         // Instantiate the custom dialog
         Dialog dialog = new Dialog(c);
@@ -137,37 +98,41 @@ public class AdapterDeleteEduHowTo extends RecyclerView.Adapter<AdapterDeleteEdu
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.delete_dialog_background);
 
-
+        // Initialize positive and negative buttons
         AppCompatButton positiveBtn = dialog.findViewById(R.id.positiveBtn);
         AppCompatButton negativeBtn = dialog.findViewById(R.id.negativeBtn);
 
+        // Set onClickListener for the positive button
         positiveBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                // Call the deletePost method with the specified documentId
                 deletePost(documentId);
+                // Dismiss the dialog after deletion
                 dialog.dismiss();
             }
         });
 
+        // Set onClickListener for the negative button
         negativeBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                // Dismiss the dialog without performing any action
                 dialog.dismiss();
             }
         });
-
+        // Show the dialog
         dialog.show();
-
     }
 
     private void deletePost(String documentId){
         // Remove the item from the datalist
         removeItemFromDataList(documentId);
+
         // Notify the adapter that the dataset has changed
         notifyDataSetChanged();
 
         // Delete the corresponding record from the Firestore database
-//        String documentID = getDocumentIdFromDataList(position);
         deleteRecordFromFirestore(documentId);
 
     }
@@ -179,11 +144,6 @@ public class AdapterDeleteEduHowTo extends RecyclerView.Adapter<AdapterDeleteEdu
                 return; // exit the loop once the item is removed
             }
         }
-    }
-
-    // Method to get the documentID of the edu post
-    private String getDocumentIdFromDataList(int position){
-        return dataList.get(position).getDocumentId();
     }
 
     // Method to delete the record from Firestore Database

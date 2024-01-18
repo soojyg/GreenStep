@@ -45,14 +45,14 @@ public class EduAlternativesDelete extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        dataList = new ArrayList<>();
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        navController = Navigation.findNavController(view);
-        scrollView = view.findViewById(R.id.scrollView);
-        dataList = new ArrayList<>();
         adapter = new AdapterDeleteEduAlternatives(dataList, requireContext(), firestoreDbRef, collectionPath);
         recyclerView.setAdapter(adapter);
+        navController = Navigation.findNavController(view);
+        scrollView = view.findViewById(R.id.scrollView);
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav_view);
         closeBtn = view.findViewById(R.id.close);
 

@@ -42,8 +42,10 @@ public class EduAlternativesDetails extends Fragment {
         txtBack = view.findViewById(R.id.txtBack);
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav_view);
 
+        // Hide the BottomNavigationView in this fragment
         bottomNavigationView.setVisibility(View.GONE);
 
+        // Retrieve data from the arguments bundle
         Bundle args = getArguments();
         if (args != null) {
             String titleValue = args.getString("Title", "");
@@ -65,17 +67,13 @@ public class EduAlternativesDetails extends Fragment {
             } else {
                 tip2.setVisibility(View.GONE);
             }
-
         }
 
+        // Navigate back to the alternatives content fragment and make the BottomNavigationView visible
         txtBack.setOnClickListener(v ->{
-
             navController.navigate(R.id.navigate_to_eduAlternativesContent);
             bottomNavigationView.setVisibility(View.VISIBLE);
-
         });
-
-
     }
 
 }

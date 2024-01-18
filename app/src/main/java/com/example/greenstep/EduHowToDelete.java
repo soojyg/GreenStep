@@ -24,7 +24,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.ArrayList;
 
 public class EduHowToDelete extends Fragment {
-//    GridView gridView;
     RecyclerView recyclerView;
     ArrayList<HowToDataClass> dataList;
     AdapterDeleteEduHowTo adapter;
@@ -46,7 +45,6 @@ public class EduHowToDelete extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerView);
-//        gridView = view.findViewById(R.id.eduHowToPost);
         dataList = new ArrayList<>();
         adapter = new AdapterDeleteEduHowTo(dataList, requireContext(), firestoreDbRef, collectionPath);
         recyclerView.setAdapter(adapter);
@@ -55,6 +53,7 @@ public class EduHowToDelete extends Fragment {
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav_view);
         closeBtn = view.findViewById(R.id.close);
 
+        // Hide bottom navigation view
         bottomNavigationView.setVisibility(View.GONE);
 
         // Load title, image url, and image from firestore database
@@ -69,8 +68,6 @@ public class EduHowToDelete extends Fragment {
                                     document.getString("ImageUrl")
                             );
                             dataList.add(howToDataClass);
-//                            Log.d("ImageURL", "Image URL: " + dataClass.getImageURL());
-
                         }
                         adapter.notifyDataSetChanged();
 
@@ -79,6 +76,7 @@ public class EduHowToDelete extends Fragment {
                     }
                 });
 
+        // Set onClickListener for the close button
         closeBtn.setOnClickListener(v ->{
             bottomNavigationView.setVisibility(View.VISIBLE);
             Navigation.findNavController(view).popBackStack();

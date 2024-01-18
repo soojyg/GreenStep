@@ -55,7 +55,7 @@ public class EduAlternativesContent extends Fragment {
         navController = Navigation.findNavController(view);
         searchBar = view.findViewById(R.id.searchBar);
         searchBar.clearFocus();
-        recyclerView = view.findViewById(R.id.recyclerView);
+
         scrollView = view.findViewById(R.id.scrollView);
         editLayout = view.findViewById(R.id.linearRowedit);
         txtEdit = view.findViewById(R.id.txtEdit);
@@ -64,9 +64,9 @@ public class EduAlternativesContent extends Fragment {
         tabAlter.setTextColor(getResources().getColor(R.color.black));
         tabAlter.setTypeface(null, Typeface.BOLD);
         uploadBtn = view.findViewById(R.id.uploadBtn);
+        recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
         dataList = new ArrayList<>();
         adapter = new AdapterDisplayEduAlternatives(dataList, requireContext(), navController);
         recyclerView.setAdapter(adapter);
@@ -90,6 +90,7 @@ public class EduAlternativesContent extends Fragment {
                 .addOnCompleteListener(task ->{
                     if(task.isSuccessful()){
                         for(QueryDocumentSnapshot document : task.getResult()){
+                            // Create a AlternativesDataClass instance with data from the document
                             AlternativesDataClass alternativesDataClass = new AlternativesDataClass(
                                     document.getId(),
                                     (String) document.get(FieldPath.of("Title")),
@@ -98,8 +99,8 @@ public class EduAlternativesContent extends Fragment {
                                     document.getString("ImageUrl")
                             );
                             dataList.add(alternativesDataClass);
-
                         }
+                        // Notify the adapter that the data has changed
                         adapter.notifyDataSetChanged();
 
                     } else{
@@ -108,8 +109,8 @@ public class EduAlternativesContent extends Fragment {
                 });
 
         txtEdit.setOnClickListener(v -> {
-                    Navigation.findNavController(view).navigate(R.id.action_to_editAlternativesPage);
-                });
+            Navigation.findNavController(view).navigate(R.id.action_to_editAlternativesPage);
+        });
 
         uploadBtn.setOnClickListener(v ->{
             Navigation.findNavController(view).navigate(R.id.action_to_alternativesUploadPage);
@@ -118,19 +119,18 @@ public class EduAlternativesContent extends Fragment {
         tabHowto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(NewsAdminView.this,EventAdminView.class);
-//                startActivity(intent);
                 Navigation.findNavController(view).navigate(R.id.navigate_to_howto);
             }
         });
 
-        // Search activity
+        // Set up a SearchView to filter the RecyclerView based on user input
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
 
+            // Update the RecyclerView as the user types in the search query
             @Override
             public boolean onQueryTextChange(String newText) {
                 searchList(newText);
@@ -139,13 +139,17 @@ public class EduAlternativesContent extends Fragment {
         });
     }
 
+    // Method to filter the data list based on the search query
     public void searchList(String text){
+        // Create a new list to store filtered items
         ArrayList<AlternativesDataClass> searchList = new ArrayList<>();
+        // Iterate through the original data list and add matching items to the searchList
         for(AlternativesDataClass dc: dataList){
             if(dc.getTitle().toLowerCase().contains(text.toLowerCase())){
                 searchList.add(dc);
             }
         }
+        // Update the adapter with the filtered list
         adapter.searchDataList(searchList);
     }
 }

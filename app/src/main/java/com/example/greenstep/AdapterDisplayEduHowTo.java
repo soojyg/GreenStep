@@ -26,7 +26,6 @@ public class AdapterDisplayEduHowTo extends RecyclerView.Adapter<AdapterDisplayE
     private ArrayList<HowToDataClass> dataList;
     private Context context;
     private NavController navController;
-    LayoutInflater layoutInflater;
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         ImageView gridImage;
         AppCompatButton btnEduTitle;
@@ -45,13 +44,17 @@ public class AdapterDisplayEduHowTo extends RecyclerView.Adapter<AdapterDisplayE
     @NonNull
     @Override
     public AdapterDisplayEduHowTo.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
+        // Inflate the layout for the RecyclerView items
         View view = LayoutInflater.from(context).inflate(R.layout.how_to_grid_item,parent,false);
         return new AdapterDisplayEduHowTo.MyViewHolder(view);
     }
 
+    // Bind data to the ViewHolder
     @Override
     public void onBindViewHolder(@NonNull AdapterDisplayEduHowTo.MyViewHolder holder, int position) {
         HowToDataClass currentItem = dataList.get(position);
+
+        // Set data to views in the ViewHolder
         holder.btnEduTitle.setText(currentItem.getTitle());
         Glide.with(context)
                 .load(currentItem.getImageURL())
@@ -59,17 +62,19 @@ public class AdapterDisplayEduHowTo extends RecyclerView.Adapter<AdapterDisplayE
                 .error(R.drawable.image_not_found)
                 .into(holder.gridImage);
 
+        // Set onClickListener for the "Share" button
         holder.btnShare.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                // Prepare and initiate the sharing of educational content
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_SEND);
-
-                String sharedText = "<b>Green Step:</b> "+ currentItem.getTitle() +"<br/>Learn more at: <a href='"+ currentItem.getSourceRef()+"'>"+ currentItem.getSourceRef()+"</a>";
+                String sharedText = "<b>Green Step:</b> "+ currentItem.getTitle() +"<br/>Learn more at: <a href='"+ currentItem.getSourceRef()+"'>"
+                        + currentItem.getSourceRef()+"</a>";
                 intent.putExtra(Intent.EXTRA_TEXT,android.text.Html.fromHtml(sharedText));
-
                 intent.setType("*/*");
 
+                // Start an activity to handle the sharing intent
                 if(intent.resolveActivity(context.getPackageManager())!=null){
                     context.startActivity(Intent.createChooser(intent,"Share with"));
                 } else{
@@ -78,6 +83,7 @@ public class AdapterDisplayEduHowTo extends RecyclerView.Adapter<AdapterDisplayE
             }
         });
 
+        // Set onClickListener for the grid item to open the source reference URL
         holder.gridItem.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -93,7 +99,6 @@ public class AdapterDisplayEduHowTo extends RecyclerView.Adapter<AdapterDisplayE
         this.navController = navController;
     }
 
-
     @Override
     public long getItemId(int i) {
         return 0;
@@ -104,68 +109,7 @@ public class AdapterDisplayEduHowTo extends RecyclerView.Adapter<AdapterDisplayE
         return dataList.size();
     }
 
-//    @Override
-//    public View getView(int i, View view, ViewGroup viewGroup) {
-//        if (layoutInflater == null) {
-//            layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        }
-//        if (view == null) {
-//            view = layoutInflater.inflate(R.layout.how_to_grid_item, null);
-//        }
-//        ImageView gridImage = view.findViewById(R.id.gridImage);
-//        AppCompatButton btnEduTitle = view.findViewById(R.id.btnTitle);
-////        ToggleButton btnFavorite = view.findViewById(R.id.imageFavorite);
-//        ImageView btnShare = view.findViewById(R.id.imageShare);
-//        CardView gridItem = view.findViewById(R.id.gridItem);
-//
-//        // Load the image
-//        Glide.with(context)
-//                .load(dataList.get(i).getImageURL())
-//                .placeholder(R.drawable.logo_app)
-//                .error(R.drawable.image_not_found)
-//                .into(gridImage);
-//
-//        // Set the title of the educational content
-//        btnEduTitle.setText(dataList.get(i).getTitle());
-//
-//
-////        btnFavorite.setOnClickListener(new View.OnClickListener() {
-////            @Override
-////            public void onClick(View v) {
-////                isFavorite = !isFavorite;
-////                btnFavorite.setChecked(isFavorite);
-////            }
-////        });
-//
-//        // Set onClickListener for the share button
-//        btnShare.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                Intent intent = new Intent();
-//                intent.setAction(Intent.ACTION_SEND);
-//
-//                String sharedText = "<b>Green Step:</b> "+ dataList.get(i).getTitle() +"<br/>Learn more at: <a href='"+ dataList.get(i).getSourceRef()+"'>"+ dataList.get(i).getSourceRef()+"</a>";
-//                intent.putExtra(Intent.EXTRA_TEXT,android.text.Html.fromHtml(sharedText));
-//
-//                intent.setType("*/*");
-//
-//                if(intent.resolveActivity(context.getPackageManager())!=null){
-//                    context.startActivity(Intent.createChooser(intent,"Share with"));
-//                } else{
-//                    Toast.makeText(context, "No app can handle this action.",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//
-//        gridItem.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                goToUrl(dataList.get(i).getSourceRef());
-//            }
-//        });
-//        return view;
-//    }
-
+    // Method to open a URL in a browser
     private void goToUrl(String url){
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW,uri);

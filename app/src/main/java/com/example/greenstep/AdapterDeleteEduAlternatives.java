@@ -77,7 +77,6 @@ public class AdapterDeleteEduAlternatives extends RecyclerView.Adapter<AdapterDe
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.delete_dialog_background);
 
-
         AppCompatButton positiveBtn = dialog.findViewById(R.id.positiveBtn);
         AppCompatButton negativeBtn = dialog.findViewById(R.id.negativeBtn);
 
@@ -88,25 +87,23 @@ public class AdapterDeleteEduAlternatives extends RecyclerView.Adapter<AdapterDe
                 dialog.dismiss();
             }
         });
-
         negativeBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 dialog.dismiss();
             }
         });
-
         dialog.show();
     }
 
     private void deleteTip(String documentId){
         // Remove the item from the datalist
         removeItemFromDataList(documentId);
+
         // Notify the adapter that the dataset has changed
         notifyDataSetChanged();
 
         // Delete the corresponding record from the Firestore database
-//        String documentID = getDocumentIdFromDataList(position);
         deleteRecordFromFirestore(documentId);
     }
 
@@ -117,10 +114,6 @@ public class AdapterDeleteEduAlternatives extends RecyclerView.Adapter<AdapterDe
                 return; // exit the loop once the item is removed
             }
         }
-    }
-
-    private String getDocumentIdFromDataList(int position){
-        return dataList.get(position).getDocumentId();
     }
 
     private void deleteRecordFromFirestore(String documentId){

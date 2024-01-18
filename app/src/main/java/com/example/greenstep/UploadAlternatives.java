@@ -139,7 +139,7 @@ public class UploadAlternatives extends Fragment {
 
     }
 
-    // Upload image to Storage AND upload details to Firestore DB
+    // Upload image to Storage and upload details to Firestore DB
     private void uploadToFirebase(Uri uri) {
         StorageReference imageReference = storageReference.child("eduAlternativesPictures").child(String.valueOf(System.currentTimeMillis()));
         imageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -162,12 +162,8 @@ public class UploadAlternatives extends Fragment {
                             .addOnSuccessListener(documentReference -> {
                                 progressBar.setVisibility(View.VISIBLE);
                                 Toast.makeText(requireContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-//                                Intent intent = new Intent(requireContext(), MainActivity.class);
-//                                startActivity(intent);
                                 navController.navigate(R.id.navigate_to_eduAlternativesContent);
                                 bottomNavigationView.setVisibility(View.VISIBLE);
-
-//                                finish();
                             }).addOnFailureListener(e -> {
                                 progressBar.setVisibility(View.INVISIBLE);
                                 Toast.makeText(requireContext(), "Failed to upload", Toast.LENGTH_SHORT).show();

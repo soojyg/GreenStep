@@ -51,6 +51,7 @@ public class AdapterDisplayEduAlternatives extends RecyclerView.Adapter<AdapterD
         return new MyViewHolder(view);
     }
 
+    // Bind data to the ViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position){
         AlternativesDataClass currentItem = dataList.get(position);
@@ -58,17 +59,20 @@ public class AdapterDisplayEduAlternatives extends RecyclerView.Adapter<AdapterD
         // Set the title
         holder.title.setText(currentItem.getTitle());
 
+        // Set onClickListener for the "Start" button to navigate to alternative details
         holder.startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int adapterPosition = holder.getAdapterPosition();
                 if(adapterPosition != RecyclerView.NO_POSITION){
+                    // Prepare data bundle for the details fragment
                     Bundle bundle = new Bundle();
                     bundle.putString("Title",dataList.get(adapterPosition).getTitle());
                     bundle.putString("Tip 1",dataList.get(adapterPosition).getTip1());
                     bundle.putString("Tip 2",dataList.get(adapterPosition).getTip2());
                     bundle.putString("imageURL",dataList.get(adapterPosition).getImageURL());
 
+                    // Navigate to the details fragment with the prepared bundle
                     navController.navigate(R.id.action_to_eduAlternativesDetails, bundle);
                 }
 
@@ -86,26 +90,9 @@ public class AdapterDisplayEduAlternatives extends RecyclerView.Adapter<AdapterD
         return dataList.size();
     }
 
+    // Method to update the adapter with a filtered data list
     public void searchDataList(ArrayList<AlternativesDataClass> searchList){
         dataList = searchList;
         notifyDataSetChanged();
     }
-
-//    private void navigateToEduAlternativesDetails(@NonNull MyViewHolder holder, AlternativesDataClass currentItem){
-//
-//        Navigation.findNavController(holder.itemView).navigate(R.id.action_to_eduContentUploadFrame,Bundle().apply{
-//            putString()
-//        });
-//    }
-
-//    private void navigateToEduAlternativesDetails(AlternativesDataClass currentItem, View view) {
-//        EduAlternativesFragmentDirections.ActionToEduAlternativesDetails action =
-//                EduAlternativesFragmentDirections.actionToEduAlternativesDetails()
-//                        .setTitle(currentItem.getTitle())
-//                        .setTip1(currentItem.getTip1())
-//                        .setTip2(currentItem.getTip2());
-//
-//        Navigation.findNavController(view).navigate(action);
-//    }
-
 }
