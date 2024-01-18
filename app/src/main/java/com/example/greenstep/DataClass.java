@@ -1,6 +1,7 @@
 package com.example.greenstep;
 
 public class DataClass {
+   
    // Fields to store data properties
     private String dataTitle;   // Title of the data
     private String dataDesc;    // Description of the data
