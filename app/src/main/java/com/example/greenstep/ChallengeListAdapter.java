@@ -79,15 +79,6 @@ public class ChallengeListAdapter extends RecyclerView.Adapter<ChallengeListAdap
 
     @Override
     public void onBindViewHolder(@NonNull ChallengeProgressViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Log.d(TAG, "onBindViewHolder: Position = " + position);
-
-
-
-
-
-
-
-
 
         if (position >= 0 && position < challengeList.size()) {
             Challenge challenge = challengeList.get(position);
