@@ -51,7 +51,7 @@ public class EventAdminView extends Fragment {
 
     }
 
-    @Override
+     @Override
     public void onViewCreated(@org.checkerframework.checker.nullness.qual.NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
@@ -59,34 +59,45 @@ public class EventAdminView extends Fragment {
         fab = view.findViewById(R.id.fab);
         txtNews = view.findViewById(R.id.tabNews);
         txtEvents = view.findViewById(R.id.tabEvents);
+
+        // Set initial styling for tabs
         txtEvents.setTextColor(getResources().getColor(R.color.black));
         txtEvents.setTypeface(null, Typeface.BOLD);
+
+        // Set up GridLayoutManager for RecyclerView
         GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
+
+        // Show progress dialog while fetching data
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setCancelable(false);
         builder.setView(R.layout.progress_layout);
         AlertDialog dialog = builder.create();
         dialog.show();
+
+        // Initialize data list, adapter, and UI elements
         dataList = new ArrayList<>();
         adapter = new EventAdapter(requireContext(), dataList, editAvailabilityManager, navController);
         recyclerView.setAdapter(adapter);
         edit = view.findViewById(R.id.txtEdit);
-// Initialize Firestore
+
+        // Initialize Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("Events");
 
-// Retrieve Data from Firestore
+        // Retrieve Data from Firestore
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    // Clear previous data and populate dataList with new data
                     dataList.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         DataClass dataClass = document.toObject(DataClass.class);
                         dataClass.setKey(document.getId());
                         dataList.add(dataClass);
                     }
+                    // Notify the adapter of data change and dismiss the progress dialog
                     adapter.notifyDataSetChanged();
                     dialog.dismiss();
                 } else {
@@ -98,11 +109,10 @@ public class EventAdminView extends Fragment {
         });
 
 
+        // Set up click listeners for UI elements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(EventAdminView.this, EventUpload.class);
-//                startActivity(intent);
                 Navigation.findNavController(view).navigate(R.id.action_to_eventUpload);
             }
         });
@@ -110,6 +120,7 @@ public class EventAdminView extends Fragment {
         Log.d("EditStatusORI", "isEditAvailable ORI: " + isEditAvailable);
 
 
+        // Set up click listener for the edit button
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,6 +128,8 @@ public class EventAdminView extends Fragment {
                 handleEditAvailability();
             }
         });
+
+        // Navigate to news fragment on tab click
         txtNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,103 +138,11 @@ public class EventAdminView extends Fragment {
         });
 
     }
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.event_admin_view);
-//        recyclerView = findViewById(R.id.recyclerViewEvent);
-//        fab = findViewById(R.id.fab);
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(EventAdminView.this, 1);
-//        recyclerView.setLayoutManager(gridLayoutManager);
-//        AlertDialog.Builder builder = new AlertDialog.Builder(EventAdminView.this);
-//        builder.setCancelable(false);
-//        builder.setView(R.layout.progress_layout);
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//        dataList = new ArrayList<>();
-//        adapter = new EventAdapter(EventAdminView.this, dataList, editAvailabilityManager);
-//        recyclerView.setAdapter(adapter);
-//        edit = findViewById(R.id.txtEdit);
-//        txtNews=findViewById(R.id.txtNews);
-//// Initialize Firestore
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        CollectionReference collectionReference = db.collection("Events");
-//
-//// Retrieve Data from Firestore
-//        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    dataList.clear();
-//                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                        DataClass dataClass = document.toObject(DataClass.class);
-//                        dataClass.setKey(document.getId());
-//                        dataList.add(dataClass);
-//                    }
-//                    adapter.notifyDataSetChanged();
-//                    dialog.dismiss();
-//                } else {
-//                    // Handle errors
-//                    dialog.dismiss();
-//                    Toast.makeText(EventAdminView.this, "Error getting data from Firestore", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//
-//
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(EventAdminView.this, EventUpload.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        Log.d("EditStatusORI", "isEditAvailable ORI: " + isEditAvailable);
-//
-//
-//        edit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                editAvailabilityManager.toggleEditAvailability();
-//                showCompleteDialog();
-//                handleEditAvailability();
-//            }
-//        });
-//        txtNews.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(EventAdminView.this,NewsAdminView.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//    }
 
-//    public void handleEditAvailability() {
-//        boolean isEditAvailable = editAvailabilityManager.isEditAvailable();
-//
-//        Log.d("EditStatusRETURN", "isEditAvailableRETURN: " + isEditAvailable);
-//
-//        requireActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (isEditAvailable) {
-//                    Log.d("EditStatusCAN", "isEditAvailableCAN: " + isEditAvailable);
-//                    // Change the text to "Done" if edit is available
-//                    edit.setText("Done");
-//                    Toast.makeText(requireContext(), "Edit Available", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    // Reset the text if edit is unavailable
-//                    edit.setText("Edit"); // You may want to set it to a different value or empty
-//                    Toast.makeText(requireContext(), "Edit Unavailable", Toast.LENGTH_SHORT).show();
-//                    Log.d("EditStatusCANNOT", "isEditAvailableCANNOT: " + isEditAvailable);
-//                }
-//            }
-//        });
-//
-//        Log.d("EditStatusFINAL", "isEditAvailableFINAL: " + isEditAvailable);
-//    }
+    /**
+     * Handles UI changes based on edit availability, showing a complete dialog if edit is available.
+     * Updates the UI accordingly and displays a toast message.
+     */
     public void handleEditAvailability() {
         boolean isEditAvailable = editAvailabilityManager.isEditAvailable();
 
@@ -232,9 +153,7 @@ public class EventAdminView extends Fragment {
             public void run() {
                 if (isEditAvailable) {
                     Log.d("EditStatusCAN", "isEditAvailableCAN: " + isEditAvailable);
-                    // Change the text to "Done" if edit is available
                     showCompleteDialog();
-//                    edit.setText("Done");
                     Toast.makeText(requireContext(), "Edit Available", Toast.LENGTH_SHORT).show();
                 } else {
                     // Reset the text if edit is unavailable
@@ -247,6 +166,11 @@ public class EventAdminView extends Fragment {
 
         Log.d("EditStatusFINAL", "isEditAvailableFINAL: " + isEditAvailable);
     }
+
+    /**
+     * Shows a custom dialog with a completion message.
+     * The dialog provides instructions to click on the card view to modify the information.
+     */
     private void showCompleteDialog() {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(requireContext());
 
@@ -255,6 +179,7 @@ public class EventAdminView extends Fragment {
 
         builder.setView(customLayout);
 
+        // Set a message in the custom dialog
         TextView complete_msg = customLayout.findViewById(R.id.edit_msg);
         complete_msg.setText("Please click on the card view to modified the information.");
 

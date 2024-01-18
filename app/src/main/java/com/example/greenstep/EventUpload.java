@@ -66,6 +66,8 @@ public class EventUpload extends Fragment {
         cancel = view.findViewById(R.id.close);
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav_view);
         bottomNavigationView.setVisibility(View.GONE);
+
+        // Register activity result launcher for handling image selection
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -83,6 +85,8 @@ public class EventUpload extends Fragment {
                     }
                 }
         );
+
+        // Set up click listeners
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,8 +105,7 @@ public class EventUpload extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(requireContext(), "Upload incomplete", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(EventUpload.this, EventAdminView.class);
-//                startActivity(intent);
+
                 Navigation.findNavController(view).popBackStack();
                 bottomNavigationView.setVisibility(View.VISIBLE);
             }
@@ -110,60 +113,12 @@ public class EventUpload extends Fragment {
 
 
     }
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.event_upload);
-//
-//        FirebaseApp.initializeApp(this);
-//        uploadImage = findViewById(R.id.uploadEventImage);
-//        uploadCompanyOrgani = findViewById(R.id.uploadCompanyOrgani);
-//        uploadEventName = findViewById(R.id.uploadEventName);
-//        uploadSource = findViewById(R.id.uploadSourceRef);
-//        btnComplete = findViewById(R.id.btnComplete);
-//        cancel = findViewById(R.id.cancel);
-//        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-//                new ActivityResultContracts.StartActivityForResult(),
-//                new ActivityResultCallback<ActivityResult>() {
-//                    @Override
-//                    public void onActivityResult(ActivityResult result) {
-//                        if (result.getResultCode() == Activity.RESULT_OK){
-//                            Intent data = result.getData();
-//                            uri = data.getData();
-//                            oldImageURL = String.valueOf(uri);
-//                            Log.d("URI_DEBUG", "Selected URI: " + uri.toString());
-//                            uploadImage.setImageURI(uri);
-//                        } else {
-//                            Toast.makeText(EventUpload.this, "No Image Selected", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                }
-//        );
-//        uploadImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent photoPicker = new Intent(Intent.ACTION_PICK);
-//                photoPicker.setType("image/*");
-//                activityResultLauncher.launch(photoPicker);
-//            }
-//        });
-//        btnComplete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                saveData();
-//            }
-//        });
-//        cancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(EventUpload.this, "Upload incomplete", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(EventUpload.this, EventAdminView.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//
-//    }
+
+    /**
+     * Saves data to Firebase Storage after handling the image upload.
+     *
+     * @param view The View representing the fragment.
+     */
     public void saveData(View view){
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("eventPictures").child("eventPic")
                 .child(uri.getLastPathSegment());
@@ -191,7 +146,11 @@ public class EventUpload extends Fragment {
         });
     }
 
-
+    /**
+     * Uploads data to Firestore.
+     *
+     * @param view The View representing the fragment.
+     */
     public void uploadData(View view){
         String eventName = uploadEventName.getText().toString();
         String companyOrgani = uploadCompanyOrgani.getText().toString();
@@ -201,21 +160,18 @@ public class EventUpload extends Fragment {
         // Get a reference to the Firestore database
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-// Create a new document reference with an automatically generated ID
+        // Create a new document reference with an automatically generated ID
         DocumentReference eventRef = db.collection("Events").document();
 
         eventId = eventRef.getId();
 
-// Set the data to the Firestore document
+    // Set the data to the Firestore document
         eventRef.set(dataClass)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show();
-//                            finish();
-//
-//                            startActivity(new Intent(EventUpload.this, EventAdminView.class));
                             Navigation.findNavController(view).popBackStack();
                             bottomNavigationView.setVisibility(View.VISIBLE);
 
@@ -228,7 +184,5 @@ public class EventUpload extends Fragment {
                     }
                 });
     }
-
-
 
 }

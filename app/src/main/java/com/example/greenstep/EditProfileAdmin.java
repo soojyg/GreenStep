@@ -77,6 +77,7 @@ public class EditProfileAdmin extends AppCompatActivity {
     DatabaseReference reference;
     FirebaseStorage storage;
     StorageReference storageRef;
+    FloatingActionButton fab;
     FirebaseUser user;
     String userID;
     ReadWriteUserDetails writeUserDetails =new ReadWriteUserDetails();
@@ -94,27 +95,15 @@ public class EditProfileAdmin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile_admin);
-        mAuth = FirebaseAuth.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("User Info");
-        userID = user.getUid();
-        userRef = db.collection("User Info").document(userID);
-        storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReference();
-        profilePic = findViewById(R.id.profile_pic);
-        editName = findViewById(R.id.editText_name);
-        editUsername = findViewById(R.id.editText_username);
-        editGender = findViewById(R.id.editText_gender);
-        editDOB = findViewById(R.id.editText_dateOfBirth);
-        editContactNo = findViewById(R.id.editText_contact);
-        editCountry = findViewById(R.id.editText_country);
-        resetPassword=findViewById(R.id.editText_password);
-        textButton_save = findViewById(R.id.textButton_save);
-        textButton_cancel=findViewById(R.id.textButton_cancel);
+
+        // Initialize Firebase components and views
+        initializeFirebase();
+        initializeViews();
         showData();
 
         FirebaseApp.initializeApp(EditProfileAdmin.this);
 
+        // Set click listeners for cancel and save buttons
         textButton_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,6 +111,7 @@ public class EditProfileAdmin extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         textButton_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +125,7 @@ public class EditProfileAdmin extends AppCompatActivity {
             }
         });
 
+        // Load image from storage and set click listener for selecting a profile picture
         loadImage();
         profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +136,7 @@ public class EditProfileAdmin extends AppCompatActivity {
             }
         });
 
-
+        // Set click listeners for reset buttons
         resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -187,14 +178,21 @@ public class EditProfileAdmin extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+        // Initialize Google Sign-In components
         gOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gClient = GoogleSignIn.getClient(this, gOptions);
         GoogleSignInAccount gAccount = GoogleSignIn.getLastSignedInAccount(this);
+
+        // Check if user is already signed in with Google account
         if (gAccount != null){
             finish();
             Intent intent = new Intent(EditProfileAdmin.this, MainActivity.class);
             startActivity(intent);
         }
+
+
+        // Set up activity result launcher for Google Sign-In
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -214,7 +212,7 @@ public class EditProfileAdmin extends AppCompatActivity {
                     }
                 });
 
-        FloatingActionButton fab = findViewById(R.id.floatingActionButton);
+        // Set up camera button click listener
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -225,18 +223,62 @@ public class EditProfileAdmin extends AppCompatActivity {
 
     }
 
+    /**
+     * Initializes Firebase components, such as FirebaseAuth, FirebaseDatabase, and FirebaseStorage.
+     * Also initializes references to the current user and the database.
+     */
+    private void initializeFirebase() {
+        mAuth = FirebaseAuth.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("User Info");
+        userID = user.getUid();
+        userRef = db.collection("User Info").document(userID);
+
+        // Initialize FirebaseStorage and get the root reference
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
+    }
+
+    /**
+     * Initializes views by finding and assigning references to UI elements.
+     * This method is called in the onCreate method to set up the initial state of the UI.
+     */
+    private void initializeViews() {
+        profilePic = findViewById(R.id.profile_pic);
+        editName = findViewById(R.id.editText_name);
+        editUsername = findViewById(R.id.editText_username);
+        editGender = findViewById(R.id.editText_gender);
+        editDOB = findViewById(R.id.editText_dateOfBirth);
+        editContactNo = findViewById(R.id.editText_contact);
+        editCountry = findViewById(R.id.editText_country);
+        resetPassword=findViewById(R.id.editText_password);
+        textButton_save = findViewById(R.id.textButton_save);
+        textButton_cancel=findViewById(R.id.textButton_cancel);
+        fab = findViewById(R.id.floatingActionButton);
+
+    }
+
+    /**
+     * Uploads the selected image to Firebase Storage and updates the database with the image URL.
+     *
+     * @param image Uri of the selected image
+     */
     private void uploadImage(Uri image) {
         if (image != null) {
             // Generate a unique filename for each image
             String imageName = "profilePicture_" + System.currentTimeMillis() + ".jpg";
+
+            // Create a StorageReference for the image in Firebase Storage
             StorageReference reference = storageRef.child("profilePictures").child("admin").
                     child(userID).child("images/" + imageName);
+            // Show a progress dialog while the image is being uploaded
             AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileAdmin.this);
             builder.setCancelable(false);
             builder.setView(R.layout.progress_layout);
             AlertDialog dialog = builder.create();
             dialog.show();
 
+            // Upload the image file to Firebase Storage
             reference.putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -244,11 +286,14 @@ public class EditProfileAdmin extends AppCompatActivity {
                     taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
+                            // Convert Uri to a string representing the image URL
                             String imageUrl = uri.toString();
+                            // Update the database with the image URL
                             updateDatabaseWithImageUrl(imageUrl);
                         }
                     });
 
+                    // Display a success message
                     Toast.makeText(EditProfileAdmin.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -258,26 +303,36 @@ public class EditProfileAdmin extends AppCompatActivity {
                 }
             });
         } else {
+            // If no new image is selected, use the original image URL
             String imageUrl = originalImageUrl;
+            // Update the database with the image URL
             updateDatabaseWithImageUrl(imageUrl);
         }
 
     }
 
 
+    /**
+     * Updates the Firebase Firestore database with the provided image URL.
+     *
+     * @param imageUrl The URL of the image to be stored in the database
+     */
     private void updateDatabaseWithImageUrl(String imageUrl) {
         if (imageUrl != null) {
-            // Assume you have a database reference pointing to the user's profile node
+            // a database reference pointing to the user's profile node
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             DocumentReference userRef = db.collection("User Info").document(userID);
 
+            // Update the profileImageUrl field in the database
             userRef.update("profileImageUrl", imageUrl)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+                            // After successful database update, trigger other changes and navigate to the profile screen
                             updateAllChanges();
                             Intent intent = new Intent(EditProfileAdmin.this, AdminProfileGreenStep.class);
                             startActivity(intent);
+                            // Display a success message
                             Toast.makeText(EditProfileAdmin.this, "Database updated successfully", Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -291,10 +346,18 @@ public class EditProfileAdmin extends AppCompatActivity {
         }
 
     }
+    /**
+     * Checks if any user profile field has been changed.
+     *
+     * @return true if any field has changed, false otherwise
+     */
     private boolean isAnyFieldChanged() {
         return isNameChanged() || isUsernameChanged() || isGenderChanged() || isContactNoChanged() || isCountryChanged() || isdobChanged();
     }
 
+    /**
+     * Updates all changes in user profile fields in the Firebase Firestore database.
+     */
     private void updateAllChanges() {
 
 
@@ -331,7 +394,11 @@ public class EditProfileAdmin extends AppCompatActivity {
 
     }
 
-
+    /**
+     * Checks if the user's name has changed and updates it in the database if needed.
+     *
+     * @return true if the name has changed, false otherwise
+     */
     private boolean isNameChanged() {
         if (!nameUser.equals(editName.getText().toString())){
             userRef.update("name", editName.getText().toString());
@@ -342,6 +409,11 @@ public class EditProfileAdmin extends AppCompatActivity {
         }
     }
 
+    /**
+     * Checks if the user's gender has changed and updates it in the database if needed.
+     *
+     * @return true if the gender has changed, false otherwise
+     */
     private boolean isGenderChanged(){
         String newGender = editGender.getText().toString();
         if (genderUser == null) {
@@ -366,6 +438,11 @@ public class EditProfileAdmin extends AppCompatActivity {
         }
     }
 
+    /**
+     * Checks if the user's username has changed and updates it in the database if needed.
+     *
+     * @return true if the username has changed, false otherwise
+     */
     private boolean isUsernameChanged(){
         String newUsername = editUsername.getText().toString();
         if (usernameUser == null) {
@@ -379,7 +456,6 @@ public class EditProfileAdmin extends AppCompatActivity {
 
             return true;
         } else if (usernameUser!=null && !usernameUser.equals(editUsername.getText().toString())) {
-//            reference.child(userID).child("username").setValue(newUsername);
             userRef.update("username", newUsername);
             usernameUser = newUsername;
             return true;
@@ -387,6 +463,12 @@ public class EditProfileAdmin extends AppCompatActivity {
             return false;
         }
     }
+
+    /**
+     * Checks if the user's day of birth has changed and updates it in the database if needed.
+     *
+     * @return true if the day of birth has changed, false otherwise
+     */
     private boolean isdobChanged(){
         String newDOB = editDOB.getText().toString();
         if (dobUser == null) {
@@ -400,7 +482,6 @@ public class EditProfileAdmin extends AppCompatActivity {
 
             return true;
         } else if (dobUser!=null && !dobUser.equals(editDOB.getText().toString())) {
-//            reference.child(userID).child("dob").setValue(newDOB);
             userRef.update("dob", newDOB);
             dobUser = newDOB;
             return true;
@@ -409,6 +490,11 @@ public class EditProfileAdmin extends AppCompatActivity {
         }
     }
 
+    /**
+     * Checks if the user's contact has changed and updates it in the database if needed.
+     *
+     * @return true if the contact has changed, false otherwise
+     */
     private boolean isContactNoChanged() {
         String newContactNo = editContactNo.getText().toString();
 
@@ -423,7 +509,6 @@ public class EditProfileAdmin extends AppCompatActivity {
 
             return true;
         } else if (contactNoUser!=null && !contactNoUser.equals(editContactNo.getText().toString())) {
-//            reference.child(userID).child("contactNo").setValue(editContactNo.getText().toString());
             userRef.update("contactNo", editContactNo.getText().toString());
             contactNoUser = editContactNo.getText().toString();
             return true;
@@ -432,7 +517,11 @@ public class EditProfileAdmin extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Checks if the user's country has changed and updates it in the database if needed.
+     *
+     * @return true if the country has changed, false otherwise
+     */
     private boolean isCountryChanged() {
         String newCountry = editCountry.getText().toString();
         if (countryUser == null) {
@@ -446,7 +535,6 @@ public class EditProfileAdmin extends AppCompatActivity {
 
             return true;
         } else if (countryUser!=null && !countryUser.equals(editCountry.getText().toString())) {
-//            reference.child(userID).child("country").setValue(newCountry);
             userRef.update("country", newCountry);
             countryUser = newCountry;
             return true;
@@ -456,7 +544,11 @@ public class EditProfileAdmin extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Retrieves user data from Firestore and populates the UI elements with the user's details.
+     * If user data exists, it updates the corresponding variables and sets text for non-null fields.
+     * If no data is found or an error occurs, it handles the failure accordingly.
+     */
     public void showData() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference userRef = db.collection("User Info").document(userID);
@@ -466,8 +558,10 @@ public class EditProfileAdmin extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot snapshot) {
                         if (snapshot.exists()) {
+                            // Convert the Firestore document to a custom object
                             ReadWriteUserDetails userProfile = snapshot.toObject(ReadWriteUserDetails.class);
 
+                            // Update local variables with user details
                             nameUser = snapshot.getString("name");
                             usernameUser = snapshot.getString("username");
                             genderUser = snapshot.getString("gender");
@@ -475,6 +569,7 @@ public class EditProfileAdmin extends AppCompatActivity {
                             countryUser = snapshot.getString("country");
                             dobUser = snapshot.getString("dob");
 
+                            // Set text for non-null fields in UI
                             setTextIfNotNull(editName, nameUser);
                             setTextIfNotNull(editUsername, usernameUser);
                             setTextIfNotNull(editDOB, dobUser);
@@ -492,13 +587,21 @@ public class EditProfileAdmin extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Sets the text for a TextView if the given text is not null.
+     * @param textView The TextView to set text on
+     * @param text The text to set (if not null)
+     */
     private void setTextIfNotNull(TextView textView, String text) {
         if (text != null) {
             textView.setText(text);
         }
     }
 
-
+    /**
+     * Launches an activity for result to select an image.
+     * Handles the result and updates the profile picture using Glide library.
+     */
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
@@ -507,6 +610,7 @@ public class EditProfileAdmin extends AppCompatActivity {
                 if(data != null && data.getData() != null){
                     imageUri = data.getData();
 
+                    // Load the selected image into the profile picture ImageView using Glide
                     Glide.with(getApplicationContext()).load(imageUri).into(profilePic);
                 } else {
                     Toast.makeText(EditProfileAdmin.this, "Image selection failed", Toast.LENGTH_SHORT).show();
@@ -515,22 +619,30 @@ public class EditProfileAdmin extends AppCompatActivity {
         }
     });
 
+    /**
+     * Loads the latest profile image from Firebase Storage and displays it using Glide.
+     * Handles success and failure cases, including logging errors.
+     */
     private void loadImage() {
+        // Reference to the images folder in Firebase Storage
         StorageReference storageRef = FirebaseStorage.getInstance().getReference()
                 .child("profilePictures")
                 .child("admin")
                 .child(userID)
                 .child("images");
 
+        // List all items (images) in the folder
         storageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override
             public void onSuccess(ListResult listResult) {
                 if (!listResult.getItems().isEmpty()) {
+                    // Find the latest image reference
                     StorageReference latestImageRef = findLatestImage(listResult.getItems());
-
+                    // Get the download URL of the latest image
                     latestImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
+                            // Update the original image URL and load the image into ImageView using Glide
                             originalImageUrl = uri.toString();
                             Glide.with(getApplicationContext())
                                     .load(originalImageUrl)
@@ -560,6 +672,12 @@ public class EditProfileAdmin extends AppCompatActivity {
         });
     }
 
+    /**
+     * Helper method to find the latest image reference from a list of StorageReferences.
+     * Assumes that the list is not empty.
+     * @param items List of StorageReferences representing images in Firebase Storage
+     * @return The StorageReference of the latest image
+     */
     private StorageReference findLatestImage(List<StorageReference> items) {
         // Check if there is only one item, return it directly
         if (items.size() == 1) {
@@ -577,11 +695,17 @@ public class EditProfileAdmin extends AppCompatActivity {
         // Get the latest image (last item after sorting)
         return items.get(items.size() - 1);
     }
+
+    /**
+     * Checks if the camera permission is granted. If granted, opens the camera; otherwise, requests permission.
+     */
     private void checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(
                 this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            // Camera permission is granted, proceed to open the camera
             openCamera();
         } else {
+            // Camera permission is not granted, request permission
             ActivityCompat.requestPermissions(
                     this,
                     new String[]{Manifest.permission.CAMERA},
@@ -590,17 +714,25 @@ public class EditProfileAdmin extends AppCompatActivity {
         }
     }
 
+    /**
+     * Opens the device's camera to capture an image.
+     * If the camera is not available, shows a toast message.
+     */
     private void openCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create a file to save the captured image
             File photoFile = createImageFile();
             if (photoFile != null) {
+                // Get a content URI for the file using FileProvider
                 Uri photoUri = FileProvider.getUriForFile(
                         this,
                         "com.example.greenStep.fileprovider",
                         photoFile
                 );
+
+                // Set the output URI for the camera intent and start the camera
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
@@ -609,12 +741,18 @@ public class EditProfileAdmin extends AppCompatActivity {
         }
     }
 
+    /**
+     * Creates a unique image file for storing the captured photo.
+     * Uses a timestamp to generate a unique filename in the app's external pictures directory.
+     * @return The created File object representing the image file.
+     */
     private File createImageFile() {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
         try {
+            // Create a temporary image file with a unique filename
             File image = File.createTempFile(imageFileName, ".jpg", storageDir);
             currentPhotoPath = image.getAbsolutePath();
             return image;
@@ -624,10 +762,16 @@ public class EditProfileAdmin extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * Handles the result of the camera intent.
+     * If the image capture is successful, updates the imageUri field with the captured photo URI
+     * and loads the photo into the profilePic ImageView using Glide.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            // Get the File object representing the captured photo
             File photoFile = new File(currentPhotoPath);
 
             // Use FileProvider to create a content URI

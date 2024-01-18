@@ -155,6 +155,9 @@ public class ProfileGreenStep extends AppCompatActivity {
 
     }
 
+    /**
+     * Fetches the current number of trees planted from Firestore and updates the corresponding TextView.
+     */
     private void displayCurrentTreesPlanted() {
         // Retrieve the current number of trees planted and update the TextView
         documentReference.get()
@@ -181,7 +184,11 @@ public class ProfileGreenStep extends AppCompatActivity {
                     }
                 });
     }
-
+    
+    /**
+     * Fetches the current number of points collected from Firestore, updates the corresponding TextView,
+     * and calculates the percentage of completion.
+     */
     private void displayPointCollected() {
         // Retrieve the current number of trees planted and update the TextView
         documentReference.get()
@@ -217,7 +224,10 @@ public class ProfileGreenStep extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Loads the user's profile image from Firebase Storage and displays it using Glide.
+     * Retrieves the latest image based on the timestamp in the filename.
+     */
     private void loadImage() {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference()
                 .child("profilePictures")
@@ -274,6 +284,10 @@ public class ProfileGreenStep extends AppCompatActivity {
         });
     }
 
+    /**
+     * Finds and returns the latest image from a list of StorageReference items based on their names.
+     * Assumes that the names contain timestamps.
+     */
     private StorageReference findLatestImage(List<StorageReference> items) {
         // Check if there is only one item, return it directly
         if (items.size() == 1) {
@@ -291,6 +305,11 @@ public class ProfileGreenStep extends AppCompatActivity {
         // Get the latest image (last item after sorting)
         return items.get(items.size() - 1);
     }
+
+    /**
+     * Updates the progress of a ProgressBar based on the current and total points.
+     * Ensures the progress value is between 0 and 100.
+     */
     private void updateProgressBar(long currentPoints, long totalPoints) {
         // Calculate the progress percentage
         int progress = (int) ((currentPoints * 100) / totalPoints);

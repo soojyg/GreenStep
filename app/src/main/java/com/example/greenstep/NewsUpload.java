@@ -53,7 +53,7 @@ public class NewsUpload extends Fragment {
 
     }
 
-    @Override
+        @Override
     public void onViewCreated(@org.checkerframework.checker.nullness.qual.NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         uploadImage = view.findViewById(R.id.uploadNewsImage);
@@ -65,6 +65,8 @@ public class NewsUpload extends Fragment {
         cancel=view.findViewById(R.id.close);
         bottomNavigationView = getActivity().findViewById(R.id.bottom_nav_view);
         bottomNavigationView.setVisibility(View.GONE);
+
+        // Set up ActivityResultLauncher for image selection
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -82,6 +84,8 @@ public class NewsUpload extends Fragment {
                     }
                 }
         );
+
+        // Set click listener for image upload button
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,6 +94,8 @@ public class NewsUpload extends Fragment {
                 activityResultLauncher.launch(photoPicker);
             }
         });
+
+        // Set click listener for completion button
         btnComplete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,12 +103,14 @@ public class NewsUpload extends Fragment {
             }
         });
 
+        // Set click listener for cancel button
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Display a message indicating an incomplete update
                 Toast.makeText(requireContext(), "Update incomplete", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(NewsUpload.this, NewsAdminView.class);
-//                startActivity(intent);
+
+                // Navigate back and make the bottom navigation view visible
                 Navigation.findNavController(view).popBackStack();
                 bottomNavigationView.setVisibility(View.VISIBLE);
             }
@@ -110,76 +118,37 @@ public class NewsUpload extends Fragment {
 
 
     }
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.news_upload);
-//        uploadImage = findViewById(R.id.uploadNewsImage);
-//        uploadAuthor = findViewById(R.id.uploadAuthor);
-//        uploadEventName = findViewById(R.id.uploadNewsName);
-//        uploadSource = findViewById(R.id.uploadNewsSourceRef);
-//        uploadDate = findViewById(R.id.uploadDate);
-//        btnComplete = findViewById(R.id.btnComplete);
-//        cancel=findViewById(R.id.cancel);
-//        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-//                new ActivityResultContracts.StartActivityForResult(),
-//                new ActivityResultCallback<ActivityResult>() {
-//                    @Override
-//                    public void onActivityResult(ActivityResult result) {
-//                        if (result.getResultCode() == Activity.RESULT_OK){
-//                            Intent data = result.getData();
-//                            uri = data.getData();
-//                            oldImageURL = String.valueOf(uri);
-//                            Log.d("URI_DEBUG", "Selected URI: " + uri.toString());
-//                            uploadImage.setImageURI(uri);
-//                        } else {
-//                            Toast.makeText(NewsUpload.this, "No Image Selected", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                }
-//        );
-//        uploadImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent photoPicker = new Intent(Intent.ACTION_PICK);
-//                photoPicker.setType("image/*");
-//                activityResultLauncher.launch(photoPicker);
-//            }
-//        });
-//        btnComplete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                saveData();
-//            }
-//        });
-//
-//        cancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(NewsUpload.this, "Update incomplete", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(NewsUpload.this, NewsAdminView.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//
-//    }
+
+    /**
+     * Saves data to Firestore. Uploads the selected image and triggers data upload.
+     *
+     * @param view The view associated with the action.
+     */
     public void saveData(View view){
+        // Set up StorageReference for image upload
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("newsPictures").child("newsPic")
                 .child(uri.getLastPathSegment());
+
+        // Create a progress dialog for the image upload process
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setCancelable(false);
         builder.setView(R.layout.progress_layout);
         AlertDialog dialog = builder.create();
         dialog.show();
+
+        // Upload the image to Firebase Storage
         storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // Get the download URL of the uploaded image
                 Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                 while (!uriTask.isComplete());
                 Uri urlImage = uriTask.getResult();
+                // Update imageURL with the download URL
                 imageURL = urlImage.toString();
+                // Trigger data upload to Firestore
                 uploadData(view);
+                // Dismiss the progress dialog
                 dialog.dismiss();
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -189,31 +158,36 @@ public class NewsUpload extends Fragment {
             }
         });
     }
+
+    /**
+     * Uploads data to Firestore after the image has been successfully uploaded.
+     *
+     * @param view The view associated with the action.
+     */
     public void uploadData(View view){
         String newsName = uploadEventName.getText().toString();
         String author = uploadAuthor.getText().toString();
         String source = uploadSource.getText().toString();
         String date = uploadDate.getText().toString();
+        // Create a NewsDataClass object with the retrieved data
         NewsDataClass newsDataClass = new NewsDataClass(newsName, author, source, imageURL,date);
         // Get a reference to the Firestore database
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-// Create a new document reference with an automatically generated ID
+        // Create a new document reference with an automatically generated ID
         DocumentReference newsRef = db.collection("News").document();
 
+        // Store the generated ID for potential further use
         newsId = newsRef.getId();
 
-//        String currentDate = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-// Set the data to the Firestore document
+        // Set the data to the Firestore document
         newsRef.set(newsDataClass)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
+                            // Display a success message and navigate back
                             Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show();
-//                            finish();
-//
-//                            startActivity(new Intent(NewsUpload.this, NewsAdminView.class));
                             Navigation.findNavController(view).popBackStack();
                             bottomNavigationView.setVisibility(View.VISIBLE);
 

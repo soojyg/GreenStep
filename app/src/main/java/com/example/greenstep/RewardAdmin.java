@@ -41,13 +41,16 @@ public class RewardAdmin extends Fragment {
         return rootView;
     }
 
-    @Override
+ @Override
     public void onViewCreated(@org.checkerframework.checker.nullness.qual.NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Initialize UI components
         noTreePlanted = view.findViewById(R.id.noTreePlanted);
         noTreeWaiting = view.findViewById(R.id.noTreeWaiting);
         buttonUpdateTree = view.findViewById(R.id.buttonUpdateTree);
 
+        // Retrieve initial values from Firestore document
         docRefTotal.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -63,6 +66,7 @@ public class RewardAdmin extends Fragment {
             }
         });
 
+        // Set click listener for the update button
         buttonUpdateTree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +78,7 @@ public class RewardAdmin extends Fragment {
                 updates.put("totalTreesPlanted", noTreePlantedDB);
                 updates.put("totalTreesWaiting", noTreeWaitingDB);
 
+                // Update Firestore document
                 docRefTotal.update(updates)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -94,62 +99,10 @@ public class RewardAdmin extends Fragment {
             }
         });
     }
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.reward_admin);
-//
-//        noTreePlanted = findViewById(R.id.noTreePlanted);
-//        noTreeWaiting = findViewById(R.id.noTreeWaiting);
-//        buttonUpdateTree = findViewById(R.id.buttonUpdateTree);
-//
-//        docRefTotal.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                if (documentSnapshot.exists()) {
-//                    // Retrieve the initial values from the document
-//                    noTreePlantedDB = documentSnapshot.getLong("totalTreesPlanted").intValue();
-//                    noTreeWaitingDB = documentSnapshot.getLong("totalTreesWaiting").intValue();
-//
-//                    // Set the values to the TextViews
-//                    noTreePlanted.setText(String.valueOf(noTreePlantedDB));
-//                    noTreeWaiting.setText(String.valueOf(noTreeWaitingDB));
-//                }
-//            }
-//        });
-//
-//        buttonUpdateTree.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Update the values when the button is clicked
-//                showCompleteDialog();
-//
-//                // Update Firestore with the new values
-//                Map<String, Object> updates = new HashMap<>();
-//                updates.put("totalTreesPlanted", noTreePlantedDB);
-//                updates.put("totalTreesWaiting", noTreeWaitingDB);
-//
-//                docRefTotal.update(updates)
-//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                            @Override
-//                            public void onSuccess(Void aVoid) {
-//                                // Update successful, update the TextViews
-//                                noTreePlanted.setText(String.valueOf(noTreePlantedDB));
-//                                noTreeWaiting.setText(String.valueOf(noTreeWaitingDB));
-//                                Toast.makeText(RewardAdmin.this, "Trees updated successfully", Toast.LENGTH_SHORT).show();
-//                            }
-//                        })
-//                        .addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception e) {
-//                                // Handle failure
-//                                Toast.makeText(RewardAdmin.this, "Error updating trees: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//            }
-//        });
-//    }
 
+    /**
+     * Display a custom dialog for updating the number of trees planted.
+     */
     private void showCompleteDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
@@ -165,7 +118,7 @@ public class RewardAdmin extends Fragment {
         // Create the dialog
         AlertDialog dialog = builder.create();
 
-// Increment button click listener
+        // Increment button click listener
         increment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,6 +155,7 @@ public class RewardAdmin extends Fragment {
         confirmPlanted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Update the TextViews and Firestore values based on user input
                 updateNumberTextView(noTreeSetting);
 
                 // Update Firestore with the new values
@@ -209,6 +163,7 @@ public class RewardAdmin extends Fragment {
                 updates.put("totalTreesPlanted", noTreePlantedDB);
                 updates.put("totalTreesWaiting", noTreeWaitingDB);
 
+                // Update Firestore document
                 docRefTotal.update(updates)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -234,12 +189,19 @@ public class RewardAdmin extends Fragment {
                 dialog.dismiss();
             }
         });
+        // Set dialog background
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         dialog.show();
         updateButtonStates(increment, decrement);
     }
 
+    /**
+     * Update the enabled/disabled state of increment and decrement buttons based on conditions.
+     *
+     * @param increment The increment button.
+     * @param decrement The decrement button.
+     */
     private void updateButtonStates(ImageButton increment, ImageButton decrement) {
         // Enable or disable increment button
         increment.setEnabled(noTreeSetting <= noTreeWaitingDB);
@@ -250,6 +212,11 @@ public class RewardAdmin extends Fragment {
 
     }
 
+    /**
+     * Update the TextViews and Firestore values based on the user's input.
+     *
+     * @param noTreeSetting The number of trees to be updated.
+     */
     private void updateNumberTextView(int noTreeSetting) {
         if(noTreeSetting <= noTreeWaitingDB)
             noTreeWaitingDB -= noTreeSetting;

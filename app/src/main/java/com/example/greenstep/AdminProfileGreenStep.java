@@ -34,9 +34,6 @@ import java.util.List;
 public class AdminProfileGreenStep extends AppCompatActivity {
     TextView field_name, field_date_birth, field_gender, field_contact, field_country, field_username;
     String nameUser, usernameUser, genderUser, contactNoUser, countryUser, dobUser;
-    public Uri imageUri;
-    FirebaseStorage storage;
-    StorageReference storageRef;
     Button editProfile, logout;
     ImageView profilePic;
     FirebaseUser user;
@@ -47,12 +44,10 @@ public class AdminProfileGreenStep extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_profile_green_step);
-
+        // Initialization of UI elements
         backBtn = findViewById(R.id.backButton);
         logout=(Button) findViewById(R.id.button_logout);
         editProfile=(Button) findViewById(R.id.button_edit);
-        user=FirebaseAuth.getInstance().getCurrentUser();
-        userID=user.getUid();
         profilePic=findViewById(R.id.profile_pic);
         field_name = findViewById(R.id.field_name);
         field_username = findViewById(R.id.field_username);
@@ -61,10 +56,13 @@ public class AdminProfileGreenStep extends AppCompatActivity {
         field_contact = findViewById(R.id.field_contact);
         field_country = findViewById(R.id.field_country);
         field_username = findViewById(R.id.field_username);
+
+        // Firebase initialization
+        user=FirebaseAuth.getInstance().getCurrentUser();
+        userID=user.getUid();
         reference= FirebaseDatabase.getInstance().getReference("User Info");
 
-
-
+        // Fetch user details from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference userRef = db.collection("User Info").document(userID);
 
@@ -72,6 +70,8 @@ public class AdminProfileGreenStep extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot snapshot) {
+                        // Handle successful document retrieval
+
                         if (snapshot.exists()) {
                             ReadWriteUserDetails userProfile = snapshot.toObject(ReadWriteUserDetails.class);
 
@@ -89,23 +89,17 @@ public class AdminProfileGreenStep extends AppCompatActivity {
                                 setTextIfNotNull(field_gender, genderUser);
                                 setTextIfNotNull(field_contact, contactNoUser);
                                 setTextIfNotNull(field_country, countryUser);
-
-                                // Special handling for title views
                                 setTextIfNotNull(field_username, usernameUser);
                             }
                         }
                     }
 
                     private void setTextIfNotNull(TextView textView, String text) {
+                        // Helper method to set text if not null
+
                         if (text != null) {
                             textView.setText(text);
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Handle failure if needed
                     }
                 });
 
@@ -113,6 +107,8 @@ public class AdminProfileGreenStep extends AppCompatActivity {
             Intent intent = new Intent(AdminProfileGreenStep.this, MainActivity.class);
             startActivity(intent);
         });
+
+        // Logout button functionality
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,16 +116,8 @@ public class AdminProfileGreenStep extends AppCompatActivity {
                 startActivity(new Intent(AdminProfileGreenStep.this, MainActivity.class));
             }
         });
-        // mine
-//        logout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FirebaseAuth.getInstance().signOut();
-//                Intent intent = new Intent(getApplicationContext(), Login.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
+
+        // Edit profile button functionality
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,14 +126,15 @@ public class AdminProfileGreenStep extends AppCompatActivity {
             }
         });
 
-
-
-        // Call this method to load the image from the database and display it
+        // Load and display the user's profile picture
         loadImage();
-
-
-
     }
+
+
+    /**
+     * Loads and displays the admin's profile picture from Firebase Storage using Glide.
+     * Retrieves the latest image based on the timestamp in the filename.
+     */
     private void loadImage() {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference()
                 .child("profilePictures")
@@ -180,8 +169,8 @@ public class AdminProfileGreenStep extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception exception) {
-                                Log.e("ImageUrl", "Failed to get image URL", exception);
                                 // Handle failure to get the image URL
+                                Log.e("ImageUrl", "Failed to get image URL", exception);
                             }
                         });
                     } else {
@@ -202,6 +191,10 @@ public class AdminProfileGreenStep extends AppCompatActivity {
         });
     }
 
+    /**
+     * Finds and returns the latest image from a list of StorageReference items based on their names.
+     * Assumes that the names contain timestamps.
+     */
     private StorageReference findLatestImage(List<StorageReference> items) {
         // Check if there is only one item, return it directly
         if (items.size() == 1) {
@@ -220,7 +213,6 @@ public class AdminProfileGreenStep extends AppCompatActivity {
         return items.get(items.size() - 1);
     }
 }
-
 
 
 

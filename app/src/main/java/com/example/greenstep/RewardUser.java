@@ -48,7 +48,7 @@ public class RewardUser extends Fragment {
         return rootView;
     }
 
-    @Override
+   @Override
     public void onViewCreated(@org.checkerframework.checker.nullness.qual.NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         number = view.findViewById(R.id.number);
@@ -56,6 +56,7 @@ public class RewardUser extends Fragment {
         button_plant = view.findViewById(R.id.button_plant);
         progressBar = view.findViewById(R.id.progressBar);
 
+        // Retrieve the current points collected and update UI elements accordingly
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -103,64 +104,10 @@ public class RewardUser extends Fragment {
         displayCurrentTreesPlanted();
         displayPointCollected();
     }
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.reward_user);
-//
-//        number = findViewById(R.id.number);
-//        noLeavesCollected = findViewById(R.id.noLeavesCollected);
-//        button_plant = findViewById(R.id.button_plant);
-//        progressBar=findViewById(R.id.progressBar);
-//        // Set a click listener for the button
-//        // Check if the currentPointCollected is greater than or equal to 10000
-//        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                if (documentSnapshot.exists()) {
-//                    Long currentPointCollected = documentSnapshot.getLong("pointCollected");
-//                    if (currentPointCollected == null) {
-//                        currentPointCollected = 0L;
-//                    }
-//
-//                    // If enough points, enable the button; otherwise, disable it
-//                    button_plant.setEnabled(currentPointCollected >= 10000);
-//
-//                    // Update progress bar
-//                    updateProgressBar(currentPointCollected, 10000);
-//                }
-//            }
-//        });
-//
-//
-//        // Set a click listener for the button
-//        button_plant.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Check if the currentPointCollected is greater than or equal to 10000
-//                documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                        if (documentSnapshot.exists()) {
-//                            Long currentPointCollected = documentSnapshot.getLong("pointCollected");
-//                            if (currentPointCollected == null) {
-//                                currentPointCollected = 0L;
-//                            }
-//
-//                            // If enough points, show the confirmation dialog; otherwise, do nothing
-//                            if (currentPointCollected >= 10000) {
-//                                showConfirmationDialog();
-//                            }
-//                        }
-//                    }
-//                });
-//            }
-//        });
-//
-//        // Display the initial count when the activity is created
-//        displayCurrentTreesPlanted();
-//        displayPointCollected();
-//    }
+
+    /**
+     * Increment the count of trees planted by 1.
+     */
     private void incrementTreesPlanted() {
         // Update the "trees_planted" field by incrementing by 1
         documentReference.get()
@@ -169,7 +116,6 @@ public class RewardUser extends Fragment {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
                             // Document exists, update the "trees_planted" field
-
                             Long currentTreesPlanted = documentSnapshot.getLong("trees_planted");
                             if (currentTreesPlanted == null) {
                                 currentTreesPlanted = 0L;
@@ -225,13 +171,16 @@ public class RewardUser extends Fragment {
                 });
     }
 
-    // Method to increment "totalTreesWaiting" in docRefTotal
+    /**
+     * Increment the count of "totalTreesWaiting" in the docRefTotal document.
+     */
     private void incrementTotalTreesWaiting() {
         docRefTotal.get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
+                            // Retrieve the current count of "totalTreesWaiting"
                             Long currentTotalTreesWaiting = documentSnapshot.getLong("totalTreesWaiting");
                             if (currentTotalTreesWaiting == null) {
                                 currentTotalTreesWaiting = 0L;
@@ -266,13 +215,16 @@ public class RewardUser extends Fragment {
                 });
     }
 
-
+    /**
+     * Decrement the points collected by 10,000 after redeeming rewards for tree plantation.
+     */
     private void decrementPointCollected() {
         documentReference.get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
+                            // Retrieve the current number of points collected
                             Long currentPointCollected = documentSnapshot.getLong("pointCollected");
                             if (currentPointCollected == null) {
                                 currentPointCollected = 0L;
@@ -316,12 +268,18 @@ public class RewardUser extends Fragment {
                 });
     }
 
-    // Method to update the button state based on the current points
+    /**
+     * Update the button state based on the current points.
+     *
+     * @param currentPoints The current number of points.
+     */
     private void updateButtonState(long currentPoints) {
         button_plant.setEnabled(currentPoints >= 10000);
     }
 
-
+    /**
+     * Retrieve the current number of trees planted and update the TextView.
+     */
     private void displayCurrentTreesPlanted() {
         // Retrieve the current number of trees planted and update the TextView
         documentReference.get()
@@ -329,6 +287,7 @@ public class RewardUser extends Fragment {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
+                            // Retrieve the current number of trees planted
                             Long currentTreesPlanted = documentSnapshot.getLong("trees_planted");
                             if (currentTreesPlanted == null) {
                                 currentTreesPlanted = 0L;
@@ -349,13 +308,18 @@ public class RewardUser extends Fragment {
                 });
     }
 
+    /**
+     * Retrieve the current number of leaves collected and update the corresponding TextView.
+     */
     private void displayPointCollected() {
-        // Retrieve the current number of trees planted and update the TextView
+        // Retrieve the current number of leaves planted and update the TextView
         documentReference.get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
+
+                            // Retrieve the current number of leaves collected
                             Long currentPointCollected = documentSnapshot.getLong("pointCollected");
                             if (currentPointCollected == null) {
                                 currentPointCollected = 0L;
@@ -376,6 +340,9 @@ public class RewardUser extends Fragment {
                 });
     }
 
+    /**
+     * Show a confirmation dialog to confirm the redemption of rewards for tree plantation.
+     */
     private void showConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
@@ -391,7 +358,6 @@ public class RewardUser extends Fragment {
 
         // Create the dialog
         AlertDialog dialog = builder.create();
-
 
         // Set click listeners for the buttons
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -417,6 +383,9 @@ public class RewardUser extends Fragment {
         dialog.show();
     }
 
+    /**
+     * Show a completion dialog after the rewards redemption is confirmed.
+     */
     private void showCompleteDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
@@ -438,6 +407,12 @@ public class RewardUser extends Fragment {
         dialog.show();
     }
 
+    /**
+     * Update the ProgressBar based on the current and total points.
+     *
+     * @param currentPoints The current number of points.
+     * @param totalPoints   The total number of points.
+     */
     private void updateProgressBar(long currentPoints, long totalPoints) {
         // Calculate the progress percentage
         int progress = (int) ((currentPoints * 100) / totalPoints);
